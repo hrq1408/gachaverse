@@ -48,4 +48,20 @@ jobs:
         env:
           CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
-        run: npx --yes wrangler@4.168.0 pages deploy out --project-name gachaverse --branch main --commit-hash "$GITHUB_SHA"
+        run: |
+          shopt -s extglob
+          for key in CLOUDFLARE_ACCOUNT_ID CLOUDFLARE_API_TOKEN; do
+            value=${!key}
+            value=${value##+([[:space:]])}
+            value=${value%%+([[:space:]])}
+            if [[ -z $value || $value == *[!a-zA-Z0-9_-]* ]]; then
+              echo "::error::O secret $key deve conter somente o valor da credencial em uma linha."
+              exit 1
+            fi
+            export "$key=$value"
+          done
+          if [[ ! $CLOUDFLARE_ACCOUNT_ID =~ ^[[:xdigit:]]{32}$ ]]; then
+            echo "::error::O secret CLOUDFLARE_ACCOUNT_ID deve conter os 32 dígitos hexadecimais da conta."
+            exit 1
+          fi
+          npx --yes wrangler@4.168.0 pages deploy out --project-name gachaverse --branch main --commit-hash "$GITHUB_SHA"
