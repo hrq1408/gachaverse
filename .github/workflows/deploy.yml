@@ -13,7 +13,8 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
-  deploy:
+  tracker:
+    name: Tracker beta
     if: github.ref == 'refs/heads/main'
     runs-on: ubuntu-24.04
     timeout-minutes: 20
@@ -32,36 +33,48 @@ jobs:
       - name: Instalar dependências
         run: pnpm install --frozen-lockfile
 
-      - name: Lint
-        run: pnpm lint
-
-      - name: Testes
-        run: pnpm test
-
-      - name: Gerar exportação estática
-        env:
-          SITE_URL: https://gachaverse.pages.dev
-          NEXT_PUBLIC_GA_MEASUREMENT_ID: G-LRJH89WQR7
-        run: pnpm build
-
-      - name: Publicar no Cloudflare Pages
+      - run: pnpm lint
+      - run: pnpm test
+      - run: pnpm build:tracker
+      - name: Publicar tracker isolado
         env:
           CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
-        run: |
-          shopt -s extglob
-          for key in CLOUDFLARE_ACCOUNT_ID CLOUDFLARE_API_TOKEN; do
-            value=${!key}
-            value=${value##+([[:space:]])}
-            value=${value%%+([[:space:]])}
-            if [[ -z $value || $value == *[!a-zA-Z0-9_-]* ]]; then
-              echo "::error::O secret $key deve conter somente o valor da credencial em uma linha."
-              exit 1
-            fi
-            export "$key=$value"
-          done
-          if [[ ! $CLOUDFLARE_ACCOUNT_ID =~ ^[[:xdigit:]]{32}$ ]]; then
-            echo "::error::O secret CLOUDFLARE_ACCOUNT_ID deve conter os 32 dígitos hexadecimais da conta."
-            exit 1
-          fi
-          npx --yes wrangler@4.168.0 pages deploy out --project-name gachaverse --branch main --commit-hash "$GITHUB_SHA"
+        run: bash scripts/deploy-pages.sh gachaverse-tracker
+      - name: Validar segurança e operações no tracker em produção
+        run: node scripts/check-beta.mjs tracker
+
+  portal:
+    name: Portal e calculadora
+    needs: tracker
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        with:
+          persist-credentials: false
+
+      - uses: actions/setup-node@53b83947a5a98c8d113130e565377fae1a50d02f # v6.3.0
+        with:
+          node-version: '22'
+
+      - name: Instalar a versão de pnpm do projeto
+        run: npm install --global "$(node -p "require('./package.json').packageManager")"
+
+      - name: Instalar dependências
+        run: pnpm install --frozen-lockfile
+
+      - name: Gerar portal após validar a origem do tracker
+        env:
+          SITE_URL: https://gachaverse.pages.dev
+          NEXT_PUBLIC_TRACKER_RELEASED: 'true'
+          NEXT_PUBLIC_ADS_ENABLED: 'false'
+          NEXT_PUBLIC_GA_MEASUREMENT_ID: G-LRJH89WQR7
+        run: pnpm build
+      - name: Publicar portal
+        env:
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+        run: bash scripts/deploy-pages.sh gachaverse
+      - name: Validar artigos, ferramentas e navegação em produção
+        run: node scripts/check-beta.mjs portal

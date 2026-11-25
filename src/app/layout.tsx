@@ -1,3 +1,4 @@
+import { adsenseClient } from '@/features/advertising/config';
 import { Consent } from '@/components/consent';
 import { publicPaths } from '@/content/editorial';
 import { games, sections, sectionPath } from '@/content/catalog';
@@ -11,7 +12,7 @@ export const metadata: Metadata = {
   ...(site.url ? { metadataBase: new URL(site.url) } : {}),
   title: { default: site.name, template: '%s | GachaVerse' },
   description: site.description,
-  other: { 'google-adsense-account': 'ca-pub-6914991641652412' },
+  other: { 'google-adsense-account': adsenseClient },
   robots: { index: Boolean(site.url), follow: true },
 };
 
@@ -22,7 +23,7 @@ export default function Layout({ children }: { children: ReactNode }) {
       <Header />
       <main id="principal" tabIndex={-1}>{children}</main>
       <Footer />
-      <Consent paths={[...new Set([...publicPaths(), ...sections.flatMap((section) => [sectionPath(section), ...games.map((game) => sectionPath(section, game))])])]} />
+      <Consent paths={[...new Set(['/ferramentas/warp-tracker/painel/', ...publicPaths(), ...sections.flatMap((section) => [sectionPath(section), ...games.map((game) => sectionPath(section, game))])])]} />
     </body>
   </html>;
 }

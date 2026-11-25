@@ -61,3 +61,5 @@ Se seu objetivo é guardar recursos para um personagem, usar Jades para repor en
 ## Quanto é possível juntar por mês?
 
 Depende da versão, dos eventos, das atividades liberadas e da sua capacidade de completar desafios. Não existe uma quantidade mensal garantida para todas as contas. Calcule com os valores atuais do seu inventário e revise o plano quando novos eventos forem anunciados.
+
+Use a [calculadora de pity do GachaVerse](/ferramentas/calculadora-pity/) para conferir quantos Saltos sua reserva cobre.

@@ -29,7 +29,7 @@ export default function Home() {
         <div className="section-heading"><h2>Escolha seu jogo</h2><Link href="/jogos/">Ver todos os jogos</Link></div>
         <div className="card-grid">{games.map((game) => <GameCard key={game.slug} game={game} />)}</div>
       </section>
-      <AdBanner placement="leaderboard" />
+      <AdBanner placement="home" />
       <div className="editorial-layout">
         <section>
           <div className="section-heading"><h2>Guias recentes</h2><Link href="/busca/">Buscar no acervo</Link></div>

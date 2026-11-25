@@ -8,7 +8,8 @@
   "packageManager": "pnpm@11.25.0",
   "scripts": {
     "dev": "next dev",
-    "build": "next build",
+    "build": "node scripts/build-portal.mjs",
+    "build:tracker": "node tracker/build.mjs",
     "lint": "eslint .",
     "test": "tsx --test tests/*.test.ts"
   },
@@ -27,8 +28,10 @@
     "@types/node": "^24.0.0",
     "@types/react": "^19.2.0",
     "@types/react-dom": "^19.2.0",
+    "esbuild": "0.28.2",
     "eslint": "^9.0.0",
     "eslint-config-next": "^16.2.0",
+    "playwright-core": "1.56.1",
     "tailwindcss": "^4.2.0",
     "tsx": "^4.20.0",
     "typescript": "^5.9.0"

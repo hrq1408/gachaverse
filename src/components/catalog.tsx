@@ -4,7 +4,7 @@ import Link from 'next/link';
 import { BookOpen, CalendarDays, Gamepad2, Gift, Layers3, Orbit, Sparkles, Swords, UserRound, Users, Waves, Zap } from 'lucide-react';
 import { gamePath, sectionPath, type Game, type Section } from '@/content/catalog';
 import { redemptionCodes, editorialSnapshotTime, findArticles } from '@/content/editorial';
-import { AdBanner } from './ad-banner';
+
 
 const gameIcons = { rail: Orbit, genshin: Sparkles, zenless: Zap, waves: Waves };
 const sectionIcons = { artigos: BookOpen, builds: Swords, 'tier-lists': Layers3, codigos: Gift, calendario: CalendarDays, personagens: UserRound, equipes: Users };
@@ -51,7 +51,7 @@ export function SectionContent({ section, games, game }: {
       entries.length ? entries.map((article) => <ArticleCard article={article} level={2} key={article.slug} />) : <div className="panel"><h2>Em preparação</h2><p>O primeiro conteúdo desta seção será publicado após revisão editorial.</p>
         <Link href={game ? gamePath(game) : '/jogos/'}>{game ? 'Voltar ao jogo' : 'Explorar jogos'}</Link>
       </div>}
-    <AdBanner />
+
   </div>;
 }
 

@@ -33,15 +33,16 @@ export async function generateMetadata({ params }: Props) {
 export default async function ArticlePage({ params }: Props) {
   const article = await resolveArticle(params);
   return <div className="shell interior">
-    <article className="prose">
+    <div className="article-columns"><article className="prose">
       <ArticleHeader article={article} />
       <ArticleContents article={article} />
       <GuideDetails article={article} />
       <div className="markdown-body" dangerouslySetInnerHTML={{ __html: article.html }} />
+      <AdBanner placement="articleBody" />
       <ArticleReferences article={article} />
-    </article>
+    </article><AdBanner placement="articleSidebar" /></div>
     <RelatedArticles article={article} />
-    <AdBanner />
+
   </div>;
 }
 

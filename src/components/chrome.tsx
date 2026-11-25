@@ -14,6 +14,7 @@ export function Header() {
       <Brand />
       <nav aria-label="Navegação principal">
         <Link href="/jogos/">Jogos</Link>
+        <Link href="/ferramentas/">Ferramentas</Link>
         <Link href="/busca/">Buscar artigos</Link>
         {publishedSections().map((section) => <Link key={section.slug} href={sectionPath(section)}>{section.slug === 'codigos' ? 'Códigos' : section.title}</Link>)}
       </nav>

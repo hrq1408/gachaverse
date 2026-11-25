@@ -105,9 +105,17 @@ export function trackPage(path: string, allowedPaths: readonly string[]) {
   const fields = { page_location: currentLocation, page_title: currentTitle, page_referrer: previousLocation };
   command('set', fields);
   command('event', 'page_view', fields);
+  if (previousLocation) {
+    const previous = new URL(previousLocation).pathname;
+    if ((previous.startsWith('/artigos/') && path.startsWith('/ferramentas/')) ||
+        (previous.startsWith('/ferramentas/') && path.startsWith('/artigos/'))) {
+      command('event', 'tool_article_navigation', fields);
+    }
+  }
+  if (path === '/ferramentas/calculadora-pity/') command('event', 'pity_calculator_open', fields);
 }
 
-export function trackAction(name: 'game_click' | 'article_read' | 'redemption_click', fields: Record<string, string>) {
+export function trackAction(name: 'game_click' | 'article_read' | 'redemption_click' | 'pity_calculation' | 'pity_banner_change' | 'pity_calculator_reset', fields: Record<string, string>) {
   if (currentLocation) command('event', name, {
     ...fields, page_location: currentLocation, page_title: currentTitle, page_referrer: previousLocation,
   });

@@ -40,7 +40,7 @@ export function publishedSections(game?: Game) {
 
 export function publicPaths() {
   return [
-    '/', '/jogos/', '/sobre/', '/privacidade/', '/contato/',
+    '/', '/jogos/', '/sobre/', '/privacidade/', '/contato/', '/ferramentas/', '/ferramentas/calculadora-pity/', '/ferramentas/warp-tracker/',
     ...publishedSections()
       .map((section) => sectionPath(section)),
     ...games.flatMap((game) => [

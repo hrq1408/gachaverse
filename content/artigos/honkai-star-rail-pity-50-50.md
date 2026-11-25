@@ -60,3 +60,5 @@ Não recomendamos. Um cinco estrelas antecipado pode consumir a garantia e alter
 ## Como conferir meu histórico
 
 Abra o menu de Saltos, acesse o histórico do tipo correspondente e conte os resultados após o último cinco estrelas. Se registros recentes ainda não aparecerem, não presuma que a contagem está completa.
+
+Use a [calculadora de pity do GachaVerse](/ferramentas/calculadora-pity/) para conferir quantos Saltos sua reserva cobre.
