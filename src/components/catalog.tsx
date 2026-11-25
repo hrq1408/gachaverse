@@ -1,12 +1,13 @@
 import { ArticleCard } from './article';
+import { CodeValidity } from './code-validity';
 import Link from 'next/link';
-import { BookOpen, Gamepad2, Gift, Layers3, Orbit, Sparkles, Swords, Waves, Zap } from 'lucide-react';
+import { BookOpen, CalendarDays, Gamepad2, Gift, Layers3, Orbit, Sparkles, Swords, UserRound, Users, Waves, Zap } from 'lucide-react';
 import { gamePath, sectionPath, type Game, type Section } from '@/content/catalog';
-import { activeCodes, editorialSnapshotTime, findArticles } from '@/content/editorial';
+import { redemptionCodes, editorialSnapshotTime, findArticles } from '@/content/editorial';
 import { AdBanner } from './ad-banner';
 
 const gameIcons = { rail: Orbit, genshin: Sparkles, zenless: Zap, waves: Waves };
-const sectionIcons = { artigos: BookOpen, builds: Swords, 'tier-lists': Layers3, codigos: Gift };
+const sectionIcons = { artigos: BookOpen, builds: Swords, 'tier-lists': Layers3, codigos: Gift, calendario: CalendarDays, personagens: UserRound, equipes: Users };
 
 export function GameCard({ game }: { game: Game }) {
   const Icon = gameIcons[game.theme];
@@ -27,7 +28,7 @@ export function SectionCard({ section, game }: { section: Section; game?: Game }
 }
 
 function Redemption({ game }: { game: Game }) {
-  const codes = activeCodes(game, editorialSnapshotTime);
+  const codes = redemptionCodes.filter((entry) => entry.game === game.slug);
   const steps = 'redemptionSteps' in game ? game.redemptionSteps : undefined;
   return <section className="panel">
     <h2>{game.name}</h2>
@@ -36,6 +37,7 @@ function Redemption({ game }: { game: Game }) {
     {codes.length ? <ul className="code-list">{codes.map((entry) => <li key={entry.code}>
       <code>{entry.code}</code> · {entry.reward} · <a data-game={game.slug} data-redemption="" href={entry.source}>Fonte oficial</a>
       <small>Verificado em <time dateTime={entry.verifiedOn}>{entry.verifiedOn}</time></small>
+      <CodeValidity expiresAt={entry.expiresAt} snapshot={editorialSnapshotTime} />
     </li>)}</ul> : <p className="muted">Ainda não há códigos verificados publicados aqui.</p>}
   </section>;
 }

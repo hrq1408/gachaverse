@@ -16,9 +16,11 @@ export const redemptionCodes: readonly RedemptionCode[] = [];
 export const editorialSnapshotTime = Date.now();
 
 export function findArticles(section: Section, game?: Game) {
-  return articles.filter((article) =>
+  const entries = articles.filter((article) =>
     article.categoria === section.slug && (!game || article.jogos.includes(game.slug)),
   );
+  if (section.slug === 'calendario') entries.sort((a, b) => Date.parse(a.periodo!.inicio) - Date.parse(b.periodo!.inicio));
+  return entries;
 }
 
 export function contentPath(article: Article) {

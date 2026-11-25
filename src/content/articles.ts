@@ -14,7 +14,14 @@ const schema = z.object({
   slug,
   descricao: text,
   jogos: z.array(z.enum(games.map((game) => game.slug))).min(1),
-  categoria: z.enum(['artigos', 'builds', 'tier-lists']),
+  categoria: z.enum(['artigos', 'builds', 'tier-lists', 'personagens', 'equipes', 'calendario']),
+  personagem: text.optional(),
+  equipamentos: z.array(z.object({ nome: text, motivo: text })).optional(),
+  equipe: z.array(z.object({ personagem: text, funcao: text })).optional(),
+  periodo: z.object({
+    inicio: z.iso.datetime({ offset: true }),
+    fim: z.iso.datetime({ offset: true }),
+  }).refine((p) => Date.parse(p.fim) > Date.parse(p.inicio), 'Período inválido').optional(),
   autor: text,
   publicacao: z.iso.date(),
   atualizacao: z.iso.date(),
@@ -23,7 +30,8 @@ const schema = z.object({
   textoAlternativo: text,
   fontes: z.array(z.object({ titulo: text, url: z.url({ protocol: /^https?$/ }) })).min(1),
   relacionados: z.array(slug).default([]),
-}).refine((meta) => meta.atualizacao >= meta.publicacao, 'Atualização anterior à publicação');
+}).refine((meta) => meta.atualizacao >= meta.publicacao, 'Atualização anterior à publicação')
+  .refine((meta) => meta.categoria !== 'calendario' || !!meta.periodo, 'Banner sem período confirmado');
 
 const markdown = new MarkdownIt({ html: false });
 type Heading = { id: string; title: string; level: number };

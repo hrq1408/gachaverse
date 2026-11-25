@@ -1,6 +1,6 @@
 import { notFound } from 'next/navigation';
 import { AdBanner } from '@/components/ad-banner';
-import { ArticleContents, ArticleHeader, ArticleReferences, RelatedArticles } from '@/components/article';
+import { ArticleContents, ArticleHeader, ArticleReferences, GuideDetails, RelatedArticles } from '@/components/article';
 import { articles, contentPath } from '@/content/editorial';
 import { pageMetadata } from '@/lib/site';
 
@@ -36,6 +36,7 @@ export default async function ArticlePage({ params }: Props) {
     <article className="prose">
       <ArticleHeader article={article} />
       <ArticleContents article={article} />
+      <GuideDetails article={article} />
       <div className="markdown-body" dangerouslySetInnerHTML={{ __html: article.html }} />
       <ArticleReferences article={article} />
     </article>

@@ -23,6 +23,9 @@ export const games = [
 ] as const;
 
 export const sections = [
+  { slug: 'calendario', title: 'Calendário de banners', description: 'Períodos de banners confirmados em anúncios oficiais.' },
+  { slug: 'personagens', title: 'Personagens', description: 'Perfis e guias de personagens por jogo.' },
+  { slug: 'equipes', title: 'Composições de equipe', description: 'Guias de composição, funções e sinergias por versão.' },
   { slug: 'artigos', title: 'Artigos', description: 'Guias e cobertura editorial em português.' },
   { slug: 'builds', title: 'Builds', description: 'Equipamentos, composição de equipes e prioridades de melhoria.' },
   { slug: 'tier-lists', title: 'Tier lists', description: 'Classificações de personagens por versão, função e modo de jogo.' },

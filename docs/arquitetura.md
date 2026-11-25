@@ -46,3 +46,9 @@ Referências: [requisitos do AdSense](https://support.google.com/adsense/answer/
 O build lê NEXT_PUBLIC_GA_MEASUREMENT_ID de .env.production. O identificador é público. O consentimento básico bloqueia o carregamento da tag até a aceitação. A escolha fica no armazenamento local e pode ser revista pelo rodapé. O banner próprio controla a audiência e não é uma CMP certificada pelo Google.
 
 A tag roda em um documento isolado do histórico do App Router. O portal emite page_view uma vez por mudança de caminho público, game_click ao selecionar um jogo, article_read quando o fim do texto entra na área visível e redemption_click ao abrir um canal oficial de resgate. O endereço enviado usa apenas caminhos do catálogo. Os sinais de publicidade permanecem negados.
+
+## Calendário, personagens e equipes
+
+Além das categorias originais, o front matter aceita `calendario`, `personagens` e `equipes`. Para um banner, informe `periodo.inicio` e `periodo.fim` em ISO 8601 com fuso e vincule a fonte oficial. O calendário ordena as publicações pelo início e exibe os horários em UTC. Perfis podem informar `personagem`, builds podem detalhar `equipamentos` (nome e motivo) e composições aceitam `equipe` (personagem e função). Use `relacionados` para ligar um perfil às builds e equipes revisadas.
+
+A busca em `/busca/` consulta somente publicações revisadas. Resultados de busca e seções sem publicações ficam fora do sitemap. As páginas de resgate com instruções oficiais continuam acessíveis mesmo sem códigos registrados.

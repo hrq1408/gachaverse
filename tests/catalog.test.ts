@@ -3,11 +3,11 @@ import test from 'node:test';
 import { games, gamePath, sectionPath, sections } from '../src/content/catalog';
 import { activeCodes, articles, contentPath, publicPaths } from '../src/content/editorial';
 
-test('every game has a distinct hub, four sections and HTTPS official sources', () => {
+test('every game has a distinct hub, distinct sections and HTTPS official sources', () => {
   assert.equal(games.length, 4);
   assert.equal(new Set(games.map(gamePath)).size, 4);
   for (const game of games) {
-    assert.equal(new Set(sections.map((section) => sectionPath(section, game))).size, 4);
+    assert.equal(new Set(sections.map((section) => sectionPath(section, game))).size, sections.length);
     for (const link of [game.official, game.redemption]) assert.equal(new URL(link).protocol, 'https:');
   }
 });
