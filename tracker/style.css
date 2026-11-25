@@ -309,3 +309,11 @@ article ol {
   }
 }
 .beta { font: 700 .85rem system-ui; vertical-align: middle; letter-spacing: .04em; color: #77e3ee; border: 1px solid #375c6c; border-radius: .4rem; padding: .25rem .55rem; } .brand a + a { margin-left: .8rem; }
+@media (max-width: 420px) {
+  .brand { flex-wrap: wrap; height: auto; min-height: 60px; padding-block: .6rem; }
+  .brand a + a { margin-left: .25rem; }
+  .filters label, .model > div { min-width: 0; max-width: 100%; }
+  .board, .model, article { overflow-wrap: anywhere; }
+  .model { display: block; }
+  .layout { grid-template-columns: minmax(0, 1fr); }
+}

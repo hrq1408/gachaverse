@@ -65,7 +65,10 @@ try {
     await page.getByRole('heading',{name:/Estimativa beta/}).waitFor();
     for(const width of [320,390,768,1440]){
       await page.setViewportSize({width,height:900});
-      assert(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth),String(width));
+      await page.waitForFunction(w => innerWidth === w && document.documentElement.scrollWidth <= w,width,{timeout:5000}).catch(async error => {
+        console.error('Elementos além da largura',width,await page.evaluate(w=>Array.from(document.querySelectorAll('body *')).filter(el=>el.getBoundingClientRect().right>w+1).slice(0,12).map(el=>el.tagName+'.'+el.className),width));
+        throw error;
+      });
     }
     assert.equal(await page.locator('script:not([src="./app.js"]),iframe').count(),0);
     assert.deepEqual([...outside],[]);
