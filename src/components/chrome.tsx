@@ -1,3 +1,4 @@
+import { CookiePreferencesButton } from './consent';
 import { publishedSections } from '@/content/editorial';
 import Link from 'next/link';
 import { Gamepad2 } from 'lucide-react';
@@ -27,6 +28,7 @@ export function Footer() {
         <Link href="/sobre/">Sobre o GachaVerse</Link>
         <Link href="/privacidade/">Privacidade</Link>
         <Link href="/contato/">Contato</Link>
+        <CookiePreferencesButton />
       </nav>
     </div>
   </footer>;

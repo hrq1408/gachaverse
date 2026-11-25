@@ -85,3 +85,14 @@ h1 em { color: var(--color-highlight); font-style: normal; }
   .ad-banner { min-height: 100px; }
 }
 
+
+.cookie-link { color: var(--color-highlight); cursor: pointer; font: inherit; }
+.cookie-panel { position: fixed; z-index: 40; inset: auto 1rem 1rem auto; width: min(32rem, calc(100% - 2rem)); max-height: 75dvh; overflow: auto; padding: 1.25rem; border: 1px solid #7355d8; border-radius: 1rem; background: #18213a; color: #fafaff; box-shadow: 0 12px 50px #0009; }
+.cookie-panel h2 { font-size: 1.25rem; font-weight: 750; }
+.cookie-panel p { margin-block: .65rem; line-height: 1.55; }
+.cookie-panel a { color: #b9a7ff; text-decoration: underline; }
+.cookie-choice { display: flex; gap: .6rem; align-items: center; min-height: 44px; }
+.cookie-choice input { accent-color: #7355d8; }
+.cookie-actions { display: flex; flex-wrap: wrap; gap: .5rem; }
+.cookie-actions button { padding: .55rem .9rem; min-height: 44px; border: 1px solid #b9a7ff; border-radius: .55rem; color: white; background: #423474; cursor: pointer; }
+.cookie-actions button:focus-visible, .cookie-link:focus-visible, .cookie-panel input:focus-visible { outline: 3px solid #22d3ee; outline-offset: 2px; }

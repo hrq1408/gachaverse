@@ -10,7 +10,7 @@ const sectionIcons = { artigos: BookOpen, builds: Swords, 'tier-lists': Layers3,
 
 export function GameCard({ game }: { game: Game }) {
   const Icon = gameIcons[game.theme];
-  return <Link href={gamePath(game)} className={`game-card theme-${game.theme}`}>
+  return <Link data-game={game.slug} href={gamePath(game)} className={`game-card theme-${game.theme}`}>
     <div className="game-art" aria-hidden="true">
       <span className="game-mark">{game.mark}</span><Icon className="game-icon" strokeWidth={1.1} />
     </div>
@@ -32,9 +32,9 @@ function Redemption({ game }: { game: Game }) {
   return <section className="panel">
     <h2>{game.name}</h2>
     <p>{steps ?? 'Acesse a página oficial e siga as instruções para vincular o código à sua conta.'}</p>
-    <p><a href={game.redemption}>{steps ? 'Ver instruções da Kuro Games' : 'Abrir página oficial de resgate'}</a></p>
+    <p><a data-game={game.slug} data-redemption="" href={game.redemption}>{steps ? 'Ver instruções da Kuro Games' : 'Abrir página oficial de resgate'}</a></p>
     {codes.length ? <ul className="code-list">{codes.map((entry) => <li key={entry.code}>
-      <code>{entry.code}</code> · {entry.reward} · <a href={entry.source}>Fonte oficial</a>
+      <code>{entry.code}</code> · {entry.reward} · <a data-game={game.slug} data-redemption="" href={entry.source}>Fonte oficial</a>
       <small>Verificado em <time dateTime={entry.verifiedOn}>{entry.verifiedOn}</time></small>
     </li>)}</ul> : <p className="muted">Ainda não há códigos verificados publicados aqui.</p>}
   </section>;

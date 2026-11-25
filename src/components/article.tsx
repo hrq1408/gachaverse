@@ -28,7 +28,7 @@ export function ArticleHeader({ article }: { article: Article }) {
     <p>Por {article.autor} · Publicado em <ArticleDate value={article.publicacao} /></p>
     <p>Atualizado em <ArticleDate value={article.atualizacao} /></p>
     <ul aria-label="Jogos abordados">{games.filter((game) => article.jogos.includes(game.slug)).map((game) =>
-      <li key={game.slug}><Link href={gamePath(game)}>{game.name}</Link></li>)}</ul>
+      <li key={game.slug}><Link data-game={game.slug} href={gamePath(game)}>{game.name}</Link></li>)}</ul>
     {article.versao && <p>Versão analisada: {article.versao}</p>}
     <Image className="mt-5 aspect-video w-full rounded-xl object-cover" src={article.imagem} alt={article.textoAlternativo} width={960} height={540} />
   </header>;
@@ -46,7 +46,7 @@ export function ArticleContents({ article }: { article: Article }) {
 }
 
 export function ArticleReferences({ article }: { article: Article }) {
-  return <section><h2>Fontes consultadas</h2>
+  return <section><h2 data-article-end="">Fontes consultadas</h2>
     <ul>{article.fontes.map((source) => <li key={source.url}><a href={source.url}>{source.titulo}</a></li>)}</ul>
   </section>;
 }

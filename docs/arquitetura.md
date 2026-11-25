@@ -34,9 +34,15 @@ As listagens vazias recebem `noindex` e ficam fora do sitemap. Com `SITE_URL` co
 
 ## Publicidade
 
-O layout global inclui o script assíncrono do AdSense no HTML estático para verificação de propriedade. O componente `AdBanner` mantém os espaços inline e leaderboard desativados até a aprovação. A configuração dos anúncios automáticos pertence ao painel do AdSense.
+O layout global inclui a metatag google-adsense-account no HTML estático para verificação de propriedade. O componente `AdBanner` mantém os espaços inline e leaderboard desativados até a aprovação. A configuração dos anúncios automáticos pertence ao painel do AdSense.
 
 Antes de veicular anúncios personalizados no EEE, Reino Unido ou Suíça, configure uma CMP certificada pelo Google integrada ao IAB TCF. Teste a aceitação, a recusa e a alteração posterior das preferências. Para o Brasil, avalie as finalidades e bases legais e mantenha desativados por padrão os cookies que dependem de consentimento. A política publicada descreve a integração atual. Revise-a quando o tratamento mudar.
 
 Referências: [requisitos do AdSense](https://support.google.com/adsense/answer/13554116?hl=pt-BR) e [guia da ANPD sobre cookies](https://www.gov.br/anpd/pt-br/centrais-de-conteudo/materiais-educativos-e-publicacoes/guia-orientativo-cookies-e-protecao-de-dados-pessoais.pdf/@@display-file/file).
 
+
+## Medição de audiência
+
+O build lê NEXT_PUBLIC_GA_MEASUREMENT_ID de .env.production. O identificador é público. O consentimento básico bloqueia o carregamento da tag até a aceitação. A escolha fica no armazenamento local e pode ser revista pelo rodapé. O banner próprio controla a audiência e não é uma CMP certificada pelo Google.
+
+A tag roda em um documento isolado do histórico do App Router. O portal emite page_view uma vez por mudança de caminho público, game_click ao selecionar um jogo, article_read quando o fim do texto entra na área visível e redemption_click ao abrir um canal oficial de resgate. O endereço enviado usa apenas caminhos do catálogo. Os sinais de publicidade permanecem negados.

@@ -11,10 +11,13 @@ export default function Privacy() {
     <h2>Ao visitar o portal</h2>
     <p>A leitura dos guias dispensa cadastro. A Cloudflare entrega as páginas e recebe dados técnicos da conexão, como endereço IP, página solicitada e informações do navegador, para atender à solicitação e proteger a infraestrutura.</p>
     <p><a href="https://www.cloudflare.com/privacypolicy/">Consultar a política de privacidade da Cloudflare</a></p>
-    <h2>Google AdSense e cookies</h2>
-    <p>Os espaços publicitários estão desativados. As páginas carregam o script de verificação do Google AdSense. Ao buscá-lo, seu navegador se conecta ao Google, que recebe dados técnicos da requisição, como o endereço IP. Serviços do Google podem usar cookies e outros identificadores conforme as configurações do serviço e do navegador.</p>
-    <p>Você pode consultar, bloquear ou apagar cookies nas configurações de privacidade do navegador. O Google explica como trata informações em sites parceiros e oferece controles de personalização de anúncios.</p>
-    <p><a href="https://policies.google.com/technologies/partner-sites?hl=pt-BR">Uso de dados em sites parceiros do Google</a> · <a href="https://myadcenter.google.com/">Minha central de anúncios</a></p>
+    <h2>Preferências de cookies e Google Analytics</h2>
+    <p>Você pode aceitar, recusar ou personalizar a medição de audiência. Guardamos a escolha no armazenamento local deste navegador. O Google Analytics só é carregado após sua autorização.</p>
+    <p>Com sua permissão, medimos visitas a páginas do portal, cliques em jogos e canais de resgate e a chegada ao fim do texto de um artigo. Os eventos usam caminhos editoriais e identificadores públicos de jogos e guias. Parâmetros de consulta, fragmentos e endereços de sites de origem são excluídos dos dados de navegação enviados pelo portal.</p>
+    <p>O Analytics pode usar cookies próprios para distinguir visitas. Ao carregar o serviço, o navegador transmite ao Google dados técnicos da conexão, como o endereço IP. Os relatórios ajudam a escolher conteúdos para revisar. <a href="https://policies.google.com/technologies/partner-sites?hl=pt-BR">Como o Google usa dados de sites parceiros</a>.</p>
+    <p>Em “Preferências de cookies”, no rodapé, desmarque a medição e salve para interromper os próximos envios e remover os cookies de medição deste site. Excluir os dados do site no navegador também apaga a escolha salva.</p>
+    <h2>Publicidade</h2>
+    <p>Os anúncios estão desativados. A verificação do AdSense usa uma metatag e o arquivo ads.txt. A preferência de audiência se aplica apenas ao Analytics.</p>
     <h2>Links externos e contato</h2>
     <p>Os resgates acontecem nos canais oficiais de cada jogo. Dados de login e códigos inseridos nesses canais são tratados pelo respectivo serviço. Ao abrir um relato no GitHub, seu nome de usuário e a mensagem ficam visíveis ao público.</p>
     <p>Para dúvidas sobre esta política ou solicitações relacionadas a dados, consulte a <Link href="/contato/">página de contato</Link>.</p>
