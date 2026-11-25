@@ -25,9 +25,20 @@ import {
 } from './formats';
 import { importProfiles, transact } from './store';
 import { demo } from './demo';
+import { ImportGuide } from './import-guide';
 import './style.css';
+import './import-guide.css';
 
 const integer = new Intl.NumberFormat('pt-BR');
+const dateFormatter = new Intl.DateTimeFormat('pt-BR', { dateStyle: 'short', timeStyle: 'short', timeZone: 'UTC' });
+function displayDate(row: Row) {
+  if (row.source?.time) {
+    const [date, time] = row.source.time.split(' ');
+    return date.split('-').reverse().join('/') + ' ' + time.slice(0, 5) + ' (servidor)';
+  }
+  const value = new Date(row.instant);
+  return Number.isFinite(value.getTime()) ? dateFormatter.format(value) + ' UTC' : row.instant;
+}
 function Chart({ title, values }: { title: string; values: Record<string, number> }) {
   const entries = Object.entries(values);
   const max = Math.max(1, ...Object.values(values));
@@ -163,7 +174,7 @@ function Summary({
           <li key={r.id}>
             <span>{r.name ?? 'Item ' + r.source?.item_id}</span>
             <small>
-              {r.rank ? r.rank + ' ★' : 'Raridade desconhecida'} · {r.source?.time ?? r.instant}
+              {r.rank ? r.rank + ' ★' : 'Raridade desconhecida'} · {displayDate(r)}
             </small>
           </li>
         ))}
@@ -200,7 +211,9 @@ function App() {
   async function pick(e: ChangeEvent<HTMLInputElement>) {
     const file = e.target.files?.[0];
     e.target.value = '';
-    if (!file) return;
+    if (file) await readHistoryFile(file);
+  }
+  async function readHistoryFile(file: File) {
     setBusy(true);
     setPreview(undefined);
     setNotice('');
@@ -214,7 +227,7 @@ function App() {
       setNotice(
         err instanceof Error && err.name === 'Error'
           ? err.message
-          : 'Arquivo inválido. Confira a versão e os campos no tutorial.',
+          : 'Não conseguimos ler esse arquivo. Exporte um JSON de histórico (UIGF, SRGF ou GachaVerse), não uma planilha, e tente novamente.',
       );
     } finally {
       setBusy(false);
@@ -229,7 +242,8 @@ function App() {
       setSelected(preview.profiles[0].key);
       setPreview(undefined);
       setDemo(false);
-      setNotice('Histórico salvo neste navegador.');
+      setNotice('Histórico salvo neste navegador. Veja seus resultados no diário abaixo.');
+      requestAnimationFrame(() => document.getElementById('tracker-board')?.focus());
     } catch (err) {
       setNotice(err instanceof Error ? err.message : 'Falha ao gravar.');
     } finally {
@@ -274,16 +288,14 @@ function App() {
             Warp <i>Tracker</i> <small className="beta">Beta</small>
           </h1>
           <p className="intro">
-            Explore seus Saltos por conta e por família de banner. O diário fica neste navegador.
+            Acompanhe quantos tiros você deu, seu pity e seu histórico. Importe um arquivo ou explore a demonstração gratuita.
           </p>
         </div>
-        <div className="layout">
-          <aside>
-            <FileUp />
-            <h2>Importar arquivo</h2>
-            <p>UIGF 4.0, 4.1 e 4.2, SRGF 1.0 ou JSON GachaVerse.</p>
+        <ImportGuide>
+            <details className="guide-details">
+              <summary>Opções avançadas (apenas backups antigos)</summary>
             <label>
-              Perfil para JSON v1 sem UID
+              Nome do perfil para arquivo GachaVerse v1 sem UID
               <input
                 value={localName}
                 maxLength={80}
@@ -293,8 +305,23 @@ function App() {
                 }}
               />
             </label>
-            <label className="upload">
-              Escolher JSON
+            </details>
+            <label className="upload"
+              onDragOver={(e) => e.preventDefault()}
+              onDrop={(e) => {
+                e.preventDefault();
+                if (busy) return;
+                if (e.dataTransfer.files.length !== 1) {
+                  setPreview(undefined);
+                  setNotice('Selecione apenas um arquivo por vez.');
+                  return;
+                }
+                void readHistoryFile(e.dataTransfer.files[0]);
+              }}>
+              <FileUp size={28} aria-hidden="true" />
+              <strong>Arraste o arquivo aqui</strong>
+              <span className="guide-select-button">Selecionar arquivo JSON</span>
+              <span className="upload-hint">Procure em Downloads · arquivo .json de até 32 MB</span>
               <input
                 aria-label="Escolher JSON"
                 type="file"
@@ -323,8 +350,10 @@ function App() {
                 </button>
               </div>
             )}
-            <p role="status">{notice}</p>
-            <hr />
+            <p role="status" aria-live="polite">{busy ? 'Processando…' : notice}</p>
+        </ImportGuide>
+        <div className="layout">
+          <aside>
             <Stars />
             <h3>Explorar demonstração</h3>
             <p>Conheça os gráficos com um histórico fictício mantido apenas em memória.</p>
@@ -338,7 +367,7 @@ function App() {
               {showDemo ? 'Sair da demonstração' : 'Abrir demonstração'}
             </button>
           </aside>
-          <section className="board">
+          <section className="board" id="tracker-board" tabIndex={-1} aria-label="Meu diário de Saltos">
             <div className="board-title">
               <ChartNoAxesColumn />
               <h2>{showDemo ? 'Diário demonstrativo' : 'Meu diário'}</h2>
@@ -433,45 +462,6 @@ function App() {
             )}
           </section>
         </div>
-        <article id="tutorial">
-          <h2>Como importar seu histórico</h2>
-          <ol>
-            <li>
-              Escolha uma cópia JSON obtida por você. O histórico oficial pode ser consultado no jogo ou
-              no HoYoLAB. Este painel recebe arquivos locais.
-            </li>
-            <li>
-              No UIGF, use a seção de Star Rail (hkrpg). Outras seções são ignoradas. O SRGF contém uma
-              conta por arquivo. Para o GachaVerse v1, dê o mesmo nome ao perfil em importações da mesma
-              conta.
-            </li>
-            <li>
-              Confira a prévia e confirme. Repetições do mesmo registro na mesma conta são unificadas.
-              Um conflito cancela a gravação inteira.
-            </li>
-            <li>
-              Selecione conta e banner. Confira no jogo se o último cinco estrelas foi o destaque antes
-              de registrar o resultado. Ausência de dados deixa a garantia indeterminada.
-            </li>
-            <li>
-              Exporte uma cópia antes de apagar dados do site. Para migrar da versão anterior, baixe o
-              JSON na origem antiga e importe aqui.
-            </li>
-          </ol>
-          <p>
-            <a href="https://uigf.org/en/standards/uigf.html" rel="noreferrer">
-              Especificação UIGF
-            </a>{' '}
-            ·{' '}
-            <a href="https://uigf.org/en/standards/srgf.html" rel="noreferrer">
-              Especificação SRGF
-            </a>{' '}
-            ·{' '}
-            <a href="https://support.hoyoverse.com/hc/en-us/articles/50913710696217" rel="noreferrer">
-              Regras dos Saltos
-            </a>
-          </p>
-        </article>
       </main>
     </>
   );
