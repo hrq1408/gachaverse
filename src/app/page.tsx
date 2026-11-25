@@ -1,8 +1,9 @@
+import { publishedSections } from '@/content/editorial';
 import Link from 'next/link';
 import { BookOpen, Gamepad2, Sparkles } from 'lucide-react';
 import { AdBanner } from '@/components/ad-banner';
 import { GameCard, SectionCard } from '@/components/catalog';
-import { games, sections } from '@/content/catalog';
+import { games } from '@/content/catalog';
 import { articles, contentPath } from '@/content/editorial';
 import { pageMetadata, site } from '@/lib/site';
 
@@ -29,7 +30,7 @@ export default function Home() {
       <AdBanner placement="leaderboard" />
       <section>
         <div className="section-heading"><h2>Explore o portal</h2></div>
-        <div className="card-grid">{sections.map((section) => <SectionCard key={section.slug} section={section} />)}</div>
+        <div className="card-grid">{publishedSections().map((section) => <SectionCard key={section.slug} section={section} />)}</div>
       </section>
       <section>
         <div className="section-heading"><h2>Guias publicados</h2><Link href="/conteudo/artigos/">Ver artigos</Link></div>

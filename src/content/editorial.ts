@@ -56,14 +56,18 @@ export function activeCodes(game: Game, now: number) {
   );
 }
 
+export function publishedSections(game?: Game) {
+  return sections.filter((section) => section.slug === 'codigos' || findArticles(section, game).length > 0);
+}
+
 export function publicPaths() {
   return [
-    '/', '/jogos/', '/sobre/',
-    ...sections.filter((section) => section.slug === 'codigos' || findArticles(section).length)
+    '/', '/jogos/', '/sobre/', '/privacidade/', '/contato/',
+    ...publishedSections()
       .map((section) => sectionPath(section)),
     ...games.flatMap((game) => [
       gamePath(game),
-      ...sections.filter((section) => section.slug === 'codigos' || findArticles(section, game).length)
+      ...publishedSections(game)
         .map((section) => sectionPath(section, game)),
     ]),
     ...articles.map(contentPath),

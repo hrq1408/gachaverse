@@ -29,3 +29,7 @@ As listagens vazias recebem `noindex` e ficam fora do sitemap. Com `SITE_URL` co
 
 O layout global inclui o script assíncrono do AdSense no HTML estático para verificação de propriedade. O componente `AdBanner` mantém os espaços inline e leaderboard desativados até a aprovação. A configuração dos anúncios automáticos pertence ao painel do AdSense.
 
+Antes de veicular anúncios personalizados no EEE, Reino Unido ou Suíça, configure uma CMP certificada pelo Google integrada ao IAB TCF. Teste a aceitação, a recusa e a alteração posterior das preferências. Para o Brasil, avalie as finalidades e bases legais e mantenha desativados por padrão os cookies que dependem de consentimento. A política publicada descreve a integração atual. Revise-a quando o tratamento mudar.
+
+Referências: [requisitos do AdSense](https://support.google.com/adsense/answer/13554116?hl=pt-BR) e [guia da ANPD sobre cookies](https://www.gov.br/anpd/pt-br/centrais-de-conteudo/materiais-educativos-e-publicacoes/guia-orientativo-cookies-e-protecao-de-dados-pessoais.pdf/@@display-file/file).
+

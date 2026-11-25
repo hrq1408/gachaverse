@@ -1,7 +1,8 @@
+import { publishedSections } from '@/content/editorial';
 import { notFound } from 'next/navigation';
 import Link from 'next/link';
 import { PageHeading, SectionCard } from '@/components/catalog';
-import { games, gamePath, sections } from '@/content/catalog';
+import { games, gamePath } from '@/content/catalog';
 import { pageMetadata } from '@/lib/site';
 
 type Props = { params: Promise<{ game: string }> };
@@ -21,9 +22,10 @@ export default async function GamePage({ params }: Props) {
   if (!entry) notFound();
   return <div className="shell interior">
     <Link href="/jogos/" className="back-link">Todos os jogos</Link>
-    <PageHeading eyebrow={entry.studio} title={entry.name} description="Artigos, builds, tier lists e instruções de resgate em português." />
+    <PageHeading eyebrow={entry.studio} title={entry.name} description="Consulte os canais oficiais e as instruções de resgate em português." />
     <a className="button secondary official" href={entry.official}>Site oficial do jogo</a>
-    <div className="card-grid">{sections.map((section) => <SectionCard section={section} game={entry} key={section.slug} />)}</div>
+    <h2 className="mb-4 text-xl font-bold">Conteúdo disponível</h2>
+    <div className="card-grid">{publishedSections(entry).map((section) => <SectionCard section={section} game={entry} key={section.slug} />)}</div>
   </div>;
 }
 
