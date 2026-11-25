@@ -1,7 +1,8 @@
+import { ArticleCard } from './article';
 import Link from 'next/link';
 import { BookOpen, Gamepad2, Gift, Layers3, Orbit, Sparkles, Swords, Waves, Zap } from 'lucide-react';
 import { gamePath, sectionPath, type Game, type Section } from '@/content/catalog';
-import { activeCodes, contentPath, editorialSnapshotTime, findArticles } from '@/content/editorial';
+import { activeCodes, editorialSnapshotTime, findArticles } from '@/content/editorial';
 import { AdBanner } from './ad-banner';
 
 const gameIcons = { rail: Orbit, genshin: Sparkles, zenless: Zap, waves: Waves };
@@ -45,9 +46,7 @@ export function SectionContent({ section, games, game }: {
   const entries = findArticles(section, game);
   return <div className="content-stack">
     {section.slug === 'codigos' ? (game ? [game] : games).map((item) => <Redemption key={item.slug} game={item} />) :
-      entries.length ? entries.map((article) => <article className="panel" key={article.slug}>
-        <h2><Link href={contentPath(article)}>{article.title}</Link></h2><p>{article.summary}</p>
-      </article>) : <div className="panel"><h2>Em preparação</h2><p>O primeiro conteúdo desta seção será publicado após revisão editorial.</p>
+      entries.length ? entries.map((article) => <ArticleCard article={article} level={2} key={article.slug} />) : <div className="panel"><h2>Em preparação</h2><p>O primeiro conteúdo desta seção será publicado após revisão editorial.</p>
         <Link href={game ? gamePath(game) : '/jogos/'}>{game ? 'Voltar ao jogo' : 'Explorar jogos'}</Link>
       </div>}
     <AdBanner />

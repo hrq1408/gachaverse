@@ -16,8 +16,9 @@ test('the sitemap includes published articles and excludes empty categories', ()
   const paths = publicPaths();
   assert.equal(new Set(paths).size, paths.length);
   assert.ok(paths.includes('/conteudo/codigos/'));
-  assert.ok(!paths.includes('/conteudo/builds/'));
-  assert.ok(!paths.includes('/conteudo/tier-lists/'));
+  for (const section of sections.filter((item) => item.slug !== 'codigos')) {
+    assert.equal(paths.includes(sectionPath(section)), articles.some((article) => article.categoria === section.slug));
+  }
   for (const article of articles) assert.ok(paths.includes(contentPath(article)));
 });
 

@@ -1,31 +1,7 @@
 import { games, gamePath, sectionPath, sections, type Game, type Section } from './catalog';
 
-type Source = { label: string; url: string };
-type Article = {
-  slug: string;
-  section: Exclude<Section['slug'], 'codigos'>;
-  title: string;
-  summary: string;
-  paragraphs: readonly string[];
-  sources: readonly Source[];
-  game?: Game['slug'];
-  version?: string;
-};
-
-export const articles: readonly Article[] = [
-  {
-    slug: 'onde-resgatar-codigos',
-    section: 'artigos',
-    title: 'Onde resgatar códigos dos quatro jogos',
-    summary: 'Encontre os portais da HoYoverse e o caminho pelo menu de Wuthering Waves.',
-    paragraphs: [
-      'Genshin Impact, Honkai: Star Rail e Zenless Zone Zero têm páginas de resgate mantidas pela HoYoverse. Abra a página correspondente ao seu jogo e siga as instruções do portal.',
-      'Em Wuthering Waves, a Kuro Games orienta a abrir as configurações dentro do jogo, entrar em Outros e selecionar Código de resgate. Depois de confirmar, confira a caixa de correio do jogo.',
-      'Confira a validade e as condições na publicação original antes de tentar usar um código. Use apenas o site oficial ou o menu interno do jogo para fazer o resgate.',
-    ],
-    sources: games.map((game) => ({ label: game.name, url: game.redemption })),
-  },
-];
+import { articles, type Article } from './articles';
+export { articles };
 
 export type RedemptionCode = {
   game: Game['slug'];
@@ -41,7 +17,7 @@ export const editorialSnapshotTime = Date.now();
 
 export function findArticles(section: Section, game?: Game) {
   return articles.filter((article) =>
-    article.section === section.slug && (!game || article.game === game.slug),
+    article.categoria === section.slug && (!game || article.jogos.includes(game.slug)),
   );
 }
 
