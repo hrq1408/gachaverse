@@ -40,7 +40,10 @@ export function ArticleHeader({ article }: { article: Article }) {
       <li key={game.slug}><Link data-game={game.slug} href={gamePath(game)}>{game.name}</Link></li>)}</ul>
     {article.versao && <p>Versão analisada: {article.versao}</p>}
     <BannerPeriod article={article} />
-    <Image className="mt-5 aspect-video w-full rounded-xl object-cover" src={article.imagem} alt={article.textoAlternativo} width={960} height={540} />
+    <figure className="mt-5">
+      <Image className="aspect-video w-full rounded-xl object-cover" src={article.imagem} alt={article.textoAlternativo} width={960} height={540} />
+      {article.legendaImagem && <figcaption className="mt-2 text-sm">{article.legendaImagem}</figcaption>}
+    </figure>
   </header>;
 }
 

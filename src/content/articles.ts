@@ -28,6 +28,7 @@ const schema = z.object({
   versao: text.optional(),
   imagem: z.string().regex(/^\/(?:[\w-]+\/)*[\w-]+\.(?:webp|png|jpe?g|avif)$/i),
   textoAlternativo: text,
+  legendaImagem: text.optional(),
   fontes: z.array(z.object({ titulo: text, url: z.url({ protocol: /^https?$/ }) })).min(1),
   relacionados: z.array(slug).default([]),
 }).refine((meta) => meta.atualizacao >= meta.publicacao, 'Atualização anterior à publicação')
