@@ -12,11 +12,20 @@ export const metadata: Metadata = {
 };
 
 export default function Layout({ children }: { children: ReactNode }) {
-  return <html lang="pt-BR"><body>
-    <a className="skip-link" href="#principal">Pular para o conteúdo</a>
-    <Header />
-    <main id="principal" tabIndex={-1}>{children}</main>
-    <Footer />
-  </body></html>;
+  return <html lang="pt-BR">
+    <head>
+      <script
+        async
+        src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6914991641652412"
+        crossOrigin="anonymous"
+      />
+    </head>
+    <body>
+      <a className="skip-link" href="#principal">Pular para o conteúdo</a>
+      <Header />
+      <main id="principal" tabIndex={-1}>{children}</main>
+      <Footer />
+    </body>
+  </html>;
 }
 

@@ -27,5 +27,5 @@ As listagens vazias recebem `noindex` e ficam fora do sitemap. Com `SITE_URL` co
 
 ## Publicidade
 
-`AdBanner` suporta os posicionamentos inline e leaderboard. Enquanto o bloqueio estiver ativo, o componente não ocupa espaço no layout nem carrega recursos externos. A integração com o provedor e a ativação dependem da aprovação do AdSense.
+O layout global inclui o script assíncrono do AdSense no HTML estático para verificação de propriedade. O componente `AdBanner` mantém os espaços inline e leaderboard desativados até a aprovação. A configuração dos anúncios automáticos pertence ao painel do AdSense.
 
