@@ -4,7 +4,11 @@ file=docs/propostas/codigos.json
 branch=automacao/revisao-codigos
 generated="$RUNNER_TEMP/codigos.json"
 [[ -s "$generated" ]] || { echo 'Nenhuma proposta nova.'; exit 0; }
-if [[ -f "$file" ]] && cmp -s "$generated" "$file"; then exit 0; fi
+pnpm exec tsx scripts/proposal-check.ts "$generated"
+same_proposal() {
+  [[ -f "$file" ]] && pnpm exec tsx scripts/proposal-check.ts "$generated" "$file"
+}
+if same_proposal; then echo 'A proposta já está registrada na main.'; exit 0; fi
 existing=$(gh pr list --state open --head "$branch" --base main --json number --jq '.[0].number // empty')
 if git ls-remote --exit-code --heads origin "$branch" >/dev/null; then
   git fetch --no-tags origin "$branch"
@@ -12,6 +16,7 @@ if git ls-remote --exit-code --heads origin "$branch" >/dev/null; then
 else
   git switch --detach "origin/main"
 fi
+if same_proposal; then echo 'A branch já registra os mesmos eventos e alterações.'; exit 0; fi
 mkdir -p "$(dirname "$file")"
 cp "$generated" "$file"
 git config user.name "github-actions[bot]"

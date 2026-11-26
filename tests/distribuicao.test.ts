@@ -4,6 +4,7 @@ import { articles } from '../src/content/articles';
 import { articleFeed, articleGraph, jsonLd } from '../src/lib/article-distribution';
 import { banners } from '../src/content/banners';
 import { reviewBanners } from '../scripts/banner-review';
+import { proposalKey } from '../scripts/proposal-check';
 
 const origin = 'https://gachaverse.pages.dev';
 
@@ -29,8 +30,24 @@ test('a auditoria sinaliza somente prévias recentes de versão nova', () => {
   const now = Date.parse('2026-11-26T15:00Z');
   const game = 'zenless-zone-zero';
   const video = { game, id: 'abcdefghijk', title: 'Version 3.4 Special Program', description: '', publishedAt: '2026-11-20T15:00Z' } as const;
-  const report = reviewBanners(banners, [video, video, { ...video, id: 'bbbbbbbbbbb', title: 'Version 3.3 Special Program' },
+  const recap = { ...video, id: '-g94CfWB-gI', title: 'Version 3.4 Special Program Recap 2' };
+  const phase = { ...video, id: 'bbbbbbbbbbb', title: 'Version 3.4 Signal Search Phase II' };
+  const report = reviewBanners(banners, [video, video, recap, phase, { ...video, id: 'ccccccccccc', title: 'Version 3.3 Special Program' },
     { ...video, id: 'zzzzzzzzzzz', publishedAt: '2026-10-01T15:00Z' }], now);
-  assert.deepEqual(report.candidates, [{ game, version: '3.4', source: 'https://www.youtube.com/watch?v=abcdefghijk' }]);
+  assert.deepEqual(report.candidates, [
+    { game, version: '3.4', event: 'fase-2', sources: ['https://www.youtube.com/watch?v=bbbbbbbbbbb'] },
+    { game, version: '3.4', event: 'programa-especial', sources: ['https://www.youtube.com/watch?v=-g94CfWB-gI', 'https://www.youtube.com/watch?v=abcdefghijk'] },
+  ]);
   assert.equal(report.expired.length, 0);
+});
+
+test('fontes adicionais do mesmo evento não geram nova proposta', () => {
+  const event = { game: 'zenless-zone-zero', version: '3.4', event: 'programa-especial',
+    sources: ['https://www.youtube.com/watch?v=s1E6w6QrYZA'] };
+  const wrap = (candidates: (typeof event)[]) => ({ candidates: [], recentlyExpired: [],
+    calendar: { candidates, expired: [], uncovered: [] } });
+  assert.equal(proposalKey(wrap([event])), proposalKey(wrap([{ ...event,
+    sources: [...event.sources, 'https://www.youtube.com/watch?v=-g94CfWB-gI'] }])));
+  assert.notEqual(proposalKey(wrap([event])), proposalKey(wrap([{ ...event, event: 'fase-1' }])));
+  assert.throws(() => proposalKey(wrap([event, event])), /duplicado/);
 });

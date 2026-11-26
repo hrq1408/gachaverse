@@ -33,7 +33,8 @@ async function main() {
       `- ${entry.game} / ${entry.code} · ${entry.notes.join(', ')} · ${entry.source}`)),
     format('Banners encerrados', calendar.expired.map(entry => `- ${entry.game} / ${entry.id} · ${entry.end} ${entry.endTime}`)),
     format('Jogos sem janela pendente', calendar.uncovered.map(game => '- ' + game)),
-    format('Versões a conferir nos anúncios de banners', calendar.candidates.map(entry => `- ${entry.game} / ${entry.version} · ${entry.source}`)),
+    format('Versões a conferir nos anúncios de banners', calendar.candidates.map(entry =>
+      `- ${entry.game} / ${entry.version} / ${entry.event} · ${entry.sources.join(' · ')}`)),
     ...(feedCheck?.failures.length ? ['Feeds indisponíveis: ' + feedCheck.failures.join(', ') + '. Propostas automáticas suspensas nesta execução.'] : []),
     'Relatório de leitura. Nenhum código ou banner foi publicado, alterado ou testado em conta.',
   ].join('\n\n'));

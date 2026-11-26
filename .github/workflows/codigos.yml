@@ -1,5 +1,14 @@
 name: Revisar códigos de resgate e calendário
 on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/codigos.yml'
+      - 'scripts/banner-review.ts'
+      - 'scripts/check-redemption.ts'
+      - 'scripts/proposal-check.ts'
+      - 'scripts/propor-revisao.sh'
+      - 'scripts/redemption-sources.ts'
   schedule:
     - cron: '17 12 * * *'
   workflow_dispatch:
@@ -41,4 +50,9 @@ jobs:
         if: github.ref == 'refs/heads/main' && !inputs.verify_api
         env:
           GH_TOKEN: ${{ github.token }}
-        run: bash scripts/propor-revisao.sh
+        run: |
+          if [[ -s "$RUNNER_TEMP/codigos.json" ]]; then
+            pnpm lint
+            pnpm test
+          fi
+          bash scripts/propor-revisao.sh
