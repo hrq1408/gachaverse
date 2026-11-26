@@ -21,7 +21,10 @@ async function resolvePage(params: Props['params']) {
 
 export async function generateMetadata({ params }: Props) {
   const { entry, category } = await resolvePage(params);
-  return pageMetadata(`${category.title} de ${entry.name}`, category.description, sectionPath(category, entry),
+  const description = category.slug === 'codigos'
+    ? `Consulte códigos de ${entry.name}, recompensas, prazos e fontes. Veja como resgatar no canal oficial.`
+    : category.description;
+  return pageMetadata(`${category.title} de ${entry.name}`, description, sectionPath(category, entry),
     category.slug === 'codigos' || findArticles(category, entry).length > 0);
 }
 
@@ -30,7 +33,7 @@ export default async function GameSection({ params }: Props) {
   return <div className="shell interior">
     <Link href={gamePath(entry)} className="back-link">{entry.name}</Link>
     <PageHeading eyebrow={entry.name} title={category.title} description={category.description} />
-    <SectionContent section={category} game={entry} games={games} />
+    <SectionContent section={category} game={entry} />
   </div>;
 }
 

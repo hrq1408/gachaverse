@@ -29,7 +29,7 @@ export const sections = [
   { slug: 'artigos', title: 'Artigos', description: 'Guias e cobertura editorial em português.' },
   { slug: 'builds', title: 'Builds', description: 'Equipamentos, composição de equipes e prioridades de melhoria.' },
   { slug: 'tier-lists', title: 'Tier lists', description: 'Classificações de personagens por versão, função e modo de jogo.' },
-  { slug: 'codigos', title: 'Códigos de resgate', description: 'Canais oficiais e instruções para resgatar recompensas.' },
+  { slug: 'codigos', title: 'Códigos de resgate', description: 'Consulte códigos, recompensas e prazos. Copie o código e acesse o canal oficial de cada jogo.' },
 ] as const;
 
 export type Game = typeof games[number];

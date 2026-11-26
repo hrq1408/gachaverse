@@ -1,7 +1,8 @@
 import assert from 'node:assert/strict';
 import test from 'node:test';
 import { games, gamePath, sectionPath, sections } from '../src/content/catalog';
-import { activeCodes, articles, contentPath, publicPaths } from '../src/content/editorial';
+import { activeCodes } from '../src/content/redemption';
+import { articles, contentPath, publicPaths } from '../src/content/editorial';
 
 test('every game has a distinct hub, distinct sections and HTTPS official sources', () => {
   assert.equal(games.length, 4);
@@ -22,10 +23,11 @@ test('the sitemap includes published articles and excludes empty categories', ()
   for (const article of articles) assert.ok(paths.includes(contentPath(article)));
 });
 
-test('published codes carry an official source and verification date', () => {
+test('published codes carry provenance and verification date', () => {
   for (const game of games) {
     for (const code of activeCodes(game, Date.now())) {
-      assert.equal(new URL(code.source).protocol, 'https:');
+      assert.ok(code.sources.some(source => source.type === 'oficial') || code.sources.length >= 2);
+      for (const source of code.sources) assert.equal(new URL(source.url).protocol, 'https:');
       assert.ok(Number.isFinite(Date.parse(code.verifiedOn)));
     }
   }

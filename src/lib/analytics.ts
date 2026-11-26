@@ -112,10 +112,11 @@ export function trackPage(path: string, allowedPaths: readonly string[]) {
       command('event', 'tool_article_navigation', fields);
     }
   }
+  if (path === '/conteudo/codigos/') command('event', 'redemption_center_view', fields);
   if (path === '/ferramentas/calculadora-pity/') command('event', 'pity_calculator_open', fields);
 }
 
-export function trackAction(name: 'game_click' | 'article_read' | 'redemption_click' | 'pity_calculation' | 'pity_banner_change' | 'pity_calculator_reset', fields: Record<string, string>) {
+export function trackAction(name: 'game_click' | 'article_read' | 'redemption_click' | 'redemption_code_copy' | 'redemption_game_select' | 'pity_calculation' | 'pity_banner_change' | 'pity_calculator_reset', fields: Record<string, string>) {
   if (currentLocation) command('event', name, {
     ...fields, page_location: currentLocation, page_title: currentTitle, page_referrer: previousLocation,
   });

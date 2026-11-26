@@ -3,18 +3,6 @@ import { games, gamePath, sectionPath, sections, type Game, type Section } from 
 import { articles, type Article } from './articles';
 export { articles };
 
-export type RedemptionCode = {
-  game: Game['slug'];
-  code: string;
-  reward: string;
-  verifiedOn: string;
-  expiresAt?: string;
-  source: string;
-};
-
-export const redemptionCodes: readonly RedemptionCode[] = [];
-export const editorialSnapshotTime = Date.now();
-
 export function findArticles(section: Section, game?: Game) {
   const entries = articles.filter((article) =>
     article.categoria === section.slug && (!game || article.jogos.includes(game.slug)),
@@ -25,13 +13,6 @@ export function findArticles(section: Section, game?: Game) {
 
 export function contentPath(article: Article) {
   return `/artigos/${article.slug}/`;
-}
-
-export function activeCodes(game: Game, now: number) {
-  return redemptionCodes.filter((entry) =>
-    entry.game === game.slug &&
-    (!entry.expiresAt || Date.parse(entry.expiresAt) > now),
-  );
 }
 
 export function publishedSections(game?: Game) {

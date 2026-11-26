@@ -21,6 +21,7 @@ export default function Home() {
         <div className="actions">
           {lead && <Link className="button primary" href={contentPath(lead)}>Ler guia</Link>}
           <a className="button secondary" href="#jogos"><Gamepad2 size={19} aria-hidden="true" /> Explorar jogos</a>
+          <Link className="button secondary" href="/conteudo/codigos/">Central de códigos</Link>
         </div>
       </div>
     </section>

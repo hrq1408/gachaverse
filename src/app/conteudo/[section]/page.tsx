@@ -1,6 +1,6 @@
 import { notFound } from 'next/navigation';
 import { PageHeading, SectionContent } from '@/components/catalog';
-import { games, sections, sectionPath } from '@/content/catalog';
+import { sections, sectionPath } from '@/content/catalog';
 import { findArticles } from '@/content/editorial';
 import { pageMetadata } from '@/lib/site';
 
@@ -25,7 +25,7 @@ export default async function ContentSection({ params }: Props) {
   const category = await resolveSection(params);
   return <div className="shell interior">
     <PageHeading eyebrow="GachaVerse" title={category.title} description={category.description} />
-    <SectionContent section={category} games={games} />
+    <SectionContent section={category} />
   </div>;
 }
 

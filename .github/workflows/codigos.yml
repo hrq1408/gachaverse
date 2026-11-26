@@ -1,0 +1,35 @@
+name: Revisar códigos de resgate
+on:
+  schedule:
+    - cron: '17 12 * * *'
+  workflow_dispatch:
+
+concurrency:
+  group: revisao-codigos
+  cancel-in-progress: false
+
+jobs:
+  auditoria:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    permissions:
+      contents: write
+      pull-requests: write
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd
+      - uses: actions/setup-node@53b83947a5a98c8d113130e565377fae1a50d02f
+        with:
+          node-version: '22'
+      - run: npm install --global "$(node -p "require('./package.json').packageManager")"
+      - run: pnpm install --frozen-lockfile
+      - name: Validar catálogo e publicar relatório de revisão
+        env:
+          YOUTUBE_DATA_API_KEY: ${{ secrets.YOUTUBE_DATA_API_KEY }}
+        run: |
+          set -o pipefail
+          REDEMPTION_PROPOSAL="$RUNNER_TEMP/codigos.json" pnpm exec tsx scripts/check-redemption.ts --feeds | tee -a "$GITHUB_STEP_SUMMARY"
+      - name: Abrir ou atualizar proposta editorial
+        if: github.ref == 'refs/heads/main'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: bash scripts/propor-revisao.sh

@@ -1,0 +1,670 @@
+[
+  {
+    "game": "genshin-impact",
+    "code": "ArchonsAnswers",
+    "rewards": [
+      "40 Gemas Essenciais",
+      "30.000 Mora",
+      "3 Lições do Herói"
+    ],
+    "sources": [
+      {
+        "title": "Genshin Impact — anúncio do evento",
+        "url": "https://www.reddit.com/r/Genshin_Impact/comments/1xxegea/event_now_available/",
+        "type": "oficial"
+      }
+    ],
+    "verifiedOn": "2026-11-26",
+    "expiresAt": "2026-11-28T13:00:00-03:00",
+    "publishedOn": "2026-11-16"
+  },
+  {
+    "game": "genshin-impact",
+    "code": "AZHGG7H2ZQZS",
+    "rewards": [
+      "10.000 Mora",
+      "10 Experiências do Aventureiro",
+      "5 Minérios de Refinamento Fino"
+    ],
+    "verifiedOn": "2026-11-26",
+    "sources": [
+      {
+        "title": "GameWith — lista de 26/11",
+        "url": "https://gamewith.jp/genshin/article/show/231856",
+        "type": "editorial"
+      },
+      {
+        "title": "HoYoLAB — apuração da comunidade",
+        "url": "https://www.hoyolab.com/article/47469796",
+        "type": "comunidade"
+      }
+    ],
+    "publishedOn": "2026-11-25"
+  },
+  {
+    "game": "genshin-impact",
+    "code": "CDOF4X83H7X2",
+    "rewards": [
+      "10.000 Mora",
+      "10 Experiências do Aventureiro",
+      "5 Minérios de Refinamento Fino"
+    ],
+    "verifiedOn": "2026-11-26",
+    "sources": [
+      {
+        "title": "Pocket Tactics",
+        "url": "https://www.pockettactics.com/genshin-impact/codes",
+        "type": "editorial"
+      },
+      {
+        "title": "Dexerto",
+        "url": "https://www.dexerto.com/genshin-impact/genshin-impact-codes-redeem-primogems-mora-1428686/",
+        "type": "editorial"
+      }
+    ]
+  },
+  {
+    "game": "genshin-impact",
+    "code": "GENSHINGIFT",
+    "rewards": [
+      "Gemas Essenciais",
+      "Materiais de experiência"
+    ],
+    "verifiedOn": "2026-11-26",
+    "sources": [
+      {
+        "title": "Pocket Tactics",
+        "url": "https://www.pockettactics.com/genshin-impact/codes",
+        "type": "editorial"
+      },
+      {
+        "title": "GameWith — lista de 26/11",
+        "url": "https://gamewith.jp/genshin/article/show/231856",
+        "type": "editorial"
+      }
+    ],
+    "editorialNote": "As fontes divergem sobre as quantidades e relatam disponibilidade intermitente."
+  },
+  {
+    "game": "genshin-impact",
+    "code": "MIJIQ23V2437",
+    "rewards": [
+      "10.000 Mora",
+      "10 Experiências do Aventureiro",
+      "5 Minérios de Refinamento Fino"
+    ],
+    "verifiedOn": "2026-11-26",
+    "sources": [
+      {
+        "title": "Pocket Tactics",
+        "url": "https://www.pockettactics.com/genshin-impact/codes",
+        "type": "editorial"
+      },
+      {
+        "title": "Dexerto",
+        "url": "https://www.dexerto.com/genshin-impact/genshin-impact-codes-redeem-primogems-mora-1428686/",
+        "type": "editorial"
+      }
+    ]
+  },
+  {
+    "game": "genshin-impact",
+    "code": "PJ2KEBRAYSRM",
+    "rewards": [
+      "60 Gemas Essenciais",
+      "5 Experiências do Aventureiro"
+    ],
+    "verifiedOn": "2026-11-26",
+    "sources": [
+      {
+        "title": "Pocket Tactics",
+        "url": "https://www.pockettactics.com/genshin-impact/codes",
+        "type": "editorial"
+      },
+      {
+        "title": "Dexerto",
+        "url": "https://www.dexerto.com/genshin-impact/genshin-impact-codes-redeem-primogems-mora-1428686/",
+        "type": "editorial"
+      }
+    ]
+  },
+  {
+    "game": "genshin-impact",
+    "code": "POYMANSXF877",
+    "rewards": [
+      "20 Gemas Essenciais"
+    ],
+    "verifiedOn": "2026-11-26",
+    "sources": [
+      {
+        "title": "GameWith — lista de 26/11",
+        "url": "https://gamewith.jp/genshin/article/show/231856",
+        "type": "editorial"
+      },
+      {
+        "title": "HoYoLAB — apuração da comunidade",
+        "url": "https://www.hoyolab.com/article/47469796",
+        "type": "comunidade"
+      }
+    ],
+    "publishedOn": "2026-11-20"
+  },
+  {
+    "game": "genshin-impact",
+    "code": "QYJWFB784MFL",
+    "rewards": [
+      "60 Gemas Essenciais",
+      "5 Experiências do Aventureiro"
+    ],
+    "verifiedOn": "2026-11-26",
+    "sources": [
+      {
+        "title": "Pocket Tactics",
+        "url": "https://www.pockettactics.com/genshin-impact/codes",
+        "type": "editorial"
+      },
+      {
+        "title": "Dexerto",
+        "url": "https://www.dexerto.com/genshin-impact/genshin-impact-codes-redeem-primogems-mora-1428686/",
+        "type": "editorial"
+      }
+    ]
+  },
+  {
+    "game": "honkai-star-rail",
+    "code": "4TKSX77Y58QK",
+    "rewards": [
+      "30 Jades Estelares",
+      "20.000 Créditos",
+      "3 Guias do Viajante"
+    ],
+    "verifiedOn": "2026-11-26",
+    "sources": [
+      {
+        "title": "Pocket Tactics",
+        "url": "https://www.pockettactics.com/honkai-star-rail/codes",
+        "type": "editorial"
+      },
+      {
+        "title": "PC Gamer",
+        "url": "https://www.pcgamer.com/honkai-star-rail-codes/",
+        "type": "editorial"
+      },
+      {
+        "title": "Gamecodely — conferência de novembro",
+        "url": "https://gamecodely.com/hsr-codes",
+        "type": "editorial"
+      }
+    ]
+  },
+  {
+    "game": "honkai-star-rail",
+    "code": "5S6ZHRWTDNJB",
+    "rewards": [
+      "60 Jades Estelares"
+    ],
+    "verifiedOn": "2026-11-26",
+    "sources": [
+      {
+        "title": "Pocket Tactics",
+        "url": "https://www.pockettactics.com/honkai-star-rail/codes",
+        "type": "editorial"
+      },
+      {
+        "title": "PC Gamer",
+        "url": "https://www.pcgamer.com/honkai-star-rail-codes/",
+        "type": "editorial"
+      },
+      {
+        "title": "Gamecodely — conferência de novembro",
+        "url": "https://gamecodely.com/hsr-codes",
+        "type": "editorial"
+      }
+    ],
+    "needsReview": true,
+    "editorialNote": "As listas divergem sobre a disponibilidade atual."
+  },
+  {
+    "game": "honkai-star-rail",
+    "code": "AeonAha",
+    "rewards": [
+      "2 balões de Éon",
+      "3 Guias do Viajante"
+    ],
+    "verifiedOn": "2026-11-26",
+    "sources": [
+      {
+        "title": "Pocket Tactics",
+        "url": "https://www.pockettactics.com/honkai-star-rail/codes",
+        "type": "editorial"
+      },
+      {
+        "title": "Gamecodely — conferência de novembro",
+        "url": "https://gamecodely.com/hsr-codes",
+        "type": "editorial"
+      },
+      {
+        "title": "Relato de lançamento da versão 4.7",
+        "url": "https://www.reddit.com/r/HonkaiStarRail/comments/1xu8xbi/new_codes_ns4du8aagxbp_aeonaha_links_in_comments/",
+        "type": "comunidade"
+      }
+    ],
+    "publishedOn": "2026-11-12"
+  },
+  {
+    "game": "honkai-star-rail",
+    "code": "CREATIONNYMPH",
+    "rewards": [
+      "60 Jades Estelares",
+      "1 Combustível"
+    ],
+    "verifiedOn": "2026-11-26",
+    "sources": [
+      {
+        "title": "Pocket Tactics",
+        "url": "https://www.pockettactics.com/honkai-star-rail/codes",
+        "type": "editorial"
+      },
+      {
+        "title": "Gamecodely — conferência de novembro",
+        "url": "https://gamecodely.com/hsr-codes",
+        "type": "editorial"
+      }
+    ]
+  },
+  {
+    "game": "honkai-star-rail",
+    "code": "FAREWELL",
+    "rewards": [
+      "60 Jades Estelares",
+      "1 Combustível"
+    ],
+    "verifiedOn": "2026-11-26",
+    "sources": [
+      {
+        "title": "Pocket Tactics",
+        "url": "https://www.pockettactics.com/honkai-star-rail/codes",
+        "type": "editorial"
+      },
+      {
+        "title": "Gamecodely — conferência de novembro",
+        "url": "https://gamecodely.com/hsr-codes",
+        "type": "editorial"
+      }
+    ]
+  },
+  {
+    "game": "honkai-star-rail",
+    "code": "IFYOUAREREADINGTHIS",
+    "rewards": [
+      "60 Jades Estelares",
+      "1 Combustível"
+    ],
+    "verifiedOn": "2026-11-26",
+    "sources": [
+      {
+        "title": "Pocket Tactics",
+        "url": "https://www.pockettactics.com/honkai-star-rail/codes",
+        "type": "editorial"
+      },
+      {
+        "title": "Gamecodely — conferência de novembro",
+        "url": "https://gamecodely.com/hsr-codes",
+        "type": "editorial"
+      }
+    ]
+  },
+  {
+    "game": "honkai-star-rail",
+    "code": "NS4DU8AAGXBP",
+    "rewards": [
+      "50 Jades Estelares",
+      "10.000 Créditos"
+    ],
+    "verifiedOn": "2026-11-26",
+    "sources": [
+      {
+        "title": "Pocket Tactics",
+        "url": "https://www.pockettactics.com/honkai-star-rail/codes",
+        "type": "editorial"
+      },
+      {
+        "title": "Gamecodely — conferência de novembro",
+        "url": "https://gamecodely.com/hsr-codes",
+        "type": "editorial"
+      },
+      {
+        "title": "Relato de lançamento da versão 4.7",
+        "url": "https://www.reddit.com/r/HonkaiStarRail/comments/1xu8xbi/new_codes_ns4du8aagxbp_aeonaha_links_in_comments/",
+        "type": "comunidade"
+      }
+    ],
+    "publishedOn": "2026-11-12",
+    "editorialNote": "Uma lista aponta 2 de dezembro como prazo. Horário e prazo oficiais não foram localizados."
+  },
+  {
+    "game": "honkai-star-rail",
+    "code": "OMEGA",
+    "rewards": [
+      "60 Jades Estelares",
+      "1 Combustível"
+    ],
+    "verifiedOn": "2026-11-26",
+    "sources": [
+      {
+        "title": "Pocket Tactics",
+        "url": "https://www.pockettactics.com/honkai-star-rail/codes",
+        "type": "editorial"
+      },
+      {
+        "title": "Gamecodely — conferência de novembro",
+        "url": "https://gamecodely.com/hsr-codes",
+        "type": "editorial"
+      }
+    ]
+  },
+  {
+    "game": "honkai-star-rail",
+    "code": "STARRAILGIFT",
+    "rewards": [
+      "50 Jades Estelares",
+      "10.000 Créditos",
+      "2 Guias do Viajante"
+    ],
+    "sources": [
+      {
+        "title": "Pocket Tactics — lista de novembro",
+        "url": "https://www.pockettactics.com/honkai-star-rail/codes",
+        "type": "editorial"
+      },
+      {
+        "title": "HoYoLAB — registro da comunidade",
+        "url": "https://www.hoyolab.com/article/40246590",
+        "type": "comunidade"
+      }
+    ],
+    "verifiedOn": "2026-11-26"
+  },
+  {
+    "game": "wuthering-waves",
+    "code": "DVME2MOHOQJT",
+    "rewards": [
+      "20 Astrites"
+    ],
+    "verifiedOn": "2026-11-26",
+    "sources": [
+      {
+        "title": "Shane the Gamer",
+        "url": "https://www.shanethegamer.com/redeem-codes/wuthering-waves-codes/",
+        "type": "editorial"
+      },
+      {
+        "title": "KeyGold — lista e arquivo de novembro",
+        "url": "https://keygold.gg/blog/detail/wuthering-waves-redeem-codes",
+        "type": "editorial"
+      }
+    ],
+    "needsReview": true,
+    "editorialNote": "As fontes divergem sobre a disponibilidade. Não foi localizado um prazo oficial."
+  },
+  {
+    "game": "wuthering-waves",
+    "code": "WUTHERINGGIFT",
+    "rewards": [
+      "50 Astrites",
+      "2 Poções de Ressonância Premium"
+    ],
+    "sources": [
+      {
+        "title": "Pocket Tactics — lista de novembro",
+        "url": "https://www.pockettactics.com/wuthering-waves/codes",
+        "type": "editorial"
+      },
+      {
+        "title": "Timesaver — conferência de novembro",
+        "url": "https://timesaver.gg/blog/wuthering-waves-livestream-codes",
+        "type": "editorial"
+      }
+    ],
+    "verifiedOn": "2026-11-26"
+  },
+  {
+    "game": "zenless-zone-zero",
+    "code": "HOLLOWRUN33",
+    "rewards": [
+      "20 Policromos",
+      "2.222 Dennies"
+    ],
+    "verifiedOn": "2026-11-26",
+    "sources": [
+      {
+        "title": "Icy Veins",
+        "url": "https://www.icy-veins.com/zenless-zone-zero/redemption-codes",
+        "type": "editorial"
+      },
+      {
+        "title": "HoYoLAB — apuração da comunidade",
+        "url": "https://www.hoyolab.com/article/47524115",
+        "type": "comunidade"
+      }
+    ]
+  },
+  {
+    "game": "zenless-zone-zero",
+    "code": "HOLLOWRUN34",
+    "rewards": [
+      "20 Policromos",
+      "2.222 Dennies"
+    ],
+    "verifiedOn": "2026-11-26",
+    "sources": [
+      {
+        "title": "Icy Veins",
+        "url": "https://www.icy-veins.com/zenless-zone-zero/redemption-codes",
+        "type": "editorial"
+      },
+      {
+        "title": "HoYoLAB — apuração da comunidade",
+        "url": "https://www.hoyolab.com/article/47524115",
+        "type": "comunidade"
+      },
+      {
+        "title": "Publicação comunitária de 22/11",
+        "url": "https://www.reddit.com/r/ZZZ_Official/comments/1y1xdcv/new_codes_inkshift34_hollowrun34_levelup34_links/",
+        "type": "comunidade"
+      }
+    ],
+    "publishedOn": "2026-11-22"
+  },
+  {
+    "game": "zenless-zone-zero",
+    "code": "INKSHIFT33",
+    "rewards": [
+      "20 Policromos",
+      "2.222 Dennies"
+    ],
+    "verifiedOn": "2026-11-26",
+    "sources": [
+      {
+        "title": "Icy Veins",
+        "url": "https://www.icy-veins.com/zenless-zone-zero/redemption-codes",
+        "type": "editorial"
+      },
+      {
+        "title": "HoYoLAB — apuração da comunidade",
+        "url": "https://www.hoyolab.com/article/47524115",
+        "type": "comunidade"
+      }
+    ]
+  },
+  {
+    "game": "zenless-zone-zero",
+    "code": "INKSHIFT34",
+    "rewards": [
+      "20 Policromos",
+      "2.222 Dennies"
+    ],
+    "verifiedOn": "2026-11-26",
+    "sources": [
+      {
+        "title": "Icy Veins",
+        "url": "https://www.icy-veins.com/zenless-zone-zero/redemption-codes",
+        "type": "editorial"
+      },
+      {
+        "title": "HoYoLAB — apuração da comunidade",
+        "url": "https://www.hoyolab.com/article/47524115",
+        "type": "comunidade"
+      },
+      {
+        "title": "Publicação comunitária de 22/11",
+        "url": "https://www.reddit.com/r/ZZZ_Official/comments/1y1xdcv/new_codes_inkshift34_hollowrun34_levelup34_links/",
+        "type": "comunidade"
+      }
+    ],
+    "publishedOn": "2026-11-22"
+  },
+  {
+    "game": "zenless-zone-zero",
+    "code": "LEVELUP33",
+    "rewards": [
+      "20 Policromos",
+      "2.222 Dennies"
+    ],
+    "verifiedOn": "2026-11-26",
+    "sources": [
+      {
+        "title": "Icy Veins",
+        "url": "https://www.icy-veins.com/zenless-zone-zero/redemption-codes",
+        "type": "editorial"
+      },
+      {
+        "title": "HoYoLAB — apuração da comunidade",
+        "url": "https://www.hoyolab.com/article/47524115",
+        "type": "comunidade"
+      }
+    ]
+  },
+  {
+    "game": "zenless-zone-zero",
+    "code": "LEVELUP34",
+    "rewards": [
+      "20 Policromos",
+      "2.222 Dennies"
+    ],
+    "verifiedOn": "2026-11-26",
+    "sources": [
+      {
+        "title": "Icy Veins",
+        "url": "https://www.icy-veins.com/zenless-zone-zero/redemption-codes",
+        "type": "editorial"
+      },
+      {
+        "title": "HoYoLAB — apuração da comunidade",
+        "url": "https://www.hoyolab.com/article/47524115",
+        "type": "comunidade"
+      },
+      {
+        "title": "Publicação comunitária de 22/11",
+        "url": "https://www.reddit.com/r/ZZZ_Official/comments/1y1xdcv/new_codes_inkshift34_hollowrun34_levelup34_links/",
+        "type": "comunidade"
+      }
+    ],
+    "publishedOn": "2026-11-22"
+  },
+  {
+    "game": "zenless-zone-zero",
+    "code": "SUNCHASER",
+    "rewards": [
+      "300 Policromos",
+      "30.000 Dennies"
+    ],
+    "sources": [
+      {
+        "title": "Zenless Zone Zero — programa especial 3.4",
+        "url": "https://www.youtube.com/watch?v=-g94CfWB-gI",
+        "type": "oficial"
+      },
+      {
+        "title": "HoyoBuild — recompensas da transmissão",
+        "url": "https://hoyobuild.com/en/zzz/news/version-3-4-livestream-code-sunchaser",
+        "type": "editorial"
+      }
+    ],
+    "verifiedOn": "2026-11-26",
+    "expiresAt": "2026-11-22T12:59:59-03:00"
+  },
+  {
+    "game": "zenless-zone-zero",
+    "code": "ZENLESSGIFT",
+    "rewards": [
+      "50 Policromos"
+    ],
+    "sources": [
+      {
+        "title": "Icy Veins — lista de novembro",
+        "url": "https://www.icy-veins.com/zenless-zone-zero/redemption-codes",
+        "type": "editorial"
+      },
+      {
+        "title": "HoYoLAB — conferência comunitária",
+        "url": "https://www.hoyolab.com/article/47518402",
+        "type": "comunidade"
+      }
+    ],
+    "verifiedOn": "2026-11-26"
+  },
+  {
+    "game": "zenless-zone-zero",
+    "code": "ZZZ34SUNBRINGER",
+    "rewards": [
+      "60 Policromos",
+      "6.666 Dennies"
+    ],
+    "verifiedOn": "2026-11-26",
+    "sources": [
+      {
+        "title": "Icy Veins",
+        "url": "https://www.icy-veins.com/zenless-zone-zero/redemption-codes",
+        "type": "editorial"
+      },
+      {
+        "title": "HoYoLAB — apuração da comunidade",
+        "url": "https://www.hoyolab.com/article/47524115",
+        "type": "comunidade"
+      },
+      {
+        "title": "Publicação comunitária de 20/11",
+        "url": "https://www.reddit.com/r/ZZZ_Official/comments/1y1iqtk/new_codes_sunchaser_zzzhsrcollab_zzz34sunbringer/",
+        "type": "comunidade"
+      }
+    ],
+    "publishedOn": "2026-11-20"
+  },
+  {
+    "game": "zenless-zone-zero",
+    "code": "ZZZHSRCOLLAB",
+    "rewards": [
+      "50 Policromos"
+    ],
+    "verifiedOn": "2026-11-26",
+    "sources": [
+      {
+        "title": "Icy Veins",
+        "url": "https://www.icy-veins.com/zenless-zone-zero/redemption-codes",
+        "type": "editorial"
+      },
+      {
+        "title": "HoYoLAB — apuração da comunidade",
+        "url": "https://www.hoyolab.com/article/47524115",
+        "type": "comunidade"
+      },
+      {
+        "title": "Publicação comunitária de 20/11",
+        "url": "https://www.reddit.com/r/ZZZ_Official/comments/1y1iqtk/new_codes_sunchaser_zzzhsrcollab_zzz34sunbringer/",
+        "type": "comunidade"
+      }
+    ],
+    "publishedOn": "2026-11-20"
+  }
+]
