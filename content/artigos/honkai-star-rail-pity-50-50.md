@@ -62,3 +62,5 @@ Não recomendamos. Um cinco estrelas antecipado pode consumir a garantia e alter
 Abra o menu de Saltos, acesse o histórico do tipo correspondente e conte os resultados após o último cinco estrelas. Se registros recentes ainda não aparecerem, não presuma que a contagem está completa.
 
 Use a [calculadora de pity do GachaVerse](/ferramentas/calculadora-pity/) para conferir quantos Saltos sua reserva cobre.
+
+Consulte o [calendário de Saltos de Honkai: Star Rail](/jogos/honkai-star-rail/calendario/) para encontrar os anúncios oficiais e abrir o planejamento das famílias compatíveis.

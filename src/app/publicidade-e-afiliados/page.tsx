@@ -17,5 +17,6 @@ export default function AdvertisingPolicyPage() {
     <h2>Medição e privacidade</h2>
     <p>Com sua autorização para medição, o portal registra o clique usando apenas o identificador público da oferta, o tipo de relação comercial e o contexto de navegação do portal. Os sites parceiros têm suas próprias políticas. Altere sua escolha de medição em “Preferências de cookies”, no rodapé.</p>
     <p>Consulte a <Link href="/privacidade/">política de privacidade</Link> ou use a <Link href="/contato/">página de contato</Link> para relatar uma oferta incorreta.</p>
+    <p>Para propor uma parceria, veja a página <Link href="/anuncie/">Anuncie no GachaVerse</Link>.</p>
   </article></div>;
 }

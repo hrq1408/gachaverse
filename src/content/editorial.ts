@@ -27,7 +27,7 @@ export function sectionHasContent(section: Section, game?: Game) {
 
 export function publicPaths() {
   return [
-    '/', '/jogos/', '/sobre/', '/privacidade/', '/publicidade-e-afiliados/', '/contato/', '/ferramentas/', '/ferramentas/calculadora-pity/', '/ferramentas/warp-tracker/',
+    '/', '/jogos/', '/sobre/', '/privacidade/', '/publicidade-e-afiliados/', '/anuncie/', '/contato/', '/ferramentas/', '/ferramentas/calculadora-pity/', '/ferramentas/warp-tracker/',
     ...publishedSections()
       .map((section) => sectionPath(section)),
     ...games.flatMap((game) => [

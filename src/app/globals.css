@@ -279,6 +279,9 @@ button:not(:disabled) { cursor: pointer; }
 .markdown-body p { line-height: inherit; margin-block: .85rem; }
 .markdown-body h2 { border-inline-start: 4px solid var(--link); padding-inline-start: .65rem; scroll-margin-top: 1rem; }
 .markdown-body ol { list-style: decimal; padding-inline-start: 1.25rem; }
+.markdown-body table { width: 100%; margin-block: 1.25rem; border-collapse: collapse; font-size: .9em; }
+.markdown-body th, .markdown-body td { padding: clamp(.4rem, 1.5vw, .8rem); border: 1px solid var(--border); text-align: start; vertical-align: top; }
+.markdown-body th { background: var(--subtle); color: var(--heading); }
 .article-sidebar { display: grid; gap: 1rem; min-width: 0; }
 .article-sidebar li a { display: flex; align-items: center; min-height: 44px; padding-block: .3rem; }
 .article-sidebar li + li { border-top: 1px solid var(--border); }

@@ -62,3 +62,5 @@ Leia o horário final no aviso do evento, prestando atenção ao servidor e ao f
 Defina o máximo de recursos que deseja utilizar antes do primeiro Salto. Se atingir esse limite sem obter o objetivo, encerre a sessão e reavalie. Não compre moeda para tentar recuperar gastos anteriores. Também é válido pular um banner ou simplesmente jogar pela história.
 
 Use a [calculadora de pity do GachaVerse](/ferramentas/calculadora-pity/) para conferir quantos Saltos sua reserva cobre.
+
+Comece pelo [calendário de banners de Honkai: Star Rail](/jogos/honkai-star-rail/calendario/) para copiar o prazo anunciado para o seu planejamento.

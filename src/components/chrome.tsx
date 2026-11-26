@@ -36,6 +36,7 @@ export function Footer() {
         <Link href="/sobre/">Sobre o GachaVerse</Link>
         <Link href="/privacidade/">Privacidade</Link>
         <Link href="/publicidade-e-afiliados/">Publicidade e afiliados</Link>
+        <Link href="/anuncie/">Anuncie</Link>
         <Link href="/contato/">Contato</Link>
         <CookiePreferencesButton />
       </nav>

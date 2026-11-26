@@ -33,3 +33,5 @@ Em Wuthering Waves, a Kuro Games orienta a abrir as configurações dentro do jo
 ## Validade e condições
 
 Confira a validade e as condições na publicação original antes de tentar usar um código. Use apenas o site oficial ou o menu interno do jogo para fazer o resgate.
+
+Se você está guardando recursos para um evento, use também o [calendário de banners dos quatro jogos](/conteudo/calendario/) para conferir as janelas anunciadas.

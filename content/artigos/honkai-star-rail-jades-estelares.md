@@ -63,3 +63,5 @@ Se seu objetivo é guardar recursos para um personagem, usar Jades para repor en
 Depende da versão, dos eventos, das atividades liberadas e da sua capacidade de completar desafios. Não existe uma quantidade mensal garantida para todas as contas. Calcule com os valores atuais do seu inventário e revise o plano quando novos eventos forem anunciados.
 
 Use a [calculadora de pity do GachaVerse](/ferramentas/calculadora-pity/) para conferir quantos Saltos sua reserva cobre.
+
+Confira as fontes, o prazo e as recompensas na [lista de códigos de Honkai: Star Rail](/jogos/honkai-star-rail/codigos/) antes de incluir um resgate no seu orçamento.

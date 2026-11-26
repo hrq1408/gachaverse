@@ -59,3 +59,5 @@ Não necessariamente. Avalie se o cone atual permite executar a estratégia e se
 ## Cuidados antes de investir
 
 Bloqueie equipamentos importantes contra descarte acidental, verifique as cópias disponíveis e confira os materiais necessários. Se estiver em dúvida entre aprimorar o cone ou uma habilidade do personagem, priorize a mudança que terá efeito imediato na sua rotação.
+
+Para conferir quais Cones de Luz estão em destaque e quando o período termina, veja o [calendário de Saltos de Honkai: Star Rail](/jogos/honkai-star-rail/calendario/).
