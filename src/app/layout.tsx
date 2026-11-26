@@ -10,7 +10,7 @@ import { site } from '@/lib/site';
 import './globals.css';
 
 export const metadata: Metadata = {
-  ...(site.url ? { metadataBase: new URL(site.url) } : {}),
+  ...(site.url ? { metadataBase: new URL(site.url), alternates: { types: { 'application/rss+xml': '/rss.xml' } } } : {}),
   title: { default: site.name, template: '%s | GachaVerse' },
   description: site.description,
   other: { 'google-adsense-account': adsenseClient },

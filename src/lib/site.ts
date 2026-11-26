@@ -10,7 +10,7 @@ export function pageMetadata(title: string, description: string, path: string, i
   return {
     title,
     description,
-    ...(site.url ? { alternates: { canonical: path } } : {}),
+    ...(site.url ? { alternates: { canonical: path, types: { 'application/rss+xml': '/rss.xml' } } } : {}),
     openGraph: {
       title,
       description,

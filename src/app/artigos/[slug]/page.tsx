@@ -6,6 +6,8 @@ import { pageMetadata } from '@/lib/site';
 import { relatedArticles } from '@/content/articles';
 import { games, gamePath } from '@/content/catalog';
 import Link from 'next/link';
+import { articleGraph, jsonLd } from '@/lib/article-distribution';
+import { site } from '@/lib/site';
 
 type Props = { params: Promise<{ slug: string }> };
 export const dynamicParams = false;
@@ -36,11 +38,19 @@ export async function generateMetadata({ params }: Props) {
 export default async function ArticlePage({ params }: Props) {
   const article = await resolveArticle(params);
   const game = games.find(entry => article.jogos.length === 1 && article.jogos.includes(entry.slug));
+  const crumbs = [
+    { name: 'Início', path: '/' },
+    { name: 'Guias', path: '/conteudo/artigos/' },
+    ...(game ? [{ name: game.name, path: gamePath(game) }] : []),
+    { name: article.titulo, path: contentPath(article) },
+  ];
   return <div className="shell interior">
+    {site.url && <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: jsonLd(articleGraph(article, crumbs, site.url)) }} />}
     <nav className="article-breadcrumbs" aria-label="Caminho da página">
-      <Link href="/">Início</Link><span aria-hidden="true">/</span><Link href="/conteudo/artigos/">Guias</Link>
-      {game && <><span aria-hidden="true">/</span><Link href={gamePath(game)}>{game.name}</Link></>}
-      <span aria-hidden="true">/</span><span aria-current="page">{article.titulo}</span>
+      {crumbs.map(({ name, path }, index) => <span key={path} className="article-crumb">
+        {index > 0 && <span aria-hidden="true">/</span>}
+        {index === crumbs.length - 1 ? <span aria-current="page">{name}</span> : <Link href={path}>{name}</Link>}
+      </span>)}
     </nav>
     <div className="article-columns"><article className="prose">
       <ArticleHeader article={article} />

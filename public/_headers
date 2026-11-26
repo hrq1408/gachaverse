@@ -2,3 +2,6 @@
 /*.txt
   ! Cache-Control
   Cache-Control: no-store
+
+/rss.xml
+  Content-Type: application/rss+xml; charset=utf-8

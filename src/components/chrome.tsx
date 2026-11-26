@@ -37,6 +37,7 @@ export function Footer() {
         <Link href="/privacidade/">Privacidade</Link>
         <Link href="/publicidade-e-afiliados/">Publicidade e afiliados</Link>
         <Link href="/anuncie/">Anuncie</Link>
+        <a href="/rss.xml">RSS de artigos</a>
         <Link href="/contato/">Contato</Link>
         <CookiePreferencesButton />
       </nav>

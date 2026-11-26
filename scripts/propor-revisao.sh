@@ -18,10 +18,10 @@ git config user.name "github-actions[bot]"
 git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
 git add -- "$file"
 if ! git diff --cached --quiet; then
-  git commit -m "Propõe revisão editorial de códigos"
+  git commit -m "Propõe revisão editorial de códigos e banners"
   git push origin "HEAD:refs/heads/$branch"
 fi
 if [[ -z "$existing" ]]; then
-  gh pr create --draft --base main --head "$branch" --title "Revisão editorial de códigos de resgate" \
-    --body "Conferir as fontes e os prazos da proposta antes de alterar content/resgates/catalogo.json. Este PR só contém candidatos. Nenhum registro foi publicado ou teve sua data de conferência atualizada."
+  gh pr create --draft --base main --head "$branch" --title "Revisão editorial de códigos e banners" \
+    --body "Conferir fontes, regiões, fases e prazos antes de alterar content/resgates/catalogo.json ou src/content/banners.ts. Este PR só contém candidatos. Nenhum registro foi publicado ou teve sua data de conferência atualizada."
 fi

@@ -64,4 +64,35 @@ test('usa a API oficial como fallback após recusa dos feeds', async context => 
   assert.equal(result.evidence.length, 1);
   assert.equal(result.evidence[0].game, 'genshin-impact');
   assert.equal(calls.filter(url => url.hostname === 'www.googleapis.com').length, 9);
+  calls.length = 0;
+  await assert.rejects(() => scanFeeds(true), /não retornou vídeos oficiais/);
+  assert.equal(calls.every(url => url.hostname === 'www.googleapis.com'), true);
+});
+
+test('homologação manual exige chave e dados dos quatro canais sem consultar Atom', async context => {
+  const previous = process.env.YOUTUBE_DATA_API_KEY;
+  context.after(() => {
+    if (previous === undefined) delete process.env.YOUTUBE_DATA_API_KEY;
+    else process.env.YOUTUBE_DATA_API_KEY = previous;
+  });
+  delete process.env.YOUTUBE_DATA_API_KEY;
+  await assert.rejects(() => scanFeeds(true), /YOUTUBE_DATA_API_KEY/);
+  process.env.YOUTUBE_DATA_API_KEY = 'fixture';
+  const channels = Object.values(officialChannels);
+  const ids = channels.map((_, index) => 'Example123' + index);
+  context.mock.method(globalThis, 'fetch', async (input: URL | string) => {
+    const url = new URL(input);
+    assert.equal(url.hostname, 'www.googleapis.com');
+    if (url.pathname.endsWith('/channels')) {
+      return Response.json({ items: channels.map(id => ({ id, contentDetails: { relatedPlaylists: { uploads: id } } })) });
+    }
+    if (url.pathname.endsWith('/playlistItems')) {
+      return Response.json({ items: [{ contentDetails: { videoId: ids[channels.findIndex(id => id === url.searchParams.get('playlistId'))] } }] });
+    }
+    const id = url.searchParams.get('id')!;
+    return Response.json({ items: [{ id, snippet: { channelId: channels[ids.indexOf(id)], description: '' } }] });
+  });
+  const result = await scanFeeds(true);
+  assert.equal(result.announcements.length, 4);
+  assert.deepEqual(result.failures, []);
 });

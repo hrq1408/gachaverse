@@ -52,10 +52,22 @@ export function Consent({ paths, advertisingAvailable = false }: { paths: string
     startAnalytics();
     trackPage(path, paths);
     function click(event: MouseEvent) {
-      const link = event.target instanceof Element ? event.target.closest('a[data-game]') : null;
-      const game = link?.getAttribute('data-game');
-      if (!game || !games.some((entry) => entry.slug === game)) return;
-      trackAction(link?.hasAttribute('data-redemption') ? 'redemption_click' : 'game_click', { game_slug: game });
+      const link = event.target instanceof Element ? event.target.closest<HTMLAnchorElement>('a[href]') : null;
+      if (!link) return;
+      const game = link.getAttribute('data-game');
+      if (game && games.some((entry) => entry.slug === game)) {
+        trackAction(link.hasAttribute('data-redemption') ? 'redemption_click' : 'game_click', { game_slug: game });
+      }
+      if (!URL.canParse(link.href)) return;
+      const destination = new URL(link.href);
+      if (destination.origin !== location.origin || !paths.includes(destination.pathname) || destination.pathname === path) return;
+      if (destination.pathname.startsWith('/artigos/')) {
+        trackAction('article_link_click', { article_slug: destination.pathname.split('/')[2] });
+      } else if (['/ferramentas/calculadora-pity/', '/ferramentas/warp-tracker/'].includes(destination.pathname)) {
+        trackAction('tool_link_click', { tool_slug: destination.pathname.split('/')[2] });
+      } else if (destination.pathname.endsWith('/calendario/')) {
+        trackAction('calendar_link_click', { calendar_path: destination.pathname });
+      }
     }
     document.addEventListener('click', click, true);
     const article = document.querySelector('[data-article-end]');

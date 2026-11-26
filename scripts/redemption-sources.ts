@@ -8,6 +8,7 @@ export const officialChannels = {
 } as const;
 type GameSlug = keyof typeof officialChannels;
 type Evidence = { game: GameSlug; code: string; source: string; reward?: number; expiresAt?: string };
+export type OfficialVideo = { game: GameSlug; id: string; title: string; description: string; publishedAt: string };
 
 const currencies = {
   'honkai-star-rail': /stellar jades?|jades? estelares?/i,
@@ -23,15 +24,25 @@ function amount(game: GameSlug, line: string) {
 }
 
 export function extractFeed(xml: string, game: GameSlug): Evidence[] {
-  const findings: Evidence[] = [];
+  return feedVideos(xml, game).flatMap(video => extractDescription(video.description, game, video.id));
+}
+
+function feedVideos(xml: string, game: GameSlug) {
+  const videos: OfficialVideo[] = [];
   for (const [entry] of xml.matchAll(/<entry>[\s\S]*?<\/entry>/g)) {
     const video = /<yt:videoId>([\w-]{11})<\/yt:videoId>/.exec(entry)?.[1];
     const channel = /<yt:channelId>([\w-]+)<\/yt:channelId>/.exec(entry)?.[1];
     const description = /<media:description(?:\s[^>]*)?>([\s\S]*?)<\/media:description>/.exec(entry)?.[1];
-    if (!video || channel !== officialChannels[game] || !description) continue;
-    findings.push(...extractDescription(description.replace(/&#(?:10|xA);/gi, '\n').replace(/&amp;/g, '&'), game, video));
+    if (!video || channel !== officialChannels[game]) continue;
+    const decode = (value: string) => value.replace(/&#(?:10|xA);/gi, '\n').replace(/&amp;/g, '&');
+    videos.push({
+      game, id: video,
+      title: decode(/<title>([\s\S]*?)<\/title>/.exec(entry)?.[1] ?? ''),
+      description: decode(description ?? ''),
+      publishedAt: /<published>([^<]+)<\/published>/.exec(entry)?.[1] ?? '',
+    });
   }
-  return findings;
+  return videos;
 }
 
 function extractDescription(description: string, game: GameSlug, video: string): Evidence[] {
@@ -62,23 +73,33 @@ export function compareEvidence(evidence: Evidence[], catalog: RedemptionCode[],
   return candidates.sort((a,b) => (a.game+a.code+a.source).localeCompare(b.game+b.code+b.source));
 }
 
-export async function scanFeeds() {
+export async function scanFeeds(apiOnly = false) {
   const evidence: Evidence[] = [];
+  const announcements: OfficialVideo[] = [];
   const failures: GameSlug[] = [];
-  for (const [game, channel] of Object.entries(officialChannels) as [GameSlug, string][]) {
+  const entries = Object.entries(officialChannels) as [GameSlug, string][];
+  for (const [game, channel] of entries) {
+    if (apiOnly) {
+      failures.push(game);
+      continue;
+    }
     try {
       const response = await fetch('https://www.youtube.com/xml/feeds/videos.xml?channel_id=' + channel,
         { signal: AbortSignal.timeout(12000), redirect: 'error' });
       if (!response.ok) throw Error(String(response.status));
       const xml = await response.text();
       if (!xml.includes('<feed') || !xml.includes(channel)) throw Error('Feed inesperado');
-      evidence.push(...extractFeed(xml, game));
+      for (const video of feedVideos(xml, game)) {
+        evidence.push(...extractDescription(video.description, game, video.id));
+        announcements.push(video);
+      }
     } catch {
       failures.push(game);
     }
   }
   const key = process.env.YOUTUBE_DATA_API_KEY;
-  if (!key || !failures.length) return { evidence, failures };
+  if (apiOnly && !key) throw Error('Cadastre o secret YOUTUBE_DATA_API_KEY antes de validar a API.');
+  if (!key || !failures.length) return { evidence, failures, announcements };
 
   async function api(resource: string, params: Record<string,string>) {
     const url = new URL('https://www.googleapis.com/youtube/v3/' + resource);
@@ -98,16 +119,22 @@ export async function scanFeeds() {
           .filter((id: unknown) => typeof id === 'string' && /^[\w-]{11}$/.test(id));
         if (ids.length) {
           const videos = await api('videos', { part: 'snippet', id: ids.join(',') });
+          const before = announcements.length;
           for (const video of videos.items ?? []) {
             if (video.snippet?.channelId === officialChannels[game] && typeof video.snippet.description === 'string' &&
                 typeof video.id === 'string' && /^[\w-]{11}$/.test(video.id)) {
               evidence.push(...extractDescription(video.snippet.description, game, video.id));
+              announcements.push({ game, id: video.id, description: video.snippet.description,
+                title: typeof video.snippet.title === 'string' ? video.snippet.title : '',
+                publishedAt: typeof video.snippet.publishedAt === 'string' ? video.snippet.publishedAt : '' });
             }
           }
-        }
+          if (apiOnly && announcements.length === before) continue;
+        } else if (apiOnly) continue;
         failures.splice(failures.indexOf(game), 1);
       } catch { /* Preserve the feed failure in the report, without logging the API key. */ }
     }
   } catch { /* The primary feed failures remain visible. */ }
-  return { evidence, failures };
+  if (apiOnly && failures.length) throw Error('A YouTube Data API não retornou vídeos oficiais para: ' + failures.join(', ') + '. Confira as restrições e a cota da chave.');
+  return { evidence, failures, announcements };
 }

@@ -264,6 +264,7 @@ button:not(:disabled) { cursor: pointer; }
 
 .article-breadcrumbs { align-items: center; gap: .35rem .65rem; margin-bottom: 1rem; color: var(--muted); font-size: .875rem; }
 .article-breadcrumbs a { color: var(--link); }
+.article-crumb { display: inline-flex; gap: .65rem; align-items: baseline; }
 .article-columns { display: grid; gap: 1.4rem; align-items: start; }
 .article-columns > article { max-width: none; min-width: 0; padding: clamp(1rem, 3vw, 2.25rem); background: var(--surface); border: 1px solid var(--border); border-radius: 1rem; }
 .article-heading h1 { font-size: clamp(1.75rem, 4vw, 2.75rem); letter-spacing: -.04em; line-height: 1.11; }

@@ -1,8 +1,13 @@
-name: Revisar códigos de resgate
+name: Revisar códigos de resgate e calendário
 on:
   schedule:
     - cron: '17 12 * * *'
   workflow_dispatch:
+    inputs:
+      verify_api:
+        description: 'Testar YouTube Data API nos quatro canais e gerar apenas relatório'
+        type: boolean
+        default: true
 
 concurrency:
   group: revisao-codigos
@@ -27,9 +32,13 @@ jobs:
           YOUTUBE_DATA_API_KEY: ${{ secrets.YOUTUBE_DATA_API_KEY }}
         run: |
           set -o pipefail
-          REDEMPTION_PROPOSAL="$RUNNER_TEMP/codigos.json" pnpm exec tsx scripts/check-redemption.ts --feeds | tee -a "$GITHUB_STEP_SUMMARY"
+          if [[ "${{ inputs.verify_api }}" == "true" ]]; then
+            pnpm exec tsx scripts/check-redemption.ts --verify-api | tee -a "$GITHUB_STEP_SUMMARY"
+          else
+            REDEMPTION_PROPOSAL="$RUNNER_TEMP/codigos.json" pnpm exec tsx scripts/check-redemption.ts --feeds | tee -a "$GITHUB_STEP_SUMMARY"
+          fi
       - name: Abrir ou atualizar proposta editorial
-        if: github.ref == 'refs/heads/main'
+        if: github.ref == 'refs/heads/main' && !inputs.verify_api
         env:
           GH_TOKEN: ${{ github.token }}
         run: bash scripts/propor-revisao.sh
