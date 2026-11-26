@@ -9,6 +9,7 @@ on:
       - 'scripts/proposal-check.ts'
       - 'scripts/propor-revisao.sh'
       - 'scripts/redemption-sources.ts'
+      - 'scripts/editorial-intelligence/youtube-snapshot.ts'
   schedule:
     - cron: '17 12 * * *'
   workflow_dispatch:
@@ -39,6 +40,7 @@ jobs:
       - name: Validar catálogo e publicar relatório de revisão
         env:
           YOUTUBE_DATA_API_KEY: ${{ secrets.YOUTUBE_DATA_API_KEY }}
+          EDITORIAL_YOUTUBE_SNAPSHOT_OUT: ${{ github.repository == 'hrq1408/gachaverse' && github.ref == 'refs/heads/main' && format('{0}/youtube-publico.json', runner.temp) || '' }}
         run: |
           set -o pipefail
           if [[ "${{ inputs.verify_api }}" == "true" ]]; then
@@ -48,6 +50,21 @@ jobs:
           else
             REDEMPTION_PROPOSAL="$RUNNER_TEMP/codigos.json" pnpm exec tsx scripts/check-redemption.ts --feeds | tee -a "$GITHUB_STEP_SUMMARY"
           fi
+      - name: Compartilhar somente metadados públicos do YouTube
+        if: github.repository == 'hrq1408/gachaverse' && github.ref == 'refs/heads/main'
+        id: youtube_snapshot
+        run: |
+          if [[ -s "$RUNNER_TEMP/youtube-publico.json" ]]; then
+            echo 'available=true' >> "$GITHUB_OUTPUT"
+          fi
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: steps.youtube_snapshot.outputs.available == 'true'
+        continue-on-error: true
+        with:
+          name: youtube-publico
+          path: ${{ runner.temp }}/youtube-publico.json
+          retention-days: 3
+          if-no-files-found: error
       - name: Abrir ou atualizar proposta editorial
         if: github.ref == 'refs/heads/main' && !inputs.verify_api
         env:

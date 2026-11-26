@@ -1,0 +1,149 @@
+[
+  {
+    "id": "genshin-impact-cross-save",
+    "slug": "genshin-impact-cross-save",
+    "type": "nova",
+    "status": "em-revisao",
+    "priority": "alta",
+    "title": "Cross-save em Genshin Impact: mantenha seu progresso ao trocar de aparelho",
+    "description": "Aprenda a levar seu progresso de Genshin Impact para outro aparelho, vincular a conta no PlayStation e conferir o servidor se o jogo começar do zero.",
+    "game": "genshin-impact",
+    "keyword": "cross-save Genshin Impact",
+    "secondary": [
+      "vincular conta Genshin Impact no PlayStation",
+      "progresso de Genshin sumiu",
+      "trocar servidor Genshin Impact"
+    ],
+    "intent": "Informacional, com passos para tomar uma decisão dentro do jogo.",
+    "digest": "500b21c875b55131fba7cb0f1f1ecb4dc1813e4570a63dcbf3fa24c1f75089e0",
+    "sources": [
+      {
+        "title": "Central de Ajuda HoYoverse — sincronização de dados",
+        "url": "https://support.hoyoverse.com/hc/en-us/articles/49686152994457-How-to-synchronize-game-data-across-platforms",
+        "checkedOn": "2026-11-26",
+        "supports": "Plataformas e uso da mesma conta."
+      },
+      {
+        "title": "Central de Ajuda HoYoverse — vínculo com a PlayStation Network",
+        "url": "https://support.hoyoverse.com/hc/en-us/articles/48105927061529-Can-I-link-my-PlayStation-Network-account-to-my-HoYoverse-Account",
+        "checkedOn": "2026-11-26",
+        "supports": "Vinculação em ambos os sentidos."
+      },
+      {
+        "title": "Central de Ajuda HoYoverse — progresso aparentemente reiniciado",
+        "url": "https://support.hoyoverse.com/hc/en-us/articles/48105391827865-What-should-I-do-if-my-game-progress-is-reset-after-logging-in",
+        "checkedOn": "2026-11-26",
+        "supports": "Servidor, região da PSN e método de login."
+      },
+      {
+        "title": "Central de Ajuda HoYoverse — transferência entre servidores",
+        "url": "https://support.hoyoverse.com/hc/en-us/articles/50333913278361-Why-can-t-I-transfer-my-game-account-to-another-server",
+        "checkedOn": "2026-11-26",
+        "supports": "Ausência de transferência e fusão entre servidores."
+      }
+    ],
+    "cover": {
+      "file": "genshin-impact-cross-save.jpg",
+      "alt": "Uma tela e um celular unidos por uma ponte luminosa violeta.",
+      "credit": "Ilustração editorial original gerada por IA para o GachaVerse. A imagem é conceitual.",
+      "prompt": "Tela e celular sem marcas ligados por luz violeta, com bússola ciano em fundo azul-noite."
+    },
+    "socials": {
+      "instagram": "Vai trocar de aparelho em Genshin Impact? Salve este checklist: confirme a conta HoYoverse, anote o servidor e confira o UID no aparelho novo. No PlayStation, a região da PSN determina o servidor. Depois da publicação, confira o guia completo no link da bio.",
+      "tiktok": "Gancho: «Seu Genshin abriu como se fosse a primeira vez?» Mostre três cartões: conta, método de login e servidor. Feche com «No PlayStation, confira a região da PSN» e direcione ao guia depois da publicação.",
+      "x": "Seu progresso de Genshin sumiu no aparelho novo? Confira conta, método de login e servidor antes de alterar vínculos. No PlayStation, a região da PSN determina o servidor. [link após publicação]"
+    }
+  },
+  {
+    "id": "honkai-star-rail-reliquias",
+    "slug": "honkai-star-rail-reliquias",
+    "type": "atualizacao",
+    "status": "em-revisao",
+    "priority": "alta",
+    "title": "Relíquias em Honkai: Star Rail: atributos, conjuntos e síntese personalizada",
+    "description": "Compare atributos e conjuntos de Relíquias e saiba quando usar a resina de síntese na síntese personalizada de Honkai: Star Rail.",
+    "game": "honkai-star-rail",
+    "keyword": "síntese de relíquias Honkai Star Rail",
+    "secondary": [
+      "Self-Modeling Resin",
+      "síntese personalizada de relíquias",
+      "atributo principal de relíquias"
+    ],
+    "intent": "Informacional, com passos para tomar uma decisão dentro do jogo.",
+    "digest": "4a085b62446ec7a261586bfa8d89e75e46694e4f519dc22c31d0df78879a29fa",
+    "sources": [
+      {
+        "title": "Honkai: Star Rail — notas oficiais da versão 3.5",
+        "url": "https://hsr.hoyoverse.com/en-us/news/158598",
+        "checkedOn": "2026-11-26",
+        "supports": "Unificação dos materiais e seleção de atributos principais e secundários."
+      },
+      {
+        "title": "Central de Ajuda HoYoverse — custos de síntese personalizada",
+        "url": "https://support.hoyoverse.com/hc/en-us/articles/50913753850905-How-many-Self-Modeling-Resin-are-required-for-Customized-Synthesis",
+        "checkedOn": "2026-11-26",
+        "supports": "Custos publicados para um atributo principal e um ou dois subatributos."
+      }
+    ],
+    "cover": {
+      "file": "honkai-star-rail-reliquias-editorial.jpg",
+      "alt": "Um cristal lilás suspenso no centro de um anel luminoso de calibração.",
+      "credit": "Ilustração editorial original gerada por IA para o GachaVerse. A imagem é conceitual.",
+      "prompt": "Cristal de equipamento abstrato em anel orbital roxo com pontos de calibração ciano."
+    },
+    "socials": {
+      "instagram": "Antes de gastar resina de síntese, descubra qual peça realmente limita sua equipe. Nosso guia atualizado compara atributo principal, subatributos e custo da síntese. Salve para a próxima build e consulte o guia quando a atualização estiver publicada.",
+      "tiktok": "Gancho: «Qual relíquia merece sua resina?» Mostre três passos: função da unidade, atributo que falta, custo exibido no jogo. Exemplo: suporte fora da ordem de ações. Feche convidando a comparar as peças no guia atualizado.",
+      "x": "Vai usar resina de síntese em Star Rail? Comece pelo atributo que resolve um problema real da equipe. Atualizamos o guia de Relíquias com a síntese personalizada e os custos documentados. [link após publicação]"
+    }
+  },
+  {
+    "id": "zenless-zone-zero-hollow-zero-recompensas",
+    "slug": "zenless-zone-zero-hollow-zero-recompensas",
+    "type": "nova",
+    "status": "em-revisao",
+    "priority": "alta",
+    "title": "Recompensas da Hollow Zero em Zenless Zone Zero: o que resgatar na semana",
+    "description": "Veja a diferença entre as recompensas semanais da Hollow Zero e o progresso de Policromos. Use um checklist para resgatar o que já liberou.",
+    "game": "zenless-zone-zero",
+    "keyword": "recompensas semanais hollow zero",
+    "secondary": [
+      "Policromos Hollow Zero",
+      "Hollow Zero Lost Void",
+      "recompensa semanal não resgatada ZZZ"
+    ],
+    "intent": "Informacional, com passos para tomar uma decisão dentro do jogo.",
+    "digest": "72cbcb2c3e9811f11088e2d5764e95a6208325332558d7242e98d164efab80a0",
+    "sources": [
+      {
+        "title": "Central de Ajuda HoYoverse — recompensas semanais esquecidas",
+        "url": "https://support.hoyoverse.com/hc/en-us/articles/51005648197017-How-can-I-claim-the-weekly-rewards-from-Hollow-Zero-that-I-forgot-to-claim",
+        "checkedOn": "2026-11-26",
+        "supports": "Recompensas semanais expiradas não são reemitidas."
+      },
+      {
+        "title": "Zenless Zone Zero — notas oficiais da versão 2.6",
+        "url": "https://zenless.hoyoverse.com/en-us/news/162561",
+        "checkedOn": "2026-11-26",
+        "supports": "A tela Reward Progress acompanha o resgate de Policromos em diferentes modos e missões da Hollow Zero."
+      },
+      {
+        "title": "Zenless Zone Zero — notas oficiais da versão 1.4",
+        "url": "https://zenless.hoyoverse.com/en-us/news/127445",
+        "checkedOn": "2026-11-26",
+        "supports": "A introdução de Lost Void como modo permanente com mecânicas próprias."
+      }
+    ],
+    "cover": {
+      "file": "zenless-zone-zero-hollow-zero-recompensas.jpg",
+      "alt": "Um scanner portátil e um símbolo de checklist iluminados em uma estação subterrânea.",
+      "credit": "Ilustração editorial original gerada por IA para o GachaVerse. A imagem é conceitual.",
+      "prompt": "Scanner portátil sem marca e checklist luminoso em uma estação subterrânea azul-noite."
+    },
+    "socials": {
+      "instagram": "Completou a Hollow Zero? Antes de fechar o jogo, abra as recompensas e confira o que ainda falta resgatar. As semanais expiradas não são reemitidas. Salve o lembrete e consulte o checklist quando o guia for publicado.",
+      "tiktok": "Gancho: «Fez Hollow Zero, mas clicou em resgatar?» Use três telas: ver tarefas concluídas, recolher as semanais, consultar Policromos pendentes. Finalize com o lembrete de conferir o reset no jogo.",
+      "x": "Fez Hollow Zero no ZZZ? Confira o que ainda precisa resgatar antes do reset semanal. A HoYoverse informa que recompensa semanal expirada não é reemitida. [link após publicação]"
+    }
+  }
+]

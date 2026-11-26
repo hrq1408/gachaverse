@@ -1,0 +1,54 @@
+{
+  "status": "publicada",
+  "author": "Equipe editorial do GachaVerse",
+  "intent": "Informacional, com passos para tomar uma decisão dentro do jogo.",
+  "priority": "alta",
+  "id": "zenless-zone-zero-hollow-zero-recompensas",
+  "slug": "zenless-zone-zero-hollow-zero-recompensas",
+  "type": "nova",
+  "game": "zenless-zone-zero",
+  "title": "Recompensas da Hollow Zero em Zenless Zone Zero: o que resgatar na semana",
+  "description": "Veja a diferença entre as recompensas semanais da Hollow Zero e o progresso de Policromos. Use um checklist para resgatar o que já liberou.",
+  "keyword": "recompensas semanais hollow zero",
+  "secondary": [
+    "Policromos Hollow Zero",
+    "Hollow Zero Lost Void",
+    "recompensa semanal não resgatada ZZZ"
+  ],
+  "intro": "As recompensas semanais da Hollow Zero precisam ser resgatadas antes da renovação seguinte. A HoYoverse informa que as recompensas expiradas não são reemitidas. O melhor momento para conferir a tela de resgate é logo depois da sessão em que você completou as tarefas.",
+  "related": [
+    "zenless-zone-zero-policromos",
+    "zenless-zone-zero-guia-iniciantes"
+  ],
+  "sources": [
+    {
+      "title": "Central de Ajuda HoYoverse — recompensas semanais esquecidas",
+      "url": "https://support.hoyoverse.com/hc/en-us/articles/51005648197017-How-can-I-claim-the-weekly-rewards-from-Hollow-Zero-that-I-forgot-to-claim",
+      "checkedOn": "2026-11-26",
+      "supports": "Recompensas semanais expiradas não são reemitidas."
+    },
+    {
+      "title": "Zenless Zone Zero — notas oficiais da versão 2.6",
+      "url": "https://zenless.hoyoverse.com/en-us/news/162561",
+      "checkedOn": "2026-11-26",
+      "supports": "A tela Reward Progress acompanha o resgate de Policromos em diferentes modos e missões da Hollow Zero."
+    },
+    {
+      "title": "Zenless Zone Zero — notas oficiais da versão 1.4",
+      "url": "https://zenless.hoyoverse.com/en-us/news/127445",
+      "checkedOn": "2026-11-26",
+      "supports": "A introdução de Lost Void como modo permanente com mecânicas próprias."
+    }
+  ],
+  "cover": {
+    "file": "zenless-zone-zero-hollow-zero-recompensas.jpg",
+    "alt": "Um scanner portátil e um símbolo de checklist iluminados em uma estação subterrânea.",
+    "credit": "Ilustração editorial original gerada por IA para o GachaVerse. A imagem é conceitual.",
+    "prompt": "Scanner portátil sem marca e checklist luminoso em uma estação subterrânea azul-noite."
+  },
+  "socials": {
+    "instagram": "Completou a Hollow Zero? Antes de fechar o jogo, abra as recompensas e confira o que ainda falta resgatar. As semanais expiradas não são reemitidas. Salve o lembrete e consulte o checklist quando o guia for publicado.",
+    "tiktok": "Gancho: «Fez Hollow Zero, mas clicou em resgatar?» Use três telas: ver tarefas concluídas, recolher as semanais, consultar Policromos pendentes. Finalize com o lembrete de conferir o reset no jogo.",
+    "x": "Fez Hollow Zero no ZZZ? Confira o que ainda precisa resgatar antes do reset semanal. A HoYoverse informa que recompensa semanal expirada não é reemitida. [link após publicação]"
+  }
+}

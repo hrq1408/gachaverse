@@ -4,6 +4,7 @@ import { codeStatus, reviewIntervalDays } from '../src/lib/redemption-status';
 import { compareEvidence, scanFeeds } from './redemption-sources';
 import { bannerAnnouncements, banners } from '../src/content/banners';
 import { reviewBanners } from './banner-review';
+import { publicYoutubeSnapshot } from './editorial-intelligence/youtube-snapshot';
 
 const now = Date.now();
 const rows = redemptionCodes.map(entry => ({ entry, status: codeStatus(entry, now) }));
@@ -16,6 +17,15 @@ async function main() {
   const verifyApi = process.argv.includes('--verify-api');
   const apiOnly = verifyApi || process.argv.includes('--require-api');
   const feedCheck = apiOnly || process.argv.includes('--feeds') ? await scanFeeds(apiOnly) : undefined;
+  const snapshotPath = process.env.EDITORIAL_YOUTUBE_SNAPSHOT_OUT;
+  if (snapshotPath && feedCheck) {
+    try {
+      const snapshot = publicYoutubeSnapshot(feedCheck.announcements, feedCheck.failures, new Date());
+      if (snapshot.videos.length) await writeFile(snapshotPath, JSON.stringify(snapshot) + '\n', { flag: 'wx' });
+    } catch {
+      console.warn('Snapshot público do YouTube indisponível. A auditoria do catálogo continua.');
+    }
+  }
   const candidates = compareEvidence(feedCheck?.evidence ?? [], redemptionCodes, now);
   const calendar = reviewBanners(banners, feedCheck?.announcements ?? [], now, bannerAnnouncements);
   const recentlyExpired = rows.filter(({ entry, status }) => status === 'expirado' &&

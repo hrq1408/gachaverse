@@ -1,0 +1,49 @@
+{
+  "status": "publicada",
+  "author": "Equipe editorial do GachaVerse",
+  "intent": "Informacional, com passos para tomar uma decisão dentro do jogo.",
+  "priority": "alta",
+  "id": "honkai-star-rail-reliquias",
+  "slug": "honkai-star-rail-reliquias",
+  "type": "atualizacao",
+  "revisionMode": "substituir",
+  "game": "honkai-star-rail",
+  "title": "Relíquias em Honkai: Star Rail: atributos, conjuntos e síntese personalizada",
+  "description": "Compare atributos e conjuntos de Relíquias e saiba quando usar a resina de síntese na síntese personalizada de Honkai: Star Rail.",
+  "keyword": "síntese de relíquias Honkai Star Rail",
+  "secondary": [
+    "Self-Modeling Resin",
+    "síntese personalizada de relíquias",
+    "atributo principal de relíquias"
+  ],
+  "intro": "Se você já tem uma equipe funcional, a síntese personalizada pode ajudar a resolver uma lacuna específica de equipamento. A atualização deste guia inclui o que mudou na versão 3.5 e uma forma prática de escolher em qual peça usar resina de síntese.",
+  "related": [
+    "honkai-star-rail-poder-desbravamento",
+    "honkai-star-rail-evoluir-personagens"
+  ],
+  "sources": [
+    {
+      "title": "Honkai: Star Rail — notas oficiais da versão 3.5",
+      "url": "https://hsr.hoyoverse.com/en-us/news/158598",
+      "checkedOn": "2026-11-26",
+      "supports": "Unificação dos materiais e seleção de atributos principais e secundários."
+    },
+    {
+      "title": "Central de Ajuda HoYoverse — custos de síntese personalizada",
+      "url": "https://support.hoyoverse.com/hc/en-us/articles/50913753850905-How-many-Self-Modeling-Resin-are-required-for-Customized-Synthesis",
+      "checkedOn": "2026-11-26",
+      "supports": "Custos publicados para um atributo principal e um ou dois subatributos."
+    }
+  ],
+  "cover": {
+    "file": "honkai-star-rail-reliquias-editorial.jpg",
+    "alt": "Um cristal lilás suspenso no centro de um anel luminoso de calibração.",
+    "credit": "Ilustração editorial original gerada por IA para o GachaVerse. A imagem é conceitual.",
+    "prompt": "Cristal de equipamento abstrato em anel orbital roxo com pontos de calibração ciano."
+  },
+  "socials": {
+    "instagram": "Antes de gastar resina de síntese, descubra qual peça realmente limita sua equipe. Nosso guia atualizado compara atributo principal, subatributos e custo da síntese. Salve para a próxima build e consulte o guia quando a atualização estiver publicada.",
+    "tiktok": "Gancho: «Qual relíquia merece sua resina?» Mostre três passos: função da unidade, atributo que falta, custo exibido no jogo. Exemplo: suporte fora da ordem de ações. Feche convidando a comparar as peças no guia atualizado.",
+    "x": "Vai usar resina de síntese em Star Rail? Comece pelo atributo que resolve um problema real da equipe. Atualizamos o guia de Relíquias com a síntese personalizada e os custos documentados. [link após publicação]"
+  }
+}

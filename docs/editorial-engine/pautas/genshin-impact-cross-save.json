@@ -1,0 +1,60 @@
+{
+  "status": "publicada",
+  "author": "Equipe editorial do GachaVerse",
+  "intent": "Informacional, com passos para tomar uma decisão dentro do jogo.",
+  "priority": "alta",
+  "id": "genshin-impact-cross-save",
+  "slug": "genshin-impact-cross-save",
+  "type": "nova",
+  "game": "genshin-impact",
+  "title": "Cross-save em Genshin Impact: mantenha seu progresso ao trocar de aparelho",
+  "description": "Aprenda a levar seu progresso de Genshin Impact para outro aparelho, vincular a conta no PlayStation e conferir o servidor se o jogo começar do zero.",
+  "keyword": "cross-save Genshin Impact",
+  "secondary": [
+    "vincular conta Genshin Impact no PlayStation",
+    "progresso de Genshin sumiu",
+    "trocar servidor Genshin Impact"
+  ],
+  "intro": "Para continuar sua partida de Genshin Impact em outro aparelho, acesse a mesma conta HoYoverse e o mesmo servidor usados no dispositivo anterior. Antes de vincular qualquer conta, abra o jogo onde seu progresso ainda aparece. Esse é o seu ponto de partida para conferir os dados corretos.",
+  "related": [
+    "genshin-impact-guia-iniciantes",
+    "onde-resgatar-codigos"
+  ],
+  "sources": [
+    {
+      "title": "Central de Ajuda HoYoverse — sincronização de dados",
+      "url": "https://support.hoyoverse.com/hc/en-us/articles/49686152994457-How-to-synchronize-game-data-across-platforms",
+      "checkedOn": "2026-11-26",
+      "supports": "Plataformas e uso da mesma conta."
+    },
+    {
+      "title": "Central de Ajuda HoYoverse — vínculo com a PlayStation Network",
+      "url": "https://support.hoyoverse.com/hc/en-us/articles/48105927061529-Can-I-link-my-PlayStation-Network-account-to-my-HoYoverse-Account",
+      "checkedOn": "2026-11-26",
+      "supports": "Vinculação em ambos os sentidos."
+    },
+    {
+      "title": "Central de Ajuda HoYoverse — progresso aparentemente reiniciado",
+      "url": "https://support.hoyoverse.com/hc/en-us/articles/48105391827865-What-should-I-do-if-my-game-progress-is-reset-after-logging-in",
+      "checkedOn": "2026-11-26",
+      "supports": "Servidor, região da PSN e método de login."
+    },
+    {
+      "title": "Central de Ajuda HoYoverse — transferência entre servidores",
+      "url": "https://support.hoyoverse.com/hc/en-us/articles/50333913278361-Why-can-t-I-transfer-my-game-account-to-another-server",
+      "checkedOn": "2026-11-26",
+      "supports": "Ausência de transferência e fusão entre servidores."
+    }
+  ],
+  "cover": {
+    "file": "genshin-impact-cross-save.jpg",
+    "alt": "Uma tela e um celular unidos por uma ponte luminosa violeta.",
+    "credit": "Ilustração editorial original gerada por IA para o GachaVerse. A imagem é conceitual.",
+    "prompt": "Tela e celular sem marcas ligados por luz violeta, com bússola ciano em fundo azul-noite."
+  },
+  "socials": {
+    "instagram": "Vai trocar de aparelho em Genshin Impact? Salve este checklist: confirme a conta HoYoverse, anote o servidor e confira o UID no aparelho novo. No PlayStation, a região da PSN determina o servidor. Depois da publicação, confira o guia completo no link da bio.",
+    "tiktok": "Gancho: «Seu Genshin abriu como se fosse a primeira vez?» Mostre três cartões: conta, método de login e servidor. Feche com «No PlayStation, confira a região da PSN» e direcione ao guia depois da publicação.",
+    "x": "Seu progresso de Genshin sumiu no aparelho novo? Confira conta, método de login e servidor antes de alterar vínculos. No PlayStation, a região da PSN determina o servidor. [link após publicação]"
+  }
+}
