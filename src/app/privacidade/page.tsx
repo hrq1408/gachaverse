@@ -1,3 +1,4 @@
+import { advertisingPolicy, adsenseClient, autoAdsEnabled, autoAdsSource } from '@/features/advertising/config';
 import Link from 'next/link';
 import { PageHeading } from '@/components/catalog';
 import { pageMetadata } from '@/lib/site';
@@ -19,7 +20,11 @@ export default function Privacy() {
     <h2>Calculadora de pity</h2><p>Os valores informados ficam no armazenamento local deste navegador. Com sua permissão para medição, registramos a abertura da ferramenta, o uso do cálculo, a troca de banner e o reinício. Os eventos omitem o pity e o saldo de recursos.</p>
     <h2>Diário de Saltos</h2><p>O novo tracker armazena o histórico no IndexedDB da sua origem independente. O painel funciona com arquivos locais e dispensa medição de audiência e publicidade. A migração de um histórico anterior exige que você exporte uma cópia no portal e confirme a importação no tracker.</p>
     <h2>Publicidade</h2>
-    <p>Os anúncios estão desativados. A verificação do AdSense usa uma metatag e o arquivo ads.txt. A preferência de audiência se aplica apenas ao Analytics.</p>
+    {autoAdsSource(advertisingPolicy, autoAdsEnabled, adsenseClient) ? (
+      <p>O AdSense é opcional. Em “Preferências de cookies”, no rodapé, você pode autorizar o carregamento ou retirar a autorização. O Google pode oferecer controles adicionais de privacidade conforme a região. A escolha de audiência se aplica apenas ao Analytics. <a href="https://policies.google.com/technologies/partner-sites?hl=pt-BR">Como o Google trata dados de sites parceiros</a>.</p>
+    ) : (
+      <p>Os anúncios estão desativados. A verificação do AdSense usa uma metatag e o arquivo ads.txt. A preferência de audiência se aplica apenas ao Analytics.</p>
+    )}
     <h2>Links externos e contato</h2>
     <p>Os resgates acontecem nos canais oficiais de cada jogo. Dados de login e códigos inseridos nesses canais são tratados pelo respectivo serviço. Ao abrir um relato no GitHub, seu nome de usuário e a mensagem ficam visíveis ao público.</p>
     <p>Para dúvidas sobre esta política ou solicitações relacionadas a dados, consulte a <Link href="/contato/">página de contato</Link>.</p>

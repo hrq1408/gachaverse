@@ -1,4 +1,5 @@
-import { adsenseClient } from '@/features/advertising/config';
+import { advertisingPolicy, adsenseClient, autoAdsEnabled, autoAdsSource } from '@/features/advertising/config';
+import { AutoAds } from '@/features/advertising/auto-ads';
 import { Consent } from '@/components/consent';
 import { publicPaths } from '@/content/editorial';
 import { games, sections, sectionPath } from '@/content/catalog';
@@ -17,13 +18,15 @@ export const metadata: Metadata = {
 };
 
 export default function Layout({ children }: { children: ReactNode }) {
+  const adSource = autoAdsSource(advertisingPolicy, autoAdsEnabled, adsenseClient);
   return <html lang="pt-BR">
     <body>
       <a className="skip-link" href="#principal">Pular para o conteúdo</a>
       <Header />
       <main id="principal" tabIndex={-1}>{children}</main>
       <Footer />
-      <Consent paths={[...new Set(['/ferramentas/warp-tracker/painel/', ...publicPaths(), ...sections.flatMap((section) => [sectionPath(section), ...games.map((game) => sectionPath(section, game))])])]} />
+      <Consent advertisingAvailable={Boolean(adSource)} paths={[...new Set(['/ferramentas/warp-tracker/painel/', ...publicPaths(), ...sections.flatMap((section) => [sectionPath(section), ...games.map((game) => sectionPath(section, game))])])]} />
+      {adSource && <AutoAds src={adSource} />}
     </body>
   </html>;
 }

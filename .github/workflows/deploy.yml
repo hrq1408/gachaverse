@@ -68,7 +68,9 @@ jobs:
         env:
           SITE_URL: https://gachaverse.pages.dev
           NEXT_PUBLIC_TRACKER_RELEASED: 'true'
-          NEXT_PUBLIC_ADS_ENABLED: 'false'
+          NEXT_PUBLIC_ADS_ENABLED: ${{ vars.ADSENSE_RELEASE_VERIFIED == 'true' && 'true' || 'false' }}
+          NEXT_PUBLIC_ADSENSE_AUTO_ADS: ${{ vars.ADSENSE_RELEASE_VERIFIED == 'true' && 'true' || 'false' }}
+          NEXT_PUBLIC_ADSENSE_CMP_VERIFIED: ${{ vars.ADSENSE_RELEASE_VERIFIED == 'true' && 'true' || 'false' }}
           NEXT_PUBLIC_GA_MEASUREMENT_ID: G-LRJH89WQR7
         run: pnpm build
       - name: Publicar portal

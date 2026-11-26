@@ -84,7 +84,9 @@ try {
       const html=await (await request(url)).text();assert(html.includes('rel="canonical" href="'+url+'"'),url);
     }
     for(const f of ['ads.txt','google35321f89903e0b6b.html'])assert.deepEqual(Buffer.from(await (await request(portal+'/'+f)).arrayBuffer()),await readFile('public/'+f));
-    await page.goto(portal);await page.getByRole('button',{name:'Recusar',exact:true}).click();
+    await page.goto(portal);
+    await page.getByRole('button',{name:'Preferências de cookies'}).click();
+    await page.getByRole('button',{name:'Salvar preferências'}).click();
     await page.getByRole('navigation',{name:'Navegação principal'}).getByText('Ferramentas').click();
     await page.getByRole('link',{name:/Calculadora de pity/}).click();
     await page.locator('#pity').fill('70');await page.locator('.guarantee input').check();
