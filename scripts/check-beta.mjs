@@ -87,12 +87,17 @@ try {
     for(const f of ['ads.txt','google35321f89903e0b6b.html'])assert.deepEqual(Buffer.from(await (await request(portal+'/'+f)).arrayBuffer()),await readFile('public/'+f));
     const assetErrors = [];
     page.on('console', message => {
-      if (message.type() === 'error') assetErrors.push(message.text());
+      if (message.type() !== 'error') return;
+      const { url } = message.location();
+      // Chromium probes for a default favicon even when the portal has no icon declared.
+      if (url === portal + '/favicon.ico' && message.text().includes('status of 404')) return;
+      assetErrors.push(url + ' ' + message.text());
     });
     page.on('response', response => {
       const url = new URL(response.url());
       const asset = ['script', 'stylesheet', 'image', 'font'].includes(response.request().resourceType());
       if (url.origin !== portal || (!asset && !url.pathname.startsWith('/_next/'))) return;
+      if (url.pathname === '/favicon.ico' && response.status() === 404) return;
       if (response.status() >= 400 || url.pathname.includes('/_next//_next/')) {
         assetErrors.push(response.status() + ' ' + url.pathname);
       }
