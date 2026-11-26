@@ -26,6 +26,7 @@ export default function Privacy() {
       <p>Os anúncios estão desativados. A verificação do AdSense usa uma metatag e o arquivo ads.txt. A preferência de audiência se aplica apenas ao Analytics.</p>
     )}
     <h2>Links externos e contato</h2>
+    <p>Com a medição autorizada, podemos contar cliques em ofertas identificadas usando o identificador público da oferta e o tipo de relação comercial. O evento omite a URL do parceiro e dados da compra. Consulte a <Link href="/publicidade-e-afiliados/">política de publicidade e afiliados</Link>.</p>
     <p>Os resgates acontecem nos canais oficiais de cada jogo. Dados de login e códigos inseridos nesses canais são tratados pelo respectivo serviço. Ao abrir um relato no GitHub, seu nome de usuário e a mensagem ficam visíveis ao público.</p>
     <p>Para dúvidas sobre esta política ou solicitações relacionadas a dados, consulte a <Link href="/contato/">página de contato</Link>.</p>
   </article></div>;

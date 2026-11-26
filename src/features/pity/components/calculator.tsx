@@ -1,6 +1,7 @@
 'use client';
 
-import { useRef } from 'react';
+import { useRef, useState } from 'react';
+import { useSearchParams } from 'next/navigation';
 import { Gem, Orbit, RotateCcw, Ticket } from 'lucide-react';
 import { trackAction } from '@/lib/analytics';
 import { calculate, whole, type GameRules } from '../domain/calculation';
@@ -8,7 +9,13 @@ import { usePlan } from '../hooks/use-plan';
 
 const number = new Intl.NumberFormat('pt-BR');
 export function Calculator({ game }: { game: GameRules }) {
-  const { banner, plan, change, select, reset } = usePlan(game);
+  const preferred = useSearchParams().get('banner') ?? undefined;
+  return <CalculatorForm key={preferred} game={game} preferred={preferred} />;
+}
+
+export function CalculatorForm({ game, preferred }: { game: GameRules; preferred?: string }) {
+  const [manual, setManual] = useState(false);
+  const { banner, plan, change, select, reset } = usePlan(game, manual ? undefined : preferred);
   const result = calculate(plan, banner, game.cost);
   const dirty = useRef(false);
   function finish() {
@@ -19,11 +26,11 @@ export function Calculator({ game }: { game: GameRules }) {
     dirty.current = true;
     change({ [key]: whole(Number(value), key === 'pity' ? banner.hardPity - 1 : undefined) });
   }
-  return <div className="pity-grid">
+  return <div className="pity-grid" id="planejamento">
     <fieldset className="pity-panel" aria-labelledby="plan-title">
       <h2 id="plan-title"><Orbit aria-hidden="true"/> Seu planejamento</h2>
       <label htmlFor="banner">Banner promocional</label>
-      <select id="banner" value={banner.id} onChange={e => { select(e.target.value); trackAction('pity_banner_change', {}); }}>
+      <select id="banner" value={banner.id} onChange={e => { setManual(true); select(e.target.value); trackAction('pity_banner_change', {}); }}>
         {game.banners.map(b => <option key={b.id} value={b.id}>{b.label}</option>)}</select>
       <div className="pity-row"><label htmlFor="pity">Pity atual</label>
         <input id="pity" type="number" inputMode="numeric" min="0" max={banner.hardPity - 1} value={plan.pity || ''} placeholder="0" onChange={e => edit('pity', e.target.value)} onBlur={finish}/></div>

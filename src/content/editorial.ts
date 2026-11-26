@@ -1,6 +1,7 @@
 import { games, gamePath, sectionPath, sections, type Game, type Section } from './catalog';
 
 import { articles, type Article } from './articles';
+import { gameBanners } from './banners';
 export { articles };
 
 export function findArticles(section: Section, game?: Game) {
@@ -16,12 +17,17 @@ export function contentPath(article: Article) {
 }
 
 export function publishedSections(game?: Game) {
-  return sections.filter((section) => section.slug === 'codigos' || findArticles(section, game).length > 0);
+  return sections.filter(section => sectionHasContent(section, game));
+}
+
+export function sectionHasContent(section: Section, game?: Game) {
+  return section.slug === 'codigos' || (section.slug === 'calendario' && gameBanners(game).length > 0) ||
+    findArticles(section, game).length > 0;
 }
 
 export function publicPaths() {
   return [
-    '/', '/jogos/', '/sobre/', '/privacidade/', '/contato/', '/ferramentas/', '/ferramentas/calculadora-pity/', '/ferramentas/warp-tracker/',
+    '/', '/jogos/', '/sobre/', '/privacidade/', '/publicidade-e-afiliados/', '/contato/', '/ferramentas/', '/ferramentas/calculadora-pity/', '/ferramentas/warp-tracker/',
     ...publishedSections()
       .map((section) => sectionPath(section)),
     ...games.flatMap((game) => [

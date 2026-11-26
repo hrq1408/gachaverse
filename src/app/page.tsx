@@ -9,6 +9,9 @@ import { games } from '@/content/catalog';
 import { redemptionCodes, redemptionSnapshot } from '@/content/redemption';
 import { codeStatus, isRecent } from '@/lib/redemption-status';
 import { CopyRedemptionCode } from '@/components/copy-redemption-code';
+import { BannerCalendar } from '@/components/banner-calendar';
+import { banners } from '@/content/banners';
+import { PartnerOffers } from '@/features/partners/partner-offers';
 import { pageMetadata, site } from '@/lib/site';
 
 export const metadata = { ...pageMetadata(site.name, site.description, '/'), title: { absolute: site.name } };
@@ -25,7 +28,6 @@ const shortcuts = [
 
 export default function Home() {
   const now = redemptionSnapshot;
-  const banners = articles.filter(({ periodo }) => periodo && Date.parse(periodo.inicio) <= now && Date.parse(periodo.fim) > now);
   const codes = redemptionCodes
     .filter(entry => isRecent(entry, now) && ['no-prazo', 'sem-prazo'].includes(codeStatus(entry, now)))
     .sort((a, b) => (b.publishedOn ?? '').localeCompare(a.publishedOn ?? ''))
@@ -54,10 +56,7 @@ export default function Home() {
           <span className="shortcut-icon"><Icon size={22} aria-hidden="true" /></span>{title}<ArrowRight className="shortcut-arrow" size={16} aria-hidden="true" />
         </Link>)}
       </nav>
-      {banners.length > 0 && <section>
-        <div className="section-heading"><h2>Banners atuais</h2><Link href="/conteudo/calendario/">Ver calendário</Link></div>
-        <div className="editorial-grid">{banners.map(article => <ArticleCard key={article.slug} article={article} />)}</div>
-      </section>}
+      <BannerCalendar entries={banners} snapshot={now} home />
       <section>
         <div className="section-heading"><h2>Códigos de resgate recentes</h2><Link href="/conteudo/codigos/">Ver central de códigos</Link></div>
         {codes.length ? <ul className="card-grid">{codes.map(({ game, code, expiresAt, rewards }) =>
@@ -75,6 +74,7 @@ export default function Home() {
         <div className="card-grid">{games.map(game => <GameCard key={game.slug} game={game} />)}</div>
       </section>
       <AdBanner placement="home" />
+      <PartnerOffers />
       {featured.length > 0 && <section>
         <div className="section-heading"><h2>Conteúdo em destaque</h2><Link href="/conteudo/artigos/">Ver todos os artigos</Link></div>
         <div className="editorial-grid">{featured.map(article => <ArticleCard key={article.slug} article={article} />)}</div>

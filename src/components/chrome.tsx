@@ -35,6 +35,7 @@ export function Footer() {
       <nav aria-label="Informações do portal">
         <Link href="/sobre/">Sobre o GachaVerse</Link>
         <Link href="/privacidade/">Privacidade</Link>
+        <Link href="/publicidade-e-afiliados/">Publicidade e afiliados</Link>
         <Link href="/contato/">Contato</Link>
         <CookiePreferencesButton />
       </nav>

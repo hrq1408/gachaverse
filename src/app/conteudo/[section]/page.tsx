@@ -1,7 +1,7 @@
 import { notFound } from 'next/navigation';
 import { PageHeading, SectionContent } from '@/components/catalog';
 import { sections, sectionPath } from '@/content/catalog';
-import { findArticles } from '@/content/editorial';
+import { sectionHasContent } from '@/content/editorial';
 import { pageMetadata } from '@/lib/site';
 
 type Props = { params: Promise<{ section: string }> };
@@ -18,7 +18,7 @@ async function resolveSection(params: Props['params']) {
 export async function generateMetadata({ params }: Props) {
   const category = await resolveSection(params);
   return pageMetadata(category.title, category.description, sectionPath(category),
-    category.slug === 'codigos' || findArticles(category).length > 0);
+    sectionHasContent(category));
 }
 
 export default async function ContentSection({ params }: Props) {

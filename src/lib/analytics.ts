@@ -116,7 +116,7 @@ export function trackPage(path: string, allowedPaths: readonly string[]) {
   if (path === '/ferramentas/calculadora-pity/') command('event', 'pity_calculator_open', fields);
 }
 
-export function trackAction(name: 'game_click' | 'article_read' | 'redemption_click' | 'redemption_code_copy' | 'redemption_game_select' | 'pity_calculation' | 'pity_banner_change' | 'pity_calculator_reset', fields: Record<string, string>) {
+export function trackAction(name: 'game_click' | 'article_read' | 'redemption_click' | 'redemption_code_copy' | 'redemption_game_select' | 'pity_calculation' | 'pity_banner_change' | 'pity_calculator_reset' | 'commercial_offer_click', fields: Record<string, string>) {
   if (currentLocation) command('event', name, {
     ...fields, page_location: currentLocation, page_title: currentTitle, page_referrer: previousLocation,
   });

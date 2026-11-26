@@ -6,6 +6,8 @@ import { BookOpen, CalendarDays, Gamepad2, Gift, Layers3, Swords, UserRound, Use
 import { gamePath, sectionPath, type Game, type Section } from '@/content/catalog';
 import { findArticles } from '@/content/editorial';
 import { redemptionCodes, redemptionSnapshot } from '@/content/redemption';
+import { gameBanners } from '@/content/banners';
+import { BannerCalendar } from './banner-calendar';
 
 
 const sectionIcons = { artigos: BookOpen, builds: Swords, 'tier-lists': Layers3, codigos: Gift, calendario: CalendarDays, personagens: UserRound, equipes: Users };
@@ -33,6 +35,11 @@ export function SectionContent({ section, game }: {
     return <RedemptionCenter key={game?.slug ?? 'central'} entries={codes} game={game} snapshot={redemptionSnapshot} />;
   }
   const entries = findArticles(section, game);
+  const schedule = section.slug === 'calendario' ? gameBanners(game) : [];
+  if (schedule.length) return <>
+    <BannerCalendar entries={schedule} snapshot={redemptionSnapshot} />
+    {entries.length > 0 && <div className="editorial-grid mt-6">{entries.map(article => <ArticleCard article={article} key={article.slug} />)}</div>}
+  </>;
   return <div className="content-stack">
     {entries.length ? entries.map((article) => <ArticleCard article={article} level={2} key={article.slug} />) : <div className="panel"><h2>Em preparação</h2><p>O primeiro conteúdo desta seção será publicado após revisão editorial.</p>
         <Link href={game ? gamePath(game) : '/jogos/'}>{game ? 'Voltar ao jogo' : 'Explorar jogos'}</Link>

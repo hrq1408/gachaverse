@@ -19,6 +19,6 @@ export function restore(raw: string | null, game: GameRules): Snapshot {
   return { version: 1, plans, selected };
 }
 
-export function updatePlan(state: Snapshot, plan: Plan): Snapshot {
-  return { ...state, plans: { ...state.plans, [state.selected]: plan } };
+export function updatePlan(state: Snapshot, plan: Plan, family = state.selected): Snapshot {
+  return { ...state, plans: { ...state.plans, [family]: plan } };
 }

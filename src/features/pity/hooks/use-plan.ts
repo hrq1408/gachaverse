@@ -30,13 +30,13 @@ function createStore(game: GameRules) {
   return { subscribe, save, snapshot: () => current, serverSnapshot: () => initial };
 }
 
-export function usePlan(game: GameRules) {
+export function usePlan(game: GameRules, preferred?: string) {
   const store = useMemo(() => createStore(game), [game]);
   const state = useSyncExternalStore(store.subscribe, store.snapshot, store.serverSnapshot);
-  const banner = game.banners.find(b => b.id === state.selected)!;
+  const banner = game.banners.find(b => b.id === preferred) ?? game.banners.find(b => b.id === state.selected)!;
   const plan = state.plans[banner.id];
   return { banner, plan,
     select: (selected: string) => store.save({ ...state, selected }),
-    change: (patch: Partial<Plan>) => store.save(updatePlan(state, { ...plan, ...patch })),
-    reset: () => store.save(updatePlan(state, emptyPlan())) };
+    change: (patch: Partial<Plan>) => store.save(updatePlan(state, { ...plan, ...patch }, banner.id)),
+    reset: () => store.save(updatePlan(state, emptyPlan(), banner.id)) };
 }

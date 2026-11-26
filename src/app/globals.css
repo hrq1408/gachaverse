@@ -306,3 +306,7 @@ button:not(:disabled) { cursor: pointer; }
 .redemption-group, .pity-result dl div { border-color: var(--border); }
 .redemption-record, .pity-result, .pity-panel { background: var(--surface); }
 .search-bar input { color: var(--heading); }
+
+.banner-record .eyebrow { margin-bottom: .4rem; font-size: .75rem; }
+.banner-record h3 { font-size: 1.1rem; font-weight: 750; overflow-wrap: anywhere; }
+.banner-record a { text-decoration: underline; }

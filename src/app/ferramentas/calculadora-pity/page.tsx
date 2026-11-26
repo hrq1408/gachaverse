@@ -1,6 +1,7 @@
 import { AdSlot } from '@/features/advertising/components';
 import Link from 'next/link';
-import { Calculator } from '@/features/pity/components/calculator';
+import { Suspense } from 'react';
+import { Calculator, CalculatorForm } from '@/features/pity/components/calculator';
 import { starRail } from '@/features/pity/config/games';
 import { pageMetadata } from '@/lib/site';
 
@@ -10,7 +11,7 @@ export default function PityPage() {
     <header className="page-heading"><Link className="back-link" href="/ferramentas/">Ferramentas</Link>
       <p className="eyebrow mt-5">Honkai: Star Rail</p><h1>Calculadora de <em>pity</em></h1>
       <p className="intro">Veja quantos Saltos sua reserva cobre e quanto falta para garantir o destaque do banner.</p></header>
-    <Calculator game={starRail}/>
+    <Suspense fallback={<CalculatorForm game={starRail} />}><Calculator game={starRail}/></Suspense>
     <section className="prose pity-guide"><h2>Como utilizar</h2>
       <p>Escolha o tipo de banner e conte, no histórico correspondente, os Saltos feitos desde o último cinco estrelas. Se ainda não recebeu nenhum, conte desde o primeiro Salto. Informe suas Jades e apenas os Passes Especiais. Cada banner guarda um cenário separado neste navegador.</p>
       <h2>O que o pity garante?</h2><p>Um cinco estrelas reinicia o contador. O limite é de 90 Saltos no evento convencional de personagem e de 80 no de Cone de Luz. Se o último cinco estrelas desse tipo de evento veio fora do destaque e sua garantia continua ativa, marque a opção correspondente. Assim, basta reservar recursos para um ciclo. Sem essa garantia, o planejamento cobre também um segundo ciclo completo.</p>

@@ -2,7 +2,7 @@ import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { PageHeading, SectionContent } from '@/components/catalog';
 import { games, gamePath, sections, sectionPath } from '@/content/catalog';
-import { findArticles } from '@/content/editorial';
+import { sectionHasContent } from '@/content/editorial';
 import { pageMetadata } from '@/lib/site';
 
 type Props = { params: Promise<{ game: string; section: string }> };
@@ -25,7 +25,7 @@ export async function generateMetadata({ params }: Props) {
     ? `Consulte códigos de ${entry.name}, recompensas, prazos e fontes. Veja como resgatar no canal oficial.`
     : category.description;
   return pageMetadata(`${category.title} de ${entry.name}`, description, sectionPath(category, entry),
-    category.slug === 'codigos' || findArticles(category, entry).length > 0);
+    sectionHasContent(category, entry));
 }
 
 export default async function GameSection({ params }: Props) {
