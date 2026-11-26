@@ -43,6 +43,8 @@ jobs:
           set -o pipefail
           if [[ "${{ inputs.verify_api }}" == "true" ]]; then
             pnpm exec tsx scripts/check-redemption.ts --verify-api | tee -a "$GITHUB_STEP_SUMMARY"
+          elif [[ "$GITHUB_EVENT_NAME" == "push" && -n "$YOUTUBE_DATA_API_KEY" ]]; then
+            REDEMPTION_PROPOSAL="$RUNNER_TEMP/codigos.json" pnpm exec tsx scripts/check-redemption.ts --require-api | tee -a "$GITHUB_STEP_SUMMARY"
           else
             REDEMPTION_PROPOSAL="$RUNNER_TEMP/codigos.json" pnpm exec tsx scripts/check-redemption.ts --feeds | tee -a "$GITHUB_STEP_SUMMARY"
           fi

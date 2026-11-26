@@ -16,13 +16,15 @@ function eventFor(title: string) {
   return null;
 }
 
-export function reviewBanners(catalog: Banner[], videos: OfficialVideo[], now: number) {
+export function reviewBanners(catalog: Banner[], videos: OfficialVideo[], now: number,
+  reviewed: readonly { game: string; version: string; event: string }[] = []) {
   const versionByGame = new Map<Banner['game'], string>();
   for (const banner of catalog) {
     const existing = versionByGame.get(banner.game);
     if (!existing || compareVersion(banner.version, existing) > 0) versionByGame.set(banner.game, banner.version);
   }
   const maximumAge = 21 * 86400000;
+  const coveredEvents = new Set(reviewed.map(({ game, version, event }) => [game, version, event].join('/')));
   const candidates = new Map<string, { game: Banner['game']; version: string; event: string; sources: Set<string> }>();
   for (const video of videos) {
     const published = Date.parse(video.publishedAt);
@@ -31,6 +33,7 @@ export function reviewBanners(catalog: Banner[], videos: OfficialVideo[], now: n
     if (!version || !event || !Number.isFinite(published) || published > now || now - published >= maximumAge ||
       compareVersion(version, versionByGame.get(video.game) ?? '0.0') <= 0) continue;
     const key = [video.game, version, event].join('/');
+    if (coveredEvents.has(key)) continue;
     const candidate = candidates.get(key) ?? { game: video.game, version, event, sources: new Set<string>() };
     candidate.sources.add('https://www.youtube.com/watch?v=' + video.id);
     candidates.set(key, candidate);

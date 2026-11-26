@@ -2,7 +2,7 @@ import assert from 'node:assert/strict';
 import test from 'node:test';
 import { articles } from '../src/content/articles';
 import { articleFeed, articleGraph, jsonLd } from '../src/lib/article-distribution';
-import { banners } from '../src/content/banners';
+import { bannerAnnouncements, banners } from '../src/content/banners';
 import { reviewBanners } from '../scripts/banner-review';
 import { proposalKey } from '../scripts/proposal-check';
 
@@ -39,6 +39,8 @@ test('a auditoria sinaliza somente prévias recentes de versão nova', () => {
     { game, version: '3.4', event: 'programa-especial', sources: ['https://www.youtube.com/watch?v=-g94CfWB-gI', 'https://www.youtube.com/watch?v=abcdefghijk'] },
   ]);
   assert.equal(report.expired.length, 0);
+  assert.deepEqual(reviewBanners(banners, [video, recap, phase], now, bannerAnnouncements).candidates,
+    [report.candidates[0]]);
 });
 
 test('fontes adicionais do mesmo evento não geram nova proposta', () => {

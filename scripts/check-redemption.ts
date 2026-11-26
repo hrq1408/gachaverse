@@ -2,7 +2,7 @@ import { writeFile } from 'node:fs/promises';
 import { redemptionCodes } from '../src/content/redemption';
 import { codeStatus, reviewIntervalDays } from '../src/lib/redemption-status';
 import { compareEvidence, scanFeeds } from './redemption-sources';
-import { banners } from '../src/content/banners';
+import { bannerAnnouncements, banners } from '../src/content/banners';
 import { reviewBanners } from './banner-review';
 
 const now = Date.now();
@@ -14,9 +14,10 @@ const review = rows.filter(({ status }) => status === 'revisao')
   .map(({ entry }) => `- ${entry.game} / ${entry.code} · última verificação ${entry.verifiedOn}`);
 async function main() {
   const verifyApi = process.argv.includes('--verify-api');
-  const feedCheck = verifyApi || process.argv.includes('--feeds') ? await scanFeeds(verifyApi) : undefined;
+  const apiOnly = verifyApi || process.argv.includes('--require-api');
+  const feedCheck = apiOnly || process.argv.includes('--feeds') ? await scanFeeds(apiOnly) : undefined;
   const candidates = compareEvidence(feedCheck?.evidence ?? [], redemptionCodes, now);
-  const calendar = reviewBanners(banners, feedCheck?.announcements ?? [], now);
+  const calendar = reviewBanners(banners, feedCheck?.announcements ?? [], now, bannerAnnouncements);
   const recentlyExpired = rows.filter(({ entry, status }) => status === 'expirado' &&
     entry.expiresAt && entry.expiresAt.slice(0, 10) >= entry.verifiedOn)
     .map(({ entry }) => ({ game: entry.game, code: entry.code, expiresAt: entry.expiresAt }));
@@ -26,7 +27,7 @@ async function main() {
   }
   console.log([
     '## Auditoria de códigos · ' + new Date(now).toISOString(),
-    ...(verifyApi ? ['Modo de verificação. API confirmada para os quatro canais, com ' + (feedCheck?.announcements.length ?? 0) + ' vídeos públicos consultados.'] : []),
+    ...(apiOnly ? ['YouTube Data API confirmada para os quatro canais, com ' + (feedCheck?.announcements.length ?? 0) + ' vídeos públicos consultados.'] : []),
     format('Validade encerrada', expired),
     format('Revisar após ' + reviewIntervalDays + ' dias', review),
     format('Candidatos vindos dos canais oficiais', candidates.map(entry =>

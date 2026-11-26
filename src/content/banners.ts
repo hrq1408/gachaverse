@@ -54,6 +54,23 @@ export const banners = validateBanners([
 export const bannersCheckedOn = '2026-11-26';
 export const gameBanners = (game?: Game) => banners.filter(row => !game || row.game === game.slug);
 
+export const bannerAnnouncements = [
+  {
+    game: 'zenless-zone-zero',
+    version: '3.4',
+    event: 'programa-especial',
+    title: 'Zenless Zone Zero 3.4 — Os Últimos Vestígios do Dia',
+    release: '2026-12-02',
+    highlights: [
+      'A atualização estreia Alvorada (Sunbringer), anunciada como a primeira Agente de entrelace.',
+      'Robin, Agente de Classe S da colaboração, foi anunciada como recompensa de login durante o evento.',
+      'A HoYoverse anunciou Kafka na Busca de Sinal por Tempo Limitado após 1º de janeiro.',
+    ],
+    scheduleNote: 'O comunicado não especifica os horários de abertura e encerramento dessas Buscas de Sinal por servidor.',
+    source: 'https://zenless.hoyoverse.com/m/pt-pt/news/167400',
+  },
+] as const;
+
 export function bannerStatus(banner: Banner, now: number) {
   // A hora do anúncio é local ao servidor. Use limites conservadores até confirmar a zona.
   const hour = 3600000;

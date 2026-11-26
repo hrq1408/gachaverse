@@ -6,7 +6,7 @@ import { BookOpen, CalendarDays, Gamepad2, Gift, Layers3, Swords, UserRound, Use
 import { gamePath, sectionPath, type Game, type Section } from '@/content/catalog';
 import { findArticles } from '@/content/editorial';
 import { redemptionCodes, redemptionSnapshot } from '@/content/redemption';
-import { gameBanners } from '@/content/banners';
+import { bannerAnnouncements, gameBanners } from '@/content/banners';
 import { BannerCalendar } from './banner-calendar';
 
 
@@ -36,7 +36,16 @@ export function SectionContent({ section, game }: {
   }
   const entries = findArticles(section, game);
   const schedule = section.slug === 'calendario' ? gameBanners(game) : [];
+  const announcements = section.slug === 'calendario'
+    ? bannerAnnouncements.filter(item => !game || item.game === game.slug) : [];
   if (schedule.length) return <>
+    {announcements.map(item => <section key={item.game + item.version} className="panel banner-record mb-6" aria-labelledby={'versao-' + item.game + '-' + item.version}>
+      <h2 id={'versao-' + item.game + '-' + item.version}>{item.title}</h2>
+      <p>Lançamento anunciado para <time dateTime={item.release}>{item.release.split('-').reverse().join('/')}</time>.</p>
+      <ul className="mt-3 ml-5 list-disc">{item.highlights.map(detail => <li key={detail}>{detail}</li>)}</ul>
+      <p>{item.scheduleNote}</p>
+      <p><a href={item.source}>Comunicado oficial da versão</a></p>
+    </section>)}
     <BannerCalendar entries={schedule} snapshot={redemptionSnapshot} />
     {entries.length > 0 && <div className="editorial-grid mt-6">{entries.map(article => <ArticleCard article={article} key={article.slug} />)}</div>}
   </>;
