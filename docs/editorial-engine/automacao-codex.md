@@ -2,7 +2,7 @@
 
 ## Conta e limites
 
-Use a CLI oficial e rode `codex login status` no mesmo usuário Windows que executará a tarefa. Se necessário, rode `codex login` e conclua o login interativo com ChatGPT. Nesta máquina o status confirmou login com ChatGPT e o modo `codex exec` está instalado. A assinatura Plus permite uso pelo produto conforme os limites da conta, com cobrança de API separada. Confirme o uso na interface da conta e mantenha compras automáticas desativadas. Se faltar cota ou a sessão expirar, suspenda a geração até a renovação ou reautenticação. [Autenticação e uso do Codex](https://help.openai.com/en/articles/11369540-using-codex-with-your-chatgpt-plan) · [Modo não interativo](https://learn.chatgpt.com/docs/non-interactive-mode)
+Use a CLI oficial e rode `codex login status` no mesmo usuário Windows que executará a tarefa. Se necessário, rode `codex login` e conclua o login interativo com ChatGPT. Nesta máquina, um teste mínimo de `codex exec` respondeu com o login ChatGPT existente e as variáveis de chaves de API removidas. A assinatura Plus permite uso pelo produto conforme os limites da conta, com cobrança de API separada. Confirme o uso na interface da conta e mantenha compras automáticas desativadas. Se faltar cota ou a sessão expirar, suspenda a geração até a renovação ou reautenticação. [Autenticação e uso do Codex](https://help.openai.com/en/articles/11369540-using-codex-with-your-chatgpt-plan) · [Modo não interativo](https://learn.chatgpt.com/docs/non-interactive-mode)
 
 ## Preparação e teste local
 
