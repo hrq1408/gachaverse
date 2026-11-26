@@ -1,9 +1,10 @@
 import { spawnSync } from 'node:child_process';
 import { createRequire } from 'node:module';
 const require = createRequire(import.meta.url);
-// The Windows CSS worker fails under Turbopack in the desktop runtime.
 const args = process.argv.slice(2);
-if (process.platform === 'win32' && !args.length) args.push('--webpack');
+// Keep Webpack available for local Windows validation only. Pages releases
+// use Turbopack consistently so clients don't mix incompatible RSC payloads.
+if (!args.length) args.push(process.platform === 'win32' && !process.env.CI ? '--webpack' : '--turbopack');
 const result = spawnSync(process.execPath, [require.resolve('next/dist/bin/next'), 'build', ...args], {
   stdio: 'inherit',
 });

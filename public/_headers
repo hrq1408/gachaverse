@@ -1,0 +1,4 @@
+# RSC navigation payloads have stable .txt paths across Next.js releases.
+/*.txt
+  ! Cache-Control
+  Cache-Control: no-store

@@ -1,5 +1,6 @@
 import assert from 'node:assert/strict';
 import { readFile, readdir } from 'node:fs/promises';
+import { relative, sep } from 'node:path';
 import { setTimeout as delay } from 'node:timers/promises';
 import { chromium } from 'playwright-core';
 
@@ -84,11 +85,38 @@ try {
       const html=await (await request(url)).text();assert(html.includes('rel="canonical" href="'+url+'"'),url);
     }
     for(const f of ['ads.txt','google35321f89903e0b6b.html'])assert.deepEqual(Buffer.from(await (await request(portal+'/'+f)).arrayBuffer()),await readFile('public/'+f));
+    const assetErrors = [];
+    page.on('console', message => {
+      if (message.type() === 'error') assetErrors.push(message.text());
+    });
+    page.on('response', response => {
+      const url = new URL(response.url());
+      const asset = ['script', 'stylesheet', 'image', 'font'].includes(response.request().resourceType());
+      if (url.origin !== portal || (!asset && !url.pathname.startsWith('/_next/'))) return;
+      if (response.status() >= 400 || url.pathname.includes('/_next//_next/')) {
+        assetErrors.push(response.status() + ' ' + url.pathname);
+      }
+    });
+    const exported = await readdir('out', { recursive: true, withFileTypes: true });
+    const routes = exported.filter(file => file.isFile() && file.name === 'index.html')
+      .map(file => relative('out', file.parentPath).split(sep).filter(Boolean))
+      .filter(parts => !['404', '_not-found'].includes(parts[0]))
+      .map(parts => portal + '/' + (parts.length ? parts.join('/') + '/' : ''));
+    for (const url of routes) {
+      const response = await page.goto(url);
+      assert.equal(response.status(), 200, url);
+      if (sitemap.includes('<loc>' + url + '</loc>')) {
+        assert.equal(await page.locator('link[rel=canonical]').getAttribute('href'), url);
+      }
+      await page.waitForLoadState('networkidle');
+    }
     await page.goto(portal);
     await page.getByRole('button',{name:'Preferências de cookies'}).click();
     await page.getByRole('button',{name:'Salvar preferências'}).click();
+    await page.evaluate(() => { document.body.dataset.navigationCheck = 'gachaverse-navigation-check'; });
     await page.getByRole('navigation',{name:'Navegação principal'}).getByText('Ferramentas').click();
     await page.getByRole('link',{name:/Calculadora de pity/}).click();
+    assert.equal(await page.locator('body').getAttribute('data-navigation-check'), 'gachaverse-navigation-check');
     await page.locator('#pity').fill('70');await page.locator('.guarantee input').check();
     await page.locator('.pity-wallet input').first().fill('2879');await page.locator('.pity-wallet input').last().fill('2');
     await page.getByRole('status').filter({hasText:'1 Jade Estelar'}).waitFor();
@@ -97,7 +125,8 @@ try {
     assert.equal(await page.locator('iframe[src*="medicao"],script[src*="googlesyndication"]').count(),0);
     await page.goto(portal+guide);await page.getByRole('link',{name:'Abrir Warp Tracker Beta'}).click();
     assert.equal(new URL(page.url()).origin,tracker);await page.getByRole('heading',{name:/Warp Tracker Beta/}).waitFor();
-    console.log(articles.length+' artigos, sitemap, consentimento, verificações do Google, calculadora e navegação OK.');
+    assert.deepEqual(assetErrors, []);
+    console.log(routes.length+' páginas, '+articles.length+' artigos, assets, sitemap, consentimento e navegação interna OK.');
   }
   assert.deepEqual(errors,[]);
 }finally{await browser.close();}

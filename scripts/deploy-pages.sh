@@ -2,7 +2,13 @@
 set -euo pipefail
 shopt -s extglob
 case "$1" in
-  gachaverse) directory=out ;;
+  gachaverse)
+    directory=out
+    if compgen -G 'out/_next/static/chunks/webpack-*.js' > /dev/null; then
+      echo "::error::O portal no Pages deve ser gerado com Turbopack."
+      exit 1
+    fi
+    ;;
   gachaverse-tracker) directory=tracker-out ;;
   *) exit 2 ;;
 esac
