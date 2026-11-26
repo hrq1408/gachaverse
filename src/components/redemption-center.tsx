@@ -7,6 +7,7 @@ import { games, gamePath, type Game } from '@/content/catalog';
 import { trackAction } from '@/lib/analytics';
 import type { RedemptionCode } from '@/content/redemption';
 import { codeStatus, confirmedTimeLeft, isRecent } from '@/lib/redemption-status';
+import { copyRedemptionCode } from './copy-redemption-code';
 
 const central = '/conteudo/codigos/';
 const pageFor = (game: Game) => gamePath(game) + 'codigos/';
@@ -66,9 +67,8 @@ export function RedemptionCenter({ entries, game, snapshot }: {
 
   async function copy(entry: RedemptionCode) {
     try {
-      await navigator.clipboard.writeText(entry.code);
+      await copyRedemptionCode(entry);
       setNotice('Código copiado: ' + entry.code);
-      trackAction('redemption_code_copy', { game_slug: entry.game });
     } catch {
       setNotice('Não foi possível copiar. Selecione o código e copie manualmente.');
     }

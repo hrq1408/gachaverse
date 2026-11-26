@@ -1,21 +1,18 @@
 import { ArticleCard } from './article';
 import { RedemptionCenter } from './redemption-center';
 import Link from 'next/link';
-import { BookOpen, CalendarDays, Gamepad2, Gift, Layers3, Orbit, Sparkles, Swords, UserRound, Users, Waves, Zap } from 'lucide-react';
+import Image from 'next/image';
+import { BookOpen, CalendarDays, Gamepad2, Gift, Layers3, Swords, UserRound, Users } from 'lucide-react';
 import { gamePath, sectionPath, type Game, type Section } from '@/content/catalog';
 import { findArticles } from '@/content/editorial';
 import { redemptionCodes, redemptionSnapshot } from '@/content/redemption';
 
 
-const gameIcons = { rail: Orbit, genshin: Sparkles, zenless: Zap, waves: Waves };
 const sectionIcons = { artigos: BookOpen, builds: Swords, 'tier-lists': Layers3, codigos: Gift, calendario: CalendarDays, personagens: UserRound, equipes: Users };
 
 export function GameCard({ game }: { game: Game }) {
-  const Icon = gameIcons[game.theme];
-  return <Link data-game={game.slug} href={gamePath(game)} className={`game-card theme-${game.theme}`}>
-    <div className="game-art" aria-hidden="true">
-      <span className="game-mark">{game.mark}</span><Icon className="game-icon" strokeWidth={1.1} />
-    </div>
+  return <Link data-game={game.slug} href={gamePath(game)} className="game-card">
+    <Image className="game-cover" src={`/images/jogos/${game.slug}.webp`} width={640} height={360} alt="" />
     <div className="game-info"><span>{game.studio}</span><h3>{game.name}</h3></div>
   </Link>;
 }

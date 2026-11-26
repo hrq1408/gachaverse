@@ -19,7 +19,11 @@ export const metadata: Metadata = {
 
 export default function Layout({ children }: { children: ReactNode }) {
   const adSource = autoAdsSource(advertisingPolicy, autoAdsEnabled, adsenseClient);
-  return <html lang="pt-BR">
+  return <html lang="pt-BR" suppressHydrationWarning>
+    <head>
+      {/* eslint-disable-next-line @next/next/no-sync-scripts -- Read the local theme before the first paint. */}
+      <script src="/theme-init.js" />
+    </head>
     <body>
       <a className="skip-link" href="#principal">Pular para o conteúdo</a>
       <Header />

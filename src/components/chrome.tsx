@@ -1,11 +1,11 @@
 import { CookiePreferencesButton } from './consent';
-import { publishedSections } from '@/content/editorial';
 import Link from 'next/link';
-import { Gamepad2 } from 'lucide-react';
-import { sectionPath } from '@/content/catalog';
+import Image from 'next/image';
+import { Search } from 'lucide-react';
+import { ThemeToggle } from './theme-toggle';
 
 function Brand() {
-  return <Link className="brand" href="/"><span><Gamepad2 aria-hidden="true" size={21} /></span>Gacha<b>Verse</b></Link>;
+  return <Link className="brand" href="/"><Image src="/images/gachaverse-logo.webp" width={210} height={52} alt="GachaVerse" /></Link>;
 }
 
 export function Header() {
@@ -13,11 +13,17 @@ export function Header() {
     <div className="shell header-inner">
       <Brand />
       <nav aria-label="Navegação principal">
+        <Link href="/">Início</Link>
         <Link href="/jogos/">Jogos</Link>
+        <Link href="/conteudo/artigos/">Guias</Link>
+        <Link href="/conteudo/codigos/">Códigos</Link>
+        <Link href="/conteudo/calendario/">Banners</Link>
         <Link href="/ferramentas/">Ferramentas</Link>
-        <Link href="/busca/">Buscar artigos</Link>
-        {publishedSections().map((section) => <Link key={section.slug} href={sectionPath(section)}>{section.slug === 'codigos' ? 'Códigos' : section.title}</Link>)}
       </nav>
+      <div className="header-tools">
+        <Link className="theme-toggle" href="/busca/" aria-label="Buscar artigos"><Search size={19} aria-hidden="true" /></Link>
+        <ThemeToggle />
+      </div>
     </div>
   </header>;
 }

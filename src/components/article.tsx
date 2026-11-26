@@ -31,13 +31,14 @@ export function ArticleCard({ article, level = 3 }: { article: Article; level?: 
 
 export function ArticleHeader({ article }: { article: Article }) {
   const section = sections.find((entry) => entry.slug === article.categoria)!;
-  return <header className="page-heading">
-    <Link className="back-link" href={sectionPath(section)}>{section.title}</Link>
+  const minutes = Math.max(1, Math.ceil(article.html.replace(/<[^>]+>/g, ' ').trim().split(/\s+/).length / 200));
+  return <header className="page-heading article-heading">
+    <div className="article-labels"><Link href={sectionPath(section)}>{section.title}</Link>
+      {games.filter(game => article.jogos.includes(game.slug)).map(game =>
+        <Link key={game.slug} data-game={game.slug} href={gamePath(game)}>{game.name}</Link>)}</div>
     <h1>{article.titulo}</h1><p className="intro">{article.descricao}</p>
-    <p>Por {article.autor} · Publicado em <ArticleDate value={article.publicacao} /></p>
-    <p>Atualizado em <ArticleDate value={article.atualizacao} /></p>
-    <ul aria-label="Jogos abordados">{games.filter((game) => article.jogos.includes(game.slug)).map((game) =>
-      <li key={game.slug}><Link data-game={game.slug} href={gamePath(game)}>{game.name}</Link></li>)}</ul>
+    <p className="article-byline">Por {article.autor} · <ArticleDate value={article.publicacao} /> · {minutes} min de leitura</p>
+    {article.atualizacao !== article.publicacao && <p>Atualizado em <ArticleDate value={article.atualizacao} /></p>}
     {article.versao && <p>Versão analisada: {article.versao}</p>}
     <BannerPeriod article={article} />
     <figure className="mt-5">
@@ -49,7 +50,7 @@ export function ArticleHeader({ article }: { article: Article }) {
 
 export function ArticleContents({ article }: { article: Article }) {
   if (!article.headings.length) return null;
-  return <nav className="panel block" aria-label="Índice do artigo">
+  return <nav className="panel article-toc" aria-label="Índice do artigo">
     <h2>Neste guia</h2><ol className="mt-3 list-decimal pl-5">
       {article.headings.map((heading) => <li key={heading.id} style={{ marginInlineStart: (heading.level - 2) + 'em' }}>
         <a href={'#' + heading.id}>{heading.title}</a>
@@ -84,7 +85,7 @@ export function RelatedArticles({ article }: { article: Article }) {
   );
   if (!related.length && !redemptionGames.length) return null;
   return <section className="mt-8"><h2 className="mb-4 text-xl font-bold">Conteúdo relacionado</h2>
-    <div className="card-grid">{related.map((item) => <ArticleCard article={item} key={item.slug} />)}</div>
+    <div className="editorial-grid related-grid">{related.map((item) => <ArticleCard article={item} key={item.slug} />)}</div>
     {redemptionGames.length > 0 && <ul className="grid gap-3 sm:grid-cols-2">
       {redemptionGames.map((game) => <li key={game.slug}><Link className="section-card block" href={sectionPath(redemption, game)}>
         Resgate em {game.name}
