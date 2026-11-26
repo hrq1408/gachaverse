@@ -1,6 +1,7 @@
 import { legacyDatabaseName } from '../tracker/legacy';
 
-export const adPreferenceKey = 'gachaverse:advertising:v1';
+export const adPreferenceKey = 'gachaverse:advertising:v2';
+export const adsTagId = 'gachaverse-adsense';
 
 export function readAdPreference() {
   try { return localStorage.getItem(adPreferenceKey) === 'accepted'; }
@@ -15,13 +16,28 @@ export async function legacyStorageClear(storage: Pick<IDBFactory, 'databases'> 
   }
 }
 
-export async function loadAutoAds(src: string) {
-  if (!readAdPreference() || !await legacyStorageClear(window.indexedDB) || !readAdPreference()) return;
-  if (document.getElementById('gachaverse-adsense')) return;
+async function insertAdsenseTag(src: string, allowed: () => boolean) {
+  if (!allowed() || !await legacyStorageClear(window.indexedDB) || !allowed()) return false;
+  if (document.getElementById(adsTagId)) return true;
   const script = document.createElement('script');
-  script.id = 'gachaverse-adsense';
+  script.id = adsTagId;
   script.async = true;
   script.crossOrigin = 'anonymous';
   script.src = src;
   document.head.append(script);
+  return true;
+}
+
+export async function loadAutoAds(src: string, pageAllowed: () => boolean) {
+  const allowed = () => pageAllowed() && readAdPreference();
+  if (!allowed()) return false;
+  try {
+    const response = await fetch('/_publicidade/elegibilidade', {
+      cache: 'no-store', credentials: 'omit', redirect: 'error', signal: AbortSignal.timeout(5000),
+    });
+    const decision = response.ok ? await response.json() : null;
+    return decision?.eligible === true && await insertAdsenseTag(src, allowed);
+  } catch {
+    return false;
+  }
 }

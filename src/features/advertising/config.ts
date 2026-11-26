@@ -1,4 +1,9 @@
 const publisherIdPattern = /^ca-pub-\d{16}$/;
+export function adsenseSource(clientId: string) {
+  return publisherIdPattern.test(clientId)
+    ? 'https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=' + clientId
+    : null;
+}
 export const adsenseClient = process.env.NEXT_PUBLIC_ADSENSE_CLIENT_ID ?? 'ca-pub-6914991641652412';
 export const autoAdsEnabled = process.env.NEXT_PUBLIC_ADSENSE_AUTO_ADS === 'true';
 export const placements = {
@@ -18,13 +23,11 @@ export const advertisingPolicy = {
 };
 
 export function autoAdsSource(policy: typeof advertisingPolicy, automatic: boolean, clientId: string) {
-  // The Google site review controls serving. Bootstrap still requires the
-  // validated CMP and a separate, per-browser legacy check and opt-in.
-  if (!policy.enabled || !automatic ||
-      !policy.certifiedConsent || !policy.privateOriginIsolated ||
-      !publisherIdPattern.test(clientId)) return null;
+  // This only configures the tag URL. The Brazil policy checks the route,
+  // regional decision, explicit opt-in and legacy storage before insertion.
+  if (!policy.enabled || !automatic || !policy.privateOriginIsolated) return null;
 
-  return 'https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=' + clientId;
+  return adsenseSource(clientId);
 }
 
 export function eligible(policy: typeof advertisingPolicy, unit?: string) {

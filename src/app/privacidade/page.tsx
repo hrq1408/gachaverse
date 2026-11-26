@@ -21,7 +21,7 @@ export default function Privacy() {
     <h2>Diário de Saltos</h2><p>O novo tracker armazena o histórico no IndexedDB da sua origem independente. O painel funciona com arquivos locais e dispensa medição de audiência e publicidade. A migração de um histórico anterior exige que você exporte uma cópia no portal e confirme a importação no tracker.</p>
     <h2>Publicidade</h2>
     {autoAdsSource(advertisingPolicy, autoAdsEnabled, adsenseClient) ? (
-      <p>O AdSense é opcional. Em “Preferências de cookies”, no rodapé, você pode autorizar o carregamento ou retirar a autorização. O Google pode oferecer controles adicionais de privacidade conforme a região. A escolha de audiência se aplica apenas ao Analytics. <a href="https://policies.google.com/technologies/partner-sites?hl=pt-BR">Como o Google trata dados de sites parceiros</a>.</p>
+      <p>Quando o Google liberar o site para veiculação, o AdSense poderá exibir anúncios na home e nos artigos para acessos identificados como Brasil pela Cloudflare que tenham autorização publicitária. A verificação regional devolve ao navegador apenas uma decisão de elegibilidade. Você pode recusar ou retirar a autorização em “Preferências de cookies”, no rodapé. A escolha de audiência se aplica apenas ao Analytics. <a href="https://policies.google.com/technologies/partner-sites?hl=pt-BR">Como o Google trata dados de sites parceiros</a>.</p>
     ) : (
       <p>Os anúncios estão desativados. A verificação do AdSense usa uma metatag e o arquivo ads.txt. A preferência de audiência se aplica apenas ao Analytics.</p>
     )}

@@ -85,7 +85,7 @@ export function Consent({ paths, advertisingAvailable = false }: { paths: string
     if (value === 'declined') stopAnalytics();
     try { localStorage.setItem(preferenceKey, value); } catch { /* Keep the choice for this visit. */ }
     setPreference(value);
-    if (advertisingAvailable && ads !== readAdPreference()) {
+    if (custom && advertisingAvailable && ads !== readAdPreference()) {
       try {
         localStorage.setItem(adPreferenceKey, ads ? 'accepted' : 'declined');
       } catch {
@@ -100,14 +100,14 @@ export function Consent({ paths, advertisingAvailable = false }: { paths: string
     opener.current = null;
   }
 
-  if (!custom && (advertisingAvailable || preference !== null)) return null;
+  if (!custom && preference !== null) return null;
   return <aside className="cookie-panel" aria-labelledby="cookie-heading">
     <h2 ref={heading} tabIndex={-1} id="cookie-heading">{custom ? 'Preferências de cookies' : 'Sua privacidade no GachaVerse'}</h2>
     <p>Com sua permissão, usamos o Google Analytics para saber quais jogos e guias recebem visitas. Sua escolha pode ser alterada no rodapé. <Link href="/privacidade/">Política de privacidade</Link></p>
     {custom && <label className="cookie-choice"><input type="checkbox" checked={enabled} onChange={(event) => setEnabled(event.target.checked)} /> Permitir medição de audiência</label>}
     {custom && advertisingAvailable && <>
       <label className="cookie-choice"><input type="checkbox" checked={ads} onChange={(event) => setAds(event.target.checked)} /> Permitir publicidade do Google</label>
-      <p>Se você autorizar, o AdSense pode usar cookies, dados do dispositivo e informações da visita para exibir e medir anúncios, inclusive personalizados. O Google pode pedir escolhas adicionais de acordo com a região. Use o link de privacidade do Google para revê-las quando estiver disponível.</p>
+      <p>Esta opção se aplica à publicidade no Brasil. Se você autorizar, o Google AdSense pode usar cookies, dados do dispositivo e informações da visita para exibir e medir anúncios, inclusive personalizados. Você pode retirar a autorização neste painel. <a href="https://policies.google.com/technologies/partner-sites?hl=pt-BR">Como o Google usa esses dados</a>.</p>
       {saveError && <p role="alert">O navegador não permitiu salvar a alteração de publicidade.</p>}
     </>}
     <div className="cookie-actions">

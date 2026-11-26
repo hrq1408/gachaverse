@@ -30,7 +30,7 @@ export default function Layout({ children }: { children: ReactNode }) {
       <main id="principal" tabIndex={-1}>{children}</main>
       <Footer />
       <Consent advertisingAvailable={Boolean(adSource)} paths={[...new Set(['/ferramentas/warp-tracker/painel/', ...publicPaths(), ...sections.flatMap((section) => [sectionPath(section), ...games.map((game) => sectionPath(section, game))])])]} />
-      {adSource && <AutoAds src={adSource} />}
+      {adSource && <AutoAds src={adSource} pages={publicPaths().filter(path => path === '/' || path.startsWith('/artigos/'))} />}
     </body>
   </html>;
 }
