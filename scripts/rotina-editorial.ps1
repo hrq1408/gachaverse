@@ -2,7 +2,8 @@
 param(
     [Parameter(Mandatory)][string]$DiretorioPrivado,
     [string]$RelatorioLocal,
-    [ValidateSet('pt-BR','en','es','todos')][string]$Idioma = 'todos'
+    [ValidateSet('pt-BR','en','es','todos')][string]$Idioma = 'todos',
+    [switch]$Consultar
 )
 $ErrorActionPreference = 'Stop'
 $checkout = [IO.Path]::GetFullPath((Join-Path $PSScriptRoot '..'))
@@ -10,6 +11,29 @@ $root = (Get-Item -LiteralPath $DiretorioPrivado).FullName
 $relative = [IO.Path]::GetRelativePath($checkout, $root)
 if ($relative -eq '.' -or !($relative -match '^\.\.[\\/]' -or [IO.Path]::IsPathRooted($relative))) {
     throw 'A rotina exige um diretório privado fora do checkout.'
+}
+$intake = Join-Path $root 'pautas'
+$log = Join-Path $root 'execucoes.log'
+if ($Consultar) {
+    if (Test-Path -LiteralPath $intake) {
+        foreach ($place in Get-ChildItem -LiteralPath $intake -Directory) {
+            $brief = Join-Path $place.FullName 'briefing.json'
+            if (!(Test-Path -LiteralPath $brief)) { continue }
+            $notes = Get-Content -LiteralPath $brief -Raw | ConvertFrom-Json
+            $drafts = @(Get-ChildItem -LiteralPath $place.FullName -Filter '*.md' -File)
+            [pscustomobject]@{
+                Pauta = $notes.editorialId
+                Estado = if (!$notes.reviewedSources) { 'Aguardando fontes' }
+                    elseif (!$notes.approvedOriginal -and $drafts.Count) { 'Aguardando aprovação do original' }
+                    elseif ($drafts.Count) { 'Rascunhos disponíveis para revisão' }
+                    else { 'Briefing validado, aguardando redação' }
+                Briefing = $brief
+                Rascunhos = $drafts.FullName -join '; '
+            }
+        }
+    }
+    if (Test-Path -LiteralPath $log) { Get-Content -LiteralPath $log -Tail 8 }
+    return
 }
 function Get-Report {
     if ($RelatorioLocal) { return Get-Content -LiteralPath $RelatorioLocal -Raw | ConvertFrom-Json }
@@ -40,12 +64,11 @@ function Get-Report {
     }
     return $null
 }
-$log = Join-Path $root 'execucoes.log'
 $lock = [IO.File]::Open((Join-Path $root 'rotina.lock'),'OpenOrCreate','ReadWrite','None')
 try {
     $current = Get-Report
+    if ($null -eq $current -or !$current.PSObject.Properties['queue']) { throw 'Relatório editorial recente indisponível.' }
     $eligible = @($current.queue | Where-Object { $_.evidence -eq 'hipótese editorial' -and $_.action -eq 'nova pauta' -and $_.officialSources.Count -gt 0 })
-    $intake = Join-Path $root 'pautas'
     $null = New-Item -ItemType Directory -Path $intake -Force
     $briefs = @(Get-ChildItem -LiteralPath $intake -Directory)
     $pending = @($eligible | Where-Object { $_.id -notin $briefs.Name })
@@ -69,7 +92,7 @@ try {
             Copy-Item -LiteralPath $selected.FullName -Destination (Join-Path $place 'pauta.json')
             @{ editorialId = $pauta.slug; reviewedSources = $false; facts = @(); sources = @($chosen.officialSources); approvedOriginal = '' } |
                 ConvertTo-Json -Depth 5 | Set-Content -LiteralPath (Join-Path $place 'briefing.json') -Encoding utf8
-            Add-Content -LiteralPath $log -Value "$(Get-Date -Format o) Pauta preparada para revisão."
+            Add-Content -LiteralPath $log -Value "$(Get-Date -Format o) [AGUARDANDO_APROVACAO] Pauta preparada para revisão de fontes."
         }
     }
     $drafted = 0
@@ -83,12 +106,15 @@ try {
             if ($language -eq 'pt-BR' -and $notes.approvedOriginal) { continue }
             if ($language -ne 'pt-BR' -and !$notes.approvedOriginal) { continue }
             $revision = (Get-FileHash -LiteralPath $briefing -Algorithm SHA256).Hash.ToLowerInvariant()
+            $before = @(Get-ChildItem -LiteralPath $item.FullName -Filter '*.md' -File).Count
             & (Join-Path $PSScriptRoot 'redigir-editorial.ps1') -Pauta (Join-Path $item.FullName 'pauta.json') -Briefing $briefing -Saida $item.FullName -Idioma $language -Revisao $revision
-            $drafted++
+            $drafted += @(Get-ChildItem -LiteralPath $item.FullName -Filter '*.md' -File).Count - $before
         }
     }
-    Add-Content -LiteralPath $log -Value "$(Get-Date -Format o) Rotina concluída. Candidatas públicas: $($eligible.Count). Briefings aptos em $Idioma = $drafted."
+    $waiting = @(Get-ChildItem -LiteralPath $intake -Directory).Count
+    $state = if ($drafted) { 'RASCUNHOS_GERADOS' } elseif ($waiting) { 'AGUARDANDO_APROVACAO' } else { 'SEM_PAUTAS' }
+    Add-Content -LiteralPath $log -Value "$(Get-Date -Format o) [$state] Candidatas públicas: $($eligible.Count). Rascunhos novos: $drafted."
 } catch {
-    Add-Content -LiteralPath $log -Value "$(Get-Date -Format o) Rotina interrompida antes da publicação."
+    Add-Content -LiteralPath $log -Value "$(Get-Date -Format o) [FALHA] Rotina interrompida antes da publicação."
     throw
 } finally { $lock.Dispose() }

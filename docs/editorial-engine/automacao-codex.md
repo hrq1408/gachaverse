@@ -70,6 +70,21 @@ O script versionado `scripts/redigir-editorial.ps1` recebe o `pauta.json` do sel
 
 ## Agendamento
 
+### Revisão diária
+
+No PowerShell, a partir da raiz do projeto, liste pendências e as últimas execuções sem iniciar uma nova redação.
+
+```powershell
+$privado = Join-Path $env:LOCALAPPDATA 'GachaVerse\Editorial'
+.\scripts\rotina-editorial.ps1 -DiretorioPrivado $privado -Consultar
+```
+
+1. Abra o `briefing.json` listado. Compare cada afirmação com a publicação oficial, registre somente fatos verificáveis em `facts`, confirme os endereços em `sources` e mude `reviewedSources` de `false` para `true`. A tarefa seguinte gera PT-BR.
+2. Revise o Markdown PT-BR contra as fontes. Corrija texto, título, descrição, links e crédito da capa. Após aprovar a versão exata, copie esse texto para `approvedOriginal` no briefing. A tarefa seguinte gera EN e ES. Esse campo autoriza a redação das traduções. A publicação do original segue pelo Editorial Engine com a aprovação de revisão e hash.
+3. Compare cada Markdown EN e ES com o original aprovado. Valide termos oficiais, links, capa e metadados por idioma. O Markdown final de cada idioma usa o mesmo `editorialId`, a `sourceRevision` de `--translations` e slug próprio. Mantenha `draft` e `reviewed: false` até aprovar aquele idioma. Para publicar, altere os dois campos para `published` e `true`, respectivamente, valide o build e envie somente os arquivos aprovados.
+
+O log distingue `SEM_PAUTAS`, `AGUARDANDO_APROVACAO`, `RASCUNHOS_GERADOS` e `FALHA`. Consulte o código da última execução no Agendador quando houver falha. A consulta mostra os caminhos dos briefings e rascunhos locais.
+
 A tarefa `GachaVerse Editorial` executa `scripts/rotina-editorial.ps1` diariamente com o usuário conectado. A rotina lê o artefato mais recente do workflow privado, filtra pautas novas com evidência pública e cria o briefing pendente em `%LOCALAPPDATA%\GachaVerse\Editorial\pautas`. O relatório bruto e as métricas permanecem no repositório privado. Para autorizar a redação em português, valide as fontes e fatos e marque `reviewedSources`. Depois de aprovar o original, inclua seu texto em `approvedOriginal` para habilitar EN e ES. A rotina gera rascunhos locais e registra somente o andamento em `execucoes.log`.
 
 No **Agendador de Tarefas → Criar tarefa**, selecione **Executar somente quando o usuário estiver conectado** e use a conta que autenticou o Codex, sem privilégios elevados. Crie um gatilho diário após a chegada do relatório editorial. Configure a ação para iniciar `pwsh.exe` com `-NoProfile -File "C:\Privado\GachaVerse\redigir.ps1" -Id ID_DA_PAUTA -Briefing "C:\Privado\GachaVerse\briefing.md"`. Em **Configurações**, escolha **Não iniciar uma nova instância** e limite a duração. Teste pelo botão **Executar** e confira o código de saída e o log privado. Sem pauta nova ou com o mesmo ID já redigido, preserve o rascunho. Para uma revisão deliberada, mantenha o ID editorial e arquive o resultado anterior antes de rodar de novo. Use o histórico da tarefa para diagnosticar falhas e mantenha o computador ligado e a sessão disponível. [Agendador de Tarefas do Windows](https://learn.microsoft.com/en-us/windows-server/administration/windows-commands/schtasks-create)
