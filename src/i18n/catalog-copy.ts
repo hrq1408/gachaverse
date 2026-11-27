@@ -6,6 +6,9 @@ const bannerNames: Record<string, Partial<Record<Locale, string>>> = {
   Linnea: { es: 'Linnéa' },
   'Incarcerating Grip': { es: 'Agarre de encarcelación' },
   'Chief Sidekick': { es: 'Subalterno jefe' },
+  // Kuro Games, anuncio de la versión 3.8, fase I (/es/main/news/detail/5763).
+  'Solsworn Ciphers': { es: 'Interpretación Solística' },
+  'Emerald Sentence': { es: 'Sentencia esmeralda' },
 };
 
 export const localizedBannerName = (value: string, locale: Locale) => bannerNames[value]?.[locale] ?? value;
