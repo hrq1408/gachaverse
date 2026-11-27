@@ -3,6 +3,7 @@ import { readFile, readdir } from 'node:fs/promises';
 import { relative, sep } from 'node:path';
 import { setTimeout as delay } from 'node:timers/promises';
 import { chromium } from 'playwright-core';
+import { checkSitemaps } from './check-sitemaps.mjs';
 
 const tracker = 'https://gachaverse-tracker.pages.dev';
 const portal = 'https://gachaverse.pages.dev';
@@ -84,7 +85,7 @@ try {
   }else{
     const guide='/ferramentas/warp-tracker/';
     await deployed(async()=>assert((await (await request(portal+guide)).text()).includes(tracker+'/')));
-    const sitemap=await (await request(portal+'/sitemap.xml')).text();
+    const sitemap=await checkSitemaps(portal,page);
     const articles=(await readdir('out/artigos',{withFileTypes:true})).filter(x=>x.isDirectory());
     assert(articles.length>=11);
     for(const a of articles){
