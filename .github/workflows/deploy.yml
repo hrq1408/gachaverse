@@ -4,6 +4,11 @@ on:
   push:
     branches: [main]
   workflow_dispatch:
+    inputs:
+      indexnow_dry_run:
+        description: Simular o IndexNow sem enviar URLs
+        type: boolean
+        default: true
 
 permissions:
   contents: read
@@ -47,6 +52,8 @@ jobs:
   portal:
     name: Portal e calculadora
     needs: tracker
+    outputs:
+      indexnow_manifest: ${{ steps.indexnow_manifest.outputs.manifest }}
     runs-on: ubuntu-24.04
     timeout-minutes: 20
     steps:
@@ -64,6 +71,11 @@ jobs:
       - name: Instalar dependências
         run: pnpm install --frozen-lockfile
 
+      - name: Preparar prova de propriedade IndexNow
+        continue-on-error: true
+        env:
+          INDEXNOW_KEY: ${{ secrets.INDEXNOW_KEY }}
+        run: node scripts/indexnow/run.mjs key-file
       - name: Gerar portal após validar a origem do tracker
         env:
           SITE_URL: https://gachaverse.pages.dev
@@ -79,3 +91,30 @@ jobs:
         run: bash scripts/deploy-pages.sh gachaverse
       - name: Validar artigos, ferramentas e navegação em produção
         run: node scripts/check-beta.mjs portal
+      - name: Gerar manifesto das páginas validadas
+        id: indexnow_manifest
+        continue-on-error: true
+        run: |
+          node scripts/indexnow/manifest.mjs --out
+          printf 'manifest=%s\n' "$(cat indexnow-current.json)" >> "$GITHUB_OUTPUT"
+
+  indexnow:
+    name: Notificar IndexNow
+    needs: portal
+    if: github.ref == 'refs/heads/main' && needs.portal.outputs.indexnow_manifest != ''
+    permissions:
+      contents: write
+    continue-on-error: true
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+      - uses: actions/setup-node@53b83947a5a98c8d113130e565377fae1a50d02f # v6.3.0
+        with:
+          node-version: '22'
+      - name: Comparar com o estado recebido e notificar
+        env:
+          INDEXNOW_KEY: ${{ secrets.INDEXNOW_KEY }}
+          INDEXNOW_MANIFEST: ${{ needs.portal.outputs.indexnow_manifest }}
+          INDEXNOW_DRY_RUN: ${{ inputs.indexnow_dry_run }}
+        run: bash scripts/indexnow/state.sh

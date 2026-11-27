@@ -1,0 +1,11 @@
+# IndexNow
+
+O workflow oficial escreve a prova de propriedade na raiz de public antes da exportação do portal. Configure o secret de repositório INDEXNOW_KEY em Settings → Secrets and variables → Actions → Secrets → New repository secret. O arquivo de prova é público por exigência do protocolo. A chave e sua URL ficam fora do histórico Git, do registro de notificações e do resumo do Actions.
+
+O envio roda em um job separado e depende do deploy e dos testes em produção. O job do portal lê sitemap.txt e confirma a canônica e as diretivas robots no HTML estático. O hash inclui título, descrição, conteúdo visível, links, datas editoriais e ALTs. Nos artigos, limita-se ao artigo principal. Chunks, CSS, dados de hidratação, listas laterais de artigos e contagens regressivas não entram no cálculo. URLs privadas ou externas, com query strings, fragmentos e arquivos estáticos ficam de fora. Saídas do manifesto só são notificadas como remoções quando a URL original responde 404 ou 410.
+
+O registro persiste na branch indexnow-state, com URLs públicas, hashes e data de retentativa. Somente o job IndexNow possui permissão contents: write. O push dessa branch não aciona o workflow de deploy. Uma submissão aceita registra apenas as URLs recebidas. Mudanças pendentes reaparecem no próximo deploy validado. Um 429 respeita Retry-After e permite até uma retentativa curta no mesmo job. Se a resposta é perdida ou o registro não pode ser gravado após a API aceitar, uma tentativa posterior pode repetir o lote. O protocolo não oferece uma chave de idempotência.
+
+Para simular, abra Actions → Deploy do GachaVerse no Pages → Run workflow, selecione main e mantenha marcada a opção de simulação IndexNow. O workflow ainda publica e valida o portal; só o POST e a atualização do registro são simulados. Em push para main o envio é automático. A primeira execução real com registro vazio envia as 166 canônicas atuais em um lote, depois de conferir o arquivo em produção. O resumo informa as URLs recebidas e o código HTTP. 200 confirma recebimento. 202 também confirma recebimento e indica chave pendente de validação. A confirmação de indexação é separada no Bing Webmaster Tools.
+
+[Documentação oficial do IndexNow](https://www.indexnow.org/documentation)
