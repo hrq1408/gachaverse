@@ -8,6 +8,7 @@ case "$1" in
       echo "::error::O portal no Pages deve ser gerado com Turbopack."
       exit 1
     fi
+    node scripts/check-portal-assets.mjs
     ;;
   gachaverse-tracker) directory=tracker-out ;;
   *) exit 2 ;;

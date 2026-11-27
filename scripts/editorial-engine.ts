@@ -14,6 +14,7 @@ const today = new Intl.DateTimeFormat('sv-SE', { timeZone: 'America/Sao_Paulo', 
 async function main() {
   const { values } = parseArgs({ options: {
     out: { type: 'string' }, report: { type: 'string' }, approval: { type: 'string' },
+    select: { type: 'boolean' },
     briefs: { type: 'string' }, covers: { type: 'string' }, translations: { type: 'boolean' }, 'translation-batches': { type: 'boolean' },
   } });
   if (values.translations || values['translation-batches']) {
@@ -35,10 +36,25 @@ async function main() {
   const covers = values.covers ?? join(workspace, 'capas');
   const files = (await readdir(intake)).filter(file => file.endsWith('.json')).sort();
   const briefs = await Promise.all(files.map(async file => briefSchema.parse(await json(join(intake, file)))));
+  const intelligence = values.report ? intelligenceSchema.parse(await json(values.report)) : undefined;
+  if (values.select) {
+    if (!intelligence || values.approval) throw new Error('Use --select com --report e uma saída privada.');
+    const existingIds = new Set(briefs.map(brief => brief.intelligenceId).filter(Boolean));
+    const existing = new Set(briefs.map(brief => brief.slug));
+    const next = intelligence.queue.find(candidate => !existingIds.has(candidate.id) && !existing.has(candidate.slug));
+    if (!next) {
+      console.log('Nenhuma nova pauta elegível no relatório.');
+      return;
+    }
+    const folder = await mkdtemp(join(output, 'selecao-'));
+    await writeFile(join(folder, 'pauta.json'), JSON.stringify({ ...next, translations: translatedLocales }, null, 2) + '\n',
+      { flag: 'wx', mode: 0o600 });
+    console.log('Uma pauta foi selecionada para revisão privada.');
+    return;
+  }
   const active = briefs.filter(brief => brief.status === 'pendente' || brief.status === 'em-revisao');
   if (active.some((brief, index) => active.slice(index + 1).some(other => brief.id === other.id || brief.slug === other.slug ||
     (brief.game === other.game && similar(brief.title, other.title, 0.8))))) throw new Error('Possível duplicata na fila.');
-  const intelligence = values.report ? intelligenceSchema.parse(await json(values.report)) : undefined;
   const approval = values.approval ? approvalSchema.parse(await json(values.approval)) : undefined;
   const selected = active.filter(brief => !approval || brief.id === approval.id);
   if (!selected.length) {

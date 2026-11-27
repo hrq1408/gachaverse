@@ -1,5 +1,13 @@
 import type { Locale } from './locales';
 
+const bannerNames: Record<string, Partial<Record<Locale, string>>> = {
+  'Fragmento Lunar da Luz': { en: 'Lightbearing Moonshard', es: 'Refulgencia de la Luna' },
+  'Ramo Dourado do Juramento Gelado': { en: 'Golden Frostbound Oath', es: 'Rama del Juramento Escarchado' },
+  Linnea: { es: 'Linnéa' },
+};
+
+export const localizedBannerName = (value: string, locale: Locale) => bannerNames[value]?.[locale] ?? value;
+
 const rewards: Record<string, readonly [string, string]> = {
   "Astrites": [
     "Astrite",

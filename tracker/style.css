@@ -40,6 +40,18 @@ i {
   margin-left: auto;
   font-size: 14px;
 }
+.brand nav {
+  display: flex;
+  gap: .45rem;
+  margin-inline-start: .7rem;
+}
+.brand nav a {
+  margin: 0;
+}
+.brand nav a[aria-current="page"] {
+  color: #fff;
+  text-decoration-thickness: .15em;
+}
 a {
   color: #c8baff;
 }

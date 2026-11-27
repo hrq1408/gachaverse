@@ -6,6 +6,10 @@ Use a CLI oficial e rode `codex login status` no mesmo usuário Windows que exec
 
 ## Preparação e teste local
 
+Para selecionar a próxima pauta da fila ranqueada, use `pnpm exec tsx scripts/editorial-engine.ts --select --report C:\Privado\GachaVerse\inteligencia-editorial.json --out C:\Privado\GachaVerse\redacao`. O seletor descarta IDs e slugs já presentes no diretório de pautas, inclusive os rejeitados, e salva apenas um registro na saída privada. Use `--briefs` para apontar ao diretório que mantém o histórico editorial autorizado.
+
+Para EN e ES, execute a redação uma vez por idioma com o original aprovado, o `editorialId`, a revisão de origem e a terminologia oficial no briefing. Use o idioma e a revisão na chave do arquivo de saída para separar revisões e evitar repetir chamadas. O texto segue como rascunho até que o revisor daquele idioma aprove conteúdo, glossário e links.
+
 1. Prepare um diretório privado fora do checkout e um briefing Markdown com uma única pauta, fontes oficiais específicas já conferidas, fatos que sustentam, termos e links permitidos. Use o ID estável do Intelligence ou um ID editorial. Para uma atualização, forneça o slug existente e somente os trechos que precisam ser revisados. Mantenha o relatório bruto do Search Console fora do prompt.
 2. Use um script PowerShell próprio sob sua conta. O exemplo abaixo recebe uma pauta por vez, evita execução concorrente para o mesmo ID e não executa o modelo novamente se já houver rascunho para revisar. Salve-o em um diretório privado com acesso restrito. O modo somente leitura protege o código e a saída registrada é apenas a última mensagem. A saída textual continua sujeita à revisão editorial.
 

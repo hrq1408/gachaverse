@@ -6,8 +6,9 @@ import { parse } from 'yaml';
 import { z } from 'zod';
 import { articles, type Article } from '@/content/articles';
 import { publicPaths } from '@/content/editorial';
+import { games } from '@/content/catalog';
 import { guidesPath, languageAlternates, translatedLocales, type TranslationLocale } from './locales';
-import { toolPages, toolPath } from './tools';
+import { gameHubPath, legacyToolAlternates, toolPages, toolPath } from './tools';
 
 const slug = z.string().regex(/^[a-z0-9]+(?:-[a-z0-9]+)*$/);
 const text = z.string().trim().min(1);
@@ -42,8 +43,14 @@ export function readTranslation(raw: string, locale: TranslationLocale, collecti
       if (child.type !== 'link_open') continue;
       const href = child.attrGet('href');
       if (typeof href === 'string' && href.startsWith('/')) {
-        if (portuguesePaths.has(href)) child.attrSet('hreflang', 'pt-BR');
-        else if (!toolPages.some(page => toolPath(page, locale) === href)) {
+        const fallback = portuguesePaths.has(href);
+        const local = toolPages.some(page => toolPath(page, locale) === href) ||
+          games.some(game => gameHubPath(game.slug, locale) === href || toolPath('codes', locale) + game.slug + '/' === href);
+        if (fallback) {
+          const translated = legacyToolAlternates(href)[locale];
+          if (translated) child.attrSet('href', translated);
+          else child.attrSet('hreflang', 'pt-BR');
+        } else if (!local) {
           throw new Error('Link interno sem destino público no português ou no idioma da tradução.');
         }
       }

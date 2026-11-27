@@ -47,6 +47,12 @@ try {
     await page.getByRole('button',{name:'Confirmar importação'}).click();
     await page.getByText(file.saltos[0].item,{exact:true}).waitFor();
     await page.reload();await page.getByText(file.saltos[0].item,{exact:true}).waitFor();
+    for (const [locale, label, journal] of [['en','EN','My journal'],['es','ES','Mi diario'],['pt-BR','PT','Meu diário']]) {
+      await page.getByRole('link', { name: label, exact: true }).click();
+      assert.equal(await page.locator('html').getAttribute('lang'), locale);
+      await page.getByRole('heading',{name:journal,exact:true}).waitFor();
+      await page.getByText(file.saltos[0].item,{exact:true}).waitFor();
+    }
     await page.getByLabel('Formato de exportação').selectOption('GachaVerse 1');
     const downloaded=page.waitForEvent('download');
     await page.getByRole('button',{name:'Exportar conta'}).click();
@@ -99,7 +105,7 @@ try {
       if (url.origin !== portal || (!asset && !url.pathname.startsWith('/_next/'))) return;
       if (url.pathname === '/favicon.ico' && response.status() === 404) return;
       if (response.status() >= 400 || url.pathname.includes('/_next//_next/')) {
-        assetErrors.push(response.status() + ' ' + url.pathname);
+        assetErrors.push(response.status() + ' ' + url.pathname + ' (página: ' + page.url() + ')');
       }
     });
     const exported = await readdir('out', { recursive: true, withFileTypes: true });

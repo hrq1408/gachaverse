@@ -5,6 +5,7 @@ import { useSyncExternalStore } from 'react';
 import { games, sectionPath, sections } from '@/content/catalog';
 import { bannersCheckedOn, bannerStatus, type Banner } from '@/content/banners';
 import type { Locale } from '@/i18n/locales';
+import { localizedBannerName } from '@/i18n/catalog-copy';
 import { toolPath } from '@/i18n/tools';
 
 const calendar = sections.find(section => section.slug === 'calendario')!;
@@ -51,7 +52,7 @@ export function BannerCalendar({ entries, snapshot, home = false, locale = 'pt-B
       const status = bannerStatus(banner, now);
       return <article key={banner.id} id={locale !== 'pt-BR' && listed.find(item => item.game === banner.game) === banner ? banner.game : undefined} className="panel banner-record">
         <p className="eyebrow">{game.name} · {banner.version}</p>
-        <h3>{banner.highlights.join(' · ')}</h3>
+        <h3>{banner.highlights.map(name => localizedBannerName(name, locale)).join(' · ')}</h3>
         <p>{labels[locale][banner.kind]} · <strong>{labels[locale][status]}</strong></p>
         {!home && <p>{banner.startTime
           ? <>{from} <time dateTime={banner.start}>{formatDate(banner.start)}</time> {at} {banner.startTime}</>
