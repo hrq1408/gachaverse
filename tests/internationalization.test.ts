@@ -19,12 +19,12 @@ function approved(locale: 'en' | 'es', collection = articles) {
   return readTranslation(file, locale, collection);
 }
 
-test('the normal export excludes drafts and stale entries and the queue covers the catalog', () => {
+test('the normal export excludes drafts and withdrawn entries and the queue covers the catalog', () => {
   assert.equal(drafts.length, 2);
   const paths = internationalSitemapPaths().map(row => row.path);
   assert.ok(paths.includes('/en/') && paths.includes('/es/'));
   for (const row of translations) {
-    assert.equal(publishedTranslations.includes(row), row.status === 'published' && row.reviewed && !row.stale);
+    assert.equal(publishedTranslations.includes(row), row.status === 'published' && row.reviewed);
     assert.equal(paths.includes(translationPath(row)), row.indexable);
   }
   assert.equal(homeAlternates['x-default'], '/');
@@ -58,15 +58,20 @@ test('published translations share reciprocal alternate paths and preserve the o
   assert.ok(rss.includes(origin + expected.en));
 });
 
-test('source revision changes hide stale translations and a published item must be reviewed', () => {
+test('source revision changes preserve the published URL; withdrawal requires an explicit reason', () => {
   const changed = articles.map(article => article.slug === id ? { ...source, html: source.html + '<p>Atualização</p>' } : article);
   assert.notEqual(sourceRevision(changed.find(article => article.slug === id)!), sourceRevision(source));
   const stale = approved('en', changed);
   assert.equal(stale.stale, true);
-  assert.equal(stale.indexable, false);
-  assert.equal(articleAlternates(id, [stale]).en, undefined);
+  assert.equal(stale.indexable, true);
+  assert.equal(articleAlternates(id, [stale]).en, translationPath(stale));
   const row = drafts.find(draft => draft.locale === 'en')!;
   const file = readFileSync('content/traducoes/en/' + row.slug + '.md', 'utf8');
+  const withdrawn = file.replace(/^status: .*$/m, 'status: "withdrawn"');
+  assert.throws(() => readTranslation(withdrawn, 'en', articles), /withdrawalReason/);
+  const removed = readTranslation(withdrawn.replace('reviewed: true', 'reviewed: true\nwithdrawalReason: "Regra enganosa"'), 'en', articles);
+  assert.equal(removed.indexable, false);
+  assert.equal(articleAlternates(id, [removed]).en, undefined);
   assert.throws(() => readTranslation(file.replace(/^status: .*$/m, 'status: "published"').replace(/reviewed: (?:true|false)/, 'reviewed: false'), 'en', articles), /revisão explícita/);
   assert.throws(() => readTranslation(file + '\n[Invalid](/pagina-que-nao-existe/)', 'en', articles), /Link interno/);
 });

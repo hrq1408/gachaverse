@@ -1,12 +1,12 @@
 import Image from 'next/image';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
-import { games, gamePath } from '@/content/catalog';
+import { games } from '@/content/catalog';
 import { publishedTranslations, translationPath } from '@/i18n/articles';
 import { editorialMessages, messages } from '@/i18n/messages';
 import { homeAlternates, localizedMetadata } from '@/i18n/seo';
 import { guidesPath, homePath, isTranslationLocale } from '@/i18n/locales';
-import { toolPath } from '@/i18n/tools';
+import { gameHubPath, toolPath } from '@/i18n/tools';
 
 type Props = { params: Promise<{ lang: string }> };
 
@@ -44,7 +44,7 @@ export default async function LocalizedHome({ params }: Props) {
     <section aria-labelledby="localized-games">
       <h2 id="localized-games">{nav.games}</h2>
       <ul className="localized-grid">{games.map(game => <li className="panel" key={game.slug}>
-        <a href={gamePath(game)} hrefLang="pt-BR">{game.name} (PT)</a>
+        <Link href={gameHubPath(game.slug, lang)}>{game.name}</Link>
       </li>)}</ul>
     </section>
     <section aria-labelledby="localized-guides">

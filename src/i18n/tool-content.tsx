@@ -32,6 +32,21 @@ const pity = {
   },
 } as const;
 
+const announcementCopy = {
+  en: {
+    title: 'Zenless Zone Zero 3.4 — The Finality of the Day',
+    highlights: ['Sunbringer debuts as the first Enchainer Agent.', 'Robin, the S-Rank crossover Agent, is a login reward during the event.', 'Kafka joins limited-time Signal Search after January 1.'],
+    note: 'The publisher announcement does not specify the opening and closing times of these channels by server.',
+    source: 'https://zenless.hoyoverse.com/en-us/news/167400',
+  },
+  es: {
+    title: 'Zenless Zone Zero 3.4 — Los últimos vestigios del día',
+    highlights: ['Debuta la Dama del Albor, la primera agente encadenadora.', 'Robin, la agente de grado S de la colaboración, se obtiene al iniciar sesión durante el evento.', 'Kafka se incorpora a la sintonización por tiempo limitado a partir del 1 de enero.'],
+    note: 'El comunicado oficial no especifica las horas de apertura y cierre de estas sintonizaciones por servidor.',
+    source: 'https://zenless.hoyoverse.com/m/es-es/news/167400',
+  },
+} as const;
+
 export function ToolContent({ page, locale, game }: { page: ToolPage; locale: TranslationLocale; game?: Game }) {
   const [title, description] = toolTitles[locale][page];
   const c = pity[locale];
@@ -46,8 +61,14 @@ export function ToolContent({ page, locale, game }: { page: ToolPage; locale: Tr
       break;
     case 'calendar':
       body = <><BannerCalendar locale={locale} entries={banners} snapshot={redemptionSnapshot} />
-        <section><h2>{c.announcement}</h2><ul>{bannerAnnouncements.map(item =>
-          <li key={item.source}><a href={item.source} lang="pt-BR">{item.title}</a></li>)}</ul></section></>;
+        <section><h2>{c.announcement}</h2>{bannerAnnouncements.map(item => {
+          const copy = item.game === 'zenless-zone-zero' && item.version === '3.4' ? announcementCopy[locale] : undefined;
+          return <article className="panel" key={item.source} lang={copy ? locale : 'pt-BR'}>
+            <h3><a href={copy?.source ?? item.source}>{copy?.title ?? item.title}</a></h3>
+            <ul>{(copy?.highlights ?? item.highlights).map(point => <li key={point}>{point}</li>)}</ul>
+            <p>{copy?.note ?? item.scheduleNote}</p>
+          </article>;
+        })}</section></>;
       break;
     case 'pity':
       body = <><Suspense fallback={<CalculatorForm game={translatedRules} locale={locale} />}><Calculator game={translatedRules} locale={locale} /></Suspense>

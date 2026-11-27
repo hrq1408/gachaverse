@@ -42,7 +42,7 @@ export function LocalizedHeader({ locale }: { locale: 'en' | 'es' }) {
       <nav aria-label={copy.navigation}>
         <Link href={homePath(locale)}>{copy.home}</Link>
         <Link href={guidesPath(locale)}>{copy.guides}</Link>
-        <Link href="/jogos/" hrefLang="pt-BR">{copy.games} (PT)</Link>
+        <Link href={homePath(locale) + '#localized-games'}>{copy.games}</Link>
         <Link href={toolPath('codes', locale)}>{copy.codes}</Link>
         <Link href={toolPath('calendar', locale)}>{copy.banners}</Link>
         <Link href={toolPath('pity', locale)}>{copy.tools}</Link>

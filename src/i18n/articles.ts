@@ -12,10 +12,12 @@ import { toolPages, toolPath } from './tools';
 const slug = z.string().regex(/^[a-z0-9]+(?:-[a-z0-9]+)*$/);
 const text = z.string().trim().min(1);
 const schema = z.object({
-  editorialId: slug, slug, status: z.enum(['draft', 'published']), reviewed: z.boolean(),
+  editorialId: slug, slug, status: z.enum(['draft', 'published', 'withdrawn']), reviewed: z.boolean(),
   sourceRevision: z.string().regex(/^[a-f0-9]{64}$/), title: text.max(130),
-  description: text.max(170), imageAlt: text,
-}).strict();
+  description: text.max(170), imageAlt: text, withdrawalReason: text.optional(),
+}).strict().refine(meta => (meta.status === 'withdrawn') === Boolean(meta.withdrawalReason), {
+  message: 'Uma retirada editorial exige withdrawalReason, reservado a traduções retiradas.',
+});
 const markdown = new MarkdownIt({ html: false });
 const portuguesePaths = new Set(publicPaths());
 
@@ -58,7 +60,7 @@ export function readTranslation(raw: string, locale: TranslationLocale, collecti
   const stale = meta.sourceRevision !== sourceRevision(source);
   const article: Article = { ...source, slug: meta.slug, titulo: meta.title, descricao: meta.description,
     textoAlternativo: meta.imageAlt, headings, html: markdown.renderer.render(tokens, markdown.options, {}) };
-  return { ...meta, locale, source, article, stale, indexable: meta.status === 'published' && !stale };
+  return { ...meta, locale, source, article, stale, indexable: meta.status === 'published' && meta.reviewed };
 }
 
 export type Translation = ReturnType<typeof readTranslation>;
@@ -104,7 +106,8 @@ export function translationQueue() {
       editorialId: source.slug, locale, title: source.titulo, sourcePath: '/artigos/' + source.slug + '/',
       sourceRevision: sourceRevision(source),
       image: source.imagem, sources: source.fontes, games: source.jogos,
-      status: entry ? entry.stale ? 'desatualizada' : entry.indexable ? 'publicada' : 'em revisão' : 'pendente',
+      status: entry ? entry.status === 'withdrawn' ? 'retirada' : entry.stale ? 'desatualizada' : entry.indexable ? 'publicada' : 'em revisão' : 'pendente',
+      remainsPublic: entry?.indexable ?? false,
       draftPath: entry ? 'content/traducoes/' + locale + '/' + entry.slug + '.md' : null,
     };
   }));

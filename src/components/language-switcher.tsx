@@ -5,7 +5,7 @@ import { usePathname } from 'next/navigation';
 import { useSyncExternalStore } from 'react';
 import { guidesPath, homePath, localeLabels, translatedLocales, type Alternates, type Locale } from '@/i18n/locales';
 import { messages } from '@/i18n/messages';
-import { codeGameAlternates, toolAlternates, toolPages, toolPath } from '@/i18n/tools';
+import { codeGameAlternates, gameHubAlternates, toolAlternates, toolPages, toolPath } from '@/i18n/tools';
 
 const preferenceKey = 'gachaverse-language';
 const preferenceEvent = 'gachaverse-language-change';
@@ -29,7 +29,8 @@ export function LanguageSwitcher({ locale, links }: { locale: Locale; links: Rec
   const copy = messages[locale];
   const tool = toolPages.find(page => toolPath(page, locale) === path);
   const codeGame = /^(?:\/jogos\/([^/]+)\/codigos\/|\/(?:en\/codes|es\/codigos)\/([^/]+)\/)$/.exec(path);
-  const toolLinks = tool ? toolAlternates(tool) : codeGame ? codeGameAlternates(codeGame[1] || codeGame[2]) : undefined;
+  const hub = /^\/(?:jogos|en\/games|es\/juegos)\/([^/]+)\/$/.exec(path)?.[1];
+  const toolLinks = tool ? toolAlternates(tool) : codeGame ? codeGameAlternates(codeGame[1] || codeGame[2]) : hub ? gameHubAlternates(hub) : undefined;
   const inGuides = locales.some(lang => guidesPath(lang) === path) || /^(?:\/artigos\/|\/(?:en\/guides|es\/guias)\/)/.test(path);
   return <details className="language-switcher">
     <summary aria-label={copy.language}><Globe size={18} aria-hidden="true" /><span>{locale === 'pt-BR' ? 'PT' : locale.toUpperCase()}</span></summary>

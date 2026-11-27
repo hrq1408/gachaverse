@@ -21,10 +21,17 @@ export const toolAlternates = (page: ToolPage) => languageAlternates({
 export const codeGameAlternates = (game: string) => languageAlternates({
   'pt-BR': '/jogos/' + game + '/codigos/', en: toolPath('codes', 'en') + game + '/', es: toolPath('codes', 'es') + game + '/',
 });
+export const gameHubPath = (game: string, locale: 'pt-BR' | TranslationLocale) =>
+  homePath(locale) + (locale === 'en' ? 'games/' : locale === 'es' ? 'juegos/' : 'jogos/') + game + '/';
+export const gameHubAlternates = (game: string) => languageAlternates({
+  'pt-BR': gameHubPath(game, 'pt-BR'), en: gameHubPath(game, 'en'), es: gameHubPath(game, 'es'),
+});
 
 export function legacyToolAlternates(path: string) {
   const game = /^\/jogos\/([^/]+)\/codigos\/$/.exec(path)?.[1];
   if (game) return codeGameAlternates(game);
+  const hub = /^\/jogos\/([^/]+)\/$/.exec(path)?.[1];
+  if (hub) return gameHubAlternates(hub);
   const route = toolPages.find(page => page !== 'search' && toolPath(page, 'pt-BR') === path);
   return route ? toolAlternates(route) : {};
 }

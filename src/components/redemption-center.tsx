@@ -10,6 +10,7 @@ import { codeStatus, confirmedTimeLeft, isRecent } from '@/lib/redemption-status
 import { copyRedemptionCode } from './copy-redemption-code';
 import type { Locale } from '@/i18n/locales';
 import { redemptionCopy } from '@/i18n/redemption';
+import { localizedCodeNote, localizedReward } from '@/i18n/catalog-copy';
 import { toolPath } from '@/i18n/tools';
 
 const central = '/conteudo/codigos/';
@@ -152,11 +153,14 @@ export function RedemptionCenter({ entries, game, snapshot, locale = 'pt-BR' }: 
             </div>
             {((status !== 'expirado' && isRecent(entry, now)) || (remaining !== null && remaining > 0 && remaining <= 48 * 3600000)) &&
               <p className="redemption-highlight">{remaining !== null && remaining > 0 && remaining <= 48 * 3600000 ? c.expiring : c.recent}</p>}
-            <p><strong>{c.rewards}</strong><br /><span lang="pt-BR">{entry.rewards.join(' · ')}</span></p>
+            <p><strong>{c.rewards}</strong><br />{entry.rewards.map((reward, index) => {
+              const label = localizedReward(reward, locale);
+              return <span key={reward}>{index > 0 && ' · '}<span lang={label.lang}>{label.text}</span></span>;
+            })}</p>
             <p>{entry.expiresAt ? <>{c.deadline}: <time dateTime={entry.expiresAt}>{deadline.format(Date.parse(entry.expiresAt))} (Brasília)</time></>
               : c.unknown}</p>
             {remaining !== null && remaining > 0 && <p>{c.remaining}: {Math.floor(remaining / 3600000)} h {Math.floor(remaining / 60000) % 60} min {Math.floor(remaining / 1000) % 60} s</p>}
-            {entry.editorialNote && <p>{c.editorialNote}: <span lang="pt-BR">{entry.editorialNote}</span></p>}
+            {entry.editorialNote && <p>{c.editorialNote}: <span lang={localizedCodeNote(entry.editorialNote, locale).lang}>{localizedCodeNote(entry.editorialNote, locale).text}</span></p>}
             <p>{c.checked}: <time dateTime={entry.verifiedOn}>{date.format(Date.parse(entry.verifiedOn))}</time></p>
             <ul className="redemption-sources" aria-label={c.sources}>{entry.sources.map(source => <li key={source.url}>
               <a href={source.url} lang="pt-BR">{source.title}</a> <span lang="pt-BR">({source.type})</span>

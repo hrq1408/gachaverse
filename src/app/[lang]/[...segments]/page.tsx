@@ -9,10 +9,10 @@ import { editorialMessages, messages } from '@/i18n/messages';
 import { guideAlternates, localizedMetadata } from '@/i18n/seo';
 import { games } from '@/content/catalog';
 import { ToolContent } from '@/i18n/tool-content';
-import { codeGameAlternates, toolAlternates, toolPages, toolPath, toolRoutes, toolTitles } from '@/i18n/tools';
+import { codeGameAlternates, gameHubAlternates, gameHubPath, toolAlternates, toolPages, toolPath, toolRoutes, toolTitles } from '@/i18n/tools';
 
 type Props = { params: Promise<{ lang: string; segments: string[] }> };
-const visible = reviewTranslations ? translations : publishedTranslations;
+const visible = reviewTranslations ? translations.filter(entry => entry.status !== 'withdrawn') : publishedTranslations;
 export const dynamicParams = false;
 
 export function generateStaticParams({ params }: { params: { lang: string } }) {
@@ -22,12 +22,18 @@ export function generateStaticParams({ params }: { params: { lang: string } }) {
   return [{ segments: [section] }, ...visible.filter(entry => entry.locale === lang)
     .map(entry => ({ segments: [section, entry.slug] })),
     ...toolPages.map(page => ({ segments: [toolRoutes[page][lang]] })),
-    ...games.map(game => ({ segments: [toolRoutes.codes[lang], game.slug] }))];
+    ...games.flatMap(game => [{ segments: [toolRoutes.codes[lang], game.slug] },
+      { segments: gameHubPath(game.slug, lang).split('/').filter(Boolean).slice(1) }])];
 }
 
 async function resolveRoute(params: Props['params']) {
   const { lang, segments } = await params;
   if (!isTranslationLocale(lang) || segments.length > 2) notFound();
+  if (segments[0] === (lang === 'en' ? 'games' : 'juegos')) {
+    const hub = games.find(game => game.slug === segments[1]);
+    if (!hub) notFound();
+    return { lang, hub, entry: undefined };
+  }
   const tool = toolPages.find(page => toolRoutes[page][lang] === segments[0]);
   if (tool) {
     const game = tool === 'codes' ? games.find(item => item.slug === segments[1]) : undefined;
@@ -41,7 +47,8 @@ async function resolveRoute(params: Props['params']) {
 }
 
 export async function generateMetadata({ params }: Props) {
-  const { lang, entry, tool, game } = await resolveRoute(params);
+  const { lang, entry, tool, game, hub } = await resolveRoute(params);
+  if (hub) return localizedMetadata(lang, hub.name, hubDescription(lang, hub.name), gameHubPath(hub.slug, lang), true, gameHubAlternates(hub.slug));
   if (tool) {
     const [title, description] = toolTitles[lang][tool];
     return localizedMetadata(lang, game ? game.name + ' — ' + title : title, description,
@@ -55,11 +62,31 @@ export async function generateMetadata({ params }: Props) {
     index ? guideAlternates() : {});
 }
 
+function hubDescription(lang: 'en' | 'es', name: string) {
+  return lang === 'en' ? 'Browse ' + name + ' guides, redemption instructions and confirmed banner dates.'
+    : 'Consulta guías de ' + name + ', instrucciones de canje y fechas confirmadas de sus banners.';
+}
+
 export default async function LocalizedGuide({ params }: Props) {
-  const { lang, entry, tool, game } = await resolveRoute(params);
+  const { lang, entry, tool, game, hub } = await resolveRoute(params);
   if (tool) return <ToolContent page={tool} locale={lang} game={game} />;
   const copy = editorialMessages[lang];
   const menu = messages[lang];
+  if (hub) {
+    const guides = publishedTranslations.filter(row => row.locale === lang && row.article.jogos.includes(hub.slug));
+    return <div className="shell interior"><header className="page-heading">
+      <h1>{hub.name}</h1><p>{hubDescription(lang, hub.name)}</p>
+    </header>
+      <ul className="localized-grid">
+        <li className="panel"><Link href={toolPath('codes', lang) + hub.slug + '/'}>{toolTitles[lang].codes[0]}</Link></li>
+        <li className="panel"><Link href={toolPath('calendar', lang)}>{toolTitles[lang].calendar[0]}</Link></li>
+        {hub.slug === 'honkai-star-rail' && <li className="panel"><Link href={toolPath('pity', lang)}>{toolTitles[lang].pity[0]}</Link></li>}
+      </ul>
+      <section><h2>{menu.guides}</h2><ul className="localized-grid">{guides.map(row => <li className="panel" key={row.slug}>
+        <h3><Link href={translationPath(row)}>{row.article.titulo}</Link></h3><p>{row.article.descricao}</p>
+      </li>)}</ul><a href={gameHubPath(hub.slug, 'pt-BR')} hrefLang="pt-BR">{copy.fallback}</a></section>
+    </div>;
+  }
   if (!entry) {
     const entries = visible.filter(row => row.locale === lang);
     return <div className="shell interior">
