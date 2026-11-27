@@ -49,8 +49,9 @@ try {
     await page.reload();await page.getByText(file.saltos[0].item,{exact:true}).waitFor();
     for (const [locale, label, journal] of [['en','EN','My journal'],['es','ES','Mi diario'],['pt-BR','PT','Meu diário']]) {
       await page.getByRole('link', { name: label, exact: true }).click();
-      assert.equal(await page.locator('html').getAttribute('lang'), locale);
+      await page.waitForURL(tracker + (locale === 'pt-BR' ? '/' : '/?lang=' + locale));
       await page.getByRole('heading',{name:journal,exact:true}).waitFor();
+      assert.equal(await page.locator('html').getAttribute('lang'), locale);
       await page.getByText(file.saltos[0].item,{exact:true}).waitFor();
     }
     await page.getByLabel('Formato de exportação').selectOption('GachaVerse 1');
