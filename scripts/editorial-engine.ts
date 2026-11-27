@@ -3,6 +3,7 @@ import { isAbsolute, join, relative, sep } from 'node:path';
 import { parseArgs } from 'node:util';
 import { articles, publicPaths } from '../src/content/editorial';
 import { loadArticles } from '../src/content/articles';
+import { translationQueue } from '../src/i18n/articles';
 import { approvalSchema, authorizePublication, bareBody, briefSchema, checkBrief, intelligenceSchema, renderDraft, reviewDigest, similar } from './editorial-engine/draft';
 
 const workspace = 'docs/editorial-engine';
@@ -12,8 +13,13 @@ const today = new Intl.DateTimeFormat('sv-SE', { timeZone: 'America/Sao_Paulo', 
 async function main() {
   const { values } = parseArgs({ options: {
     out: { type: 'string' }, report: { type: 'string' }, approval: { type: 'string' },
-    briefs: { type: 'string' }, covers: { type: 'string' },
+    briefs: { type: 'string' }, covers: { type: 'string' }, translations: { type: 'boolean' },
   } });
+  if (values.translations) {
+    if (Object.keys(values).length !== 1) throw new Error('Use --translations separadamente para listar a fila.');
+    console.log(JSON.stringify(translationQueue(), null, 2));
+    return;
+  }
   if ((values.report || values.approval) && (!values.out || !isAbsolute(values.out))) {
     throw new Error('Use --out com um diretório absoluto fora do checkout ao importar relatórios ou preparar uma publicação.');
   }

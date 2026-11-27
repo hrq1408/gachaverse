@@ -3,9 +3,13 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { Search } from 'lucide-react';
 import { ThemeToggle } from './theme-toggle';
+import { LanguageSwitcher } from './language-switcher';
+import { articleSwitchMap } from '@/i18n/articles';
+import { guidesPath, homePath, type Locale } from '@/i18n/locales';
+import { messages } from '@/i18n/messages';
 
-function Brand() {
-  return <Link className="brand" href="/"><Image src="/images/gachaverse-logo.webp" width={210} height={52} alt="GachaVerse" /></Link>;
+function Brand({ locale = 'pt-BR' }: { locale?: Locale }) {
+  return <Link className="brand" href={homePath(locale)}><Image src="/images/gachaverse-logo.webp" width={210} height={52} alt="GachaVerse" /></Link>;
 }
 
 export function Header() {
@@ -23,6 +27,29 @@ export function Header() {
       <div className="header-tools">
         <Link className="theme-toggle" href="/busca/" aria-label="Buscar artigos"><Search size={19} aria-hidden="true" /></Link>
         <ThemeToggle />
+        <LanguageSwitcher locale="pt-BR" links={articleSwitchMap()} />
+      </div>
+    </div>
+  </header>;
+}
+
+export function LocalizedHeader({ locale }: { locale: 'en' | 'es' }) {
+  const copy = messages[locale];
+  return <header className="site-header">
+    <div className="shell header-inner">
+      <Brand locale={locale} />
+      <nav aria-label={copy.navigation}>
+        <Link href={homePath(locale)}>{copy.home}</Link>
+        <Link href={guidesPath(locale)}>{copy.guides}</Link>
+        <Link href="/jogos/" hrefLang="pt-BR">{copy.games} (PT)</Link>
+        <Link href="/conteudo/codigos/" hrefLang="pt-BR">{copy.codes} (PT)</Link>
+        <Link href="/conteudo/calendario/" hrefLang="pt-BR">{copy.banners} (PT)</Link>
+        <Link href="/ferramentas/" hrefLang="pt-BR">{copy.tools} (PT)</Link>
+      </nav>
+      <div className="header-tools">
+        <Link className="theme-toggle" href="/busca/" hrefLang="pt-BR" aria-label={copy.search}><Search size={19} aria-hidden="true" /></Link>
+        <ThemeToggle locale={locale} />
+        <LanguageSwitcher locale={locale} links={articleSwitchMap()} />
       </div>
     </div>
   </header>;

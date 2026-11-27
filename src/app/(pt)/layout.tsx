@@ -7,7 +7,7 @@ import type { Metadata } from 'next';
 import type { ReactNode } from 'react';
 import { Footer, Header } from '@/components/chrome';
 import { site } from '@/lib/site';
-import './globals.css';
+import '../globals.css';
 
 export const metadata: Metadata = {
   ...(site.url ? { metadataBase: new URL(site.url), alternates: { types: { 'application/rss+xml': '/rss.xml' } } } : {}),

@@ -3,7 +3,7 @@ import { isAbsolute, join, relative, sep } from 'node:path';
 import { parseArgs } from 'node:util';
 import { articles } from '../src/content/articles';
 import { officialChannels, scanFeeds } from './redemption-sources';
-import { collectSearchConsole } from './editorial-intelligence/search-console';
+import { collectInternationalSearchConsole, collectSearchConsole, parseInternationalMarkets } from './editorial-intelligence/search-console';
 import { seoOpportunities } from './editorial-intelligence/opportunities';
 import { editorialQueue } from './editorial-intelligence/queue';
 import { importTrends } from './editorial-intelligence/trends';
@@ -17,9 +17,9 @@ const n = (value: number) => number.format(value);
 async function main() {
   const { values } = parseArgs({ options: {
     public: { type: 'boolean' }, out: { type: 'string' }, trends: { type: 'string' },
-    'skip-youtube': { type: 'boolean' },
+    'skip-youtube': { type: 'boolean' }, markets: { type: 'string' },
   } });
-  if (values.public && (values.out || values.trends)) throw new Error('O modo público aceita somente o resumo de fontes públicas.');
+  if (values.public && (values.out || values.trends || values.markets)) throw new Error('O modo público aceita somente o resumo de fontes públicas.');
   if (process.env.GITHUB_ACTIONS === 'true' && !values.public &&
       (process.env.GACHAVERSE_PRIVATE_WORKFLOW !== 'true' || process.env.GITHUB_REPOSITORY !== 'hrq1408/gachaverse-intelligence' ||
        process.env.GITHUB_REPOSITORY_ID !== '1473633500' || process.env.GITHUB_REF !== 'refs/heads/main')) {
@@ -38,6 +38,7 @@ async function main() {
   const now = new Date();
   const token = values.public ? undefined : process.env.GSC_ACCESS_TOKEN;
   const searchConsole = token ? await collectSearchConsole(token, now) : null;
+  const international = token ? await collectInternationalSearchConsole(token, now, parseInternationalMarkets(values.markets)) : null;
   const trends = values.trends ? importTrends(await readFile(values.trends, 'utf8')) : null;
   const apiOnly = Boolean(process.env.YOUTUBE_DATA_API_KEY);
   const snapshotPath = process.env.EDITORIAL_YOUTUBE_SNAPSHOT;
@@ -52,7 +53,7 @@ async function main() {
   const queue = editorialQueue(articles, sources?.announcements ?? [], now, seo ?? undefined, trends ?? undefined);
   const report = {
     generatedAt: now.toISOString(), catalogArticles: articles.length,
-    searchConsole, seo, trends, youtube: sources ? { mode: snapshotPath ? 'snapshot' : apiOnly ? 'api' : 'atom',
+    searchConsole, international, seo, trends, youtube: sources ? { mode: snapshotPath ? 'snapshot' : apiOnly ? 'api' : 'atom',
       videosChecked: sources.announcements.length, unavailableGames: sources.failures,
       collectedAt: 'collectedAt' in sources ? sources.collectedAt : null } : null,
     queue,
@@ -83,6 +84,15 @@ async function main() {
     const state = sitemap.isPending === undefined ? 'estado indisponível' : sitemap.isPending ? 'pendente' : 'sem indicação de pendência';
     lines.push('- ' + md(sitemap.path) + ' — ' + state +
       ', última leitura ' + md(sitemap.lastDownloaded ?? 'indisponível') + ', erros ' + md(sitemap.errors ?? 'indisponíveis'));
+  }
+  lines.push('', '## Search Console — idiomas das páginas e países', '',
+    'Recortes de 28 dias. O idioma é inferido pelo prefixo da página. A API não informa o idioma da consulta.');
+  if (!international) lines.push('Coleta internacional não executada.');
+  for (const market of international ?? []) {
+    const row = market.status === 'available' ? market.current.total.rows[0] : undefined;
+    lines.push('- ' + market.locale + ' / ' + (market.country ?? 'todos os países') + ' — ' +
+      (row ? n(row.clicks) + ' cliques e ' + n(row.impressions) + ' impressões' :
+        market.status === 'unavailable' ? 'coleta interrompida neste recorte' : 'sem linhas disponíveis'));
   }
   lines.push('', '## Oportunidades observadas em 28 dias', '',
     'Os limiares são critérios de triagem. O JSON contém as linhas de evidência e os dados comparativos.', '');

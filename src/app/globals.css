@@ -102,6 +102,8 @@ h1 em { color: var(--color-highlight); font-style: normal; }
 .ad-banner--leaderboard { min-height: 100px; max-width: 970px; }
 @media (max-width: 640px) {
   .shell { width: calc(100% - 2rem); }
+  .header-inner { grid-template-columns: minmax(0, 1fr) auto; column-gap: .5rem; }
+  .header-inner .brand img { max-width: 100%; }
   .header-inner { align-items: start; flex-direction: column; gap: .75rem; padding-block: .85rem; }
   nav { column-gap: 1rem; }
   nav a { display: inline-flex; align-items: center; min-height: 32px; }
@@ -229,6 +231,21 @@ button:not(:disabled) { cursor: pointer; }
 .header-inner nav a:hover, .theme-toggle:hover { background: var(--subtle); }
 .brand img { width: clamp(154px, 18vw, 228px); height: auto; display: block; }
 .header-tools { display: flex; gap: .45rem; }
+.language-switcher { position: relative; align-self: center; }
+.language-switcher summary { display: flex; align-items: center; gap: .35rem; min-height: 44px; padding: .4rem .65rem; border: 1px solid var(--border); border-radius: .65rem; cursor: pointer; list-style: none; font-weight: 700; }
+.language-switcher summary::-webkit-details-marker { display: none; }
+.language-switcher summary:hover, .language-switcher [aria-current="true"] { background: var(--subtle); }
+.language-switcher ul { position: absolute; inset-inline-end: 0; top: calc(100% + .4rem); z-index: 20; width: max-content; max-width: calc(100vw - 2rem); padding: .35rem; background: var(--surface); border: 1px solid var(--border); border-radius: .65rem; box-shadow: 0 .45rem 1rem rgb(15 10 40 / .14); }
+.language-switcher a { display: block; padding: .65rem .8rem; min-height: 44px; border-radius: .4rem; }
+.language-switcher a:hover { background: var(--subtle); }
+.language-preferred { margin-inline-start: .55rem; }
+.localized-home { display: grid; gap: 2rem; }
+.localized-hero { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 2rem; align-items: center; }
+.localized-hero img, .localized-article > img { width: 100%; height: auto; border-radius: .9rem; }
+.localized-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 14rem), 1fr)); gap: .8rem; }
+.localized-article { max-width: 78ch; }
+.localized-article a { overflow-wrap: anywhere; }
+@media (max-width: 720px) { .localized-hero { grid-template-columns: 1fr; } }
 .theme-toggle { width: 44px; height: 44px; display: grid; place-items: center; color: var(--heading); background: var(--page); border: 1px solid var(--border); border-radius: .7rem; }
 :root:not([data-theme="dark"]) .theme-sun, :root[data-theme="dark"] .theme-moon { display: none; }
 

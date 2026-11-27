@@ -3,6 +3,7 @@ import { PageHeading, SectionContent } from '@/components/catalog';
 import { sections, sectionPath } from '@/content/catalog';
 import { sectionHasContent } from '@/content/editorial';
 import { pageMetadata } from '@/lib/site';
+import { guideAlternates, withLanguages } from '@/i18n/seo';
 
 type Props = { params: Promise<{ section: string }> };
 export const dynamicParams = false;
@@ -17,8 +18,9 @@ async function resolveSection(params: Props['params']) {
 
 export async function generateMetadata({ params }: Props) {
   const category = await resolveSection(params);
-  return pageMetadata(category.title, category.description, sectionPath(category),
+  const metadata = pageMetadata(category.title, category.description, sectionPath(category),
     sectionHasContent(category));
+  return category.slug === 'artigos' ? withLanguages(metadata, guideAlternates()) : metadata;
 }
 
 export default async function ContentSection({ params }: Props) {

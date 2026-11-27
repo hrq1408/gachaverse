@@ -13,8 +13,9 @@ import { BannerCalendar } from '@/components/banner-calendar';
 import { banners } from '@/content/banners';
 import { PartnerOffers } from '@/features/partners/partner-offers';
 import { pageMetadata, site } from '@/lib/site';
+import { homeAlternates, withLanguages } from '@/i18n/seo';
 
-export const metadata = { ...pageMetadata(site.name, site.description, '/'), title: { absolute: site.name } };
+export const metadata = { ...withLanguages(pageMetadata(site.name, site.description, '/'), homeAlternates), title: { absolute: site.name } };
 
 const codeDeadline = new Intl.DateTimeFormat('pt-BR', { dateStyle: 'short', timeStyle: 'short', timeZone: 'America/Sao_Paulo' });
 

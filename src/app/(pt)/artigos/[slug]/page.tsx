@@ -8,6 +8,8 @@ import { games, gamePath } from '@/content/catalog';
 import Link from 'next/link';
 import { articleGraph, jsonLd } from '@/lib/article-distribution';
 import { site } from '@/lib/site';
+import { articleAlternates } from '@/i18n/articles';
+import { withLanguages } from '@/i18n/seo';
 
 type Props = { params: Promise<{ slug: string }> };
 export const dynamicParams = false;
@@ -22,7 +24,7 @@ async function resolveArticle(params: Props['params']) {
 
 export async function generateMetadata({ params }: Props) {
   const article = await resolveArticle(params);
-  const metadata = pageMetadata(article.titulo, article.descricao, contentPath(article));
+  const metadata = withLanguages(pageMetadata(article.titulo, article.descricao, contentPath(article)), articleAlternates(article.slug));
   return {
     ...metadata,
     authors: [{ name: article.autor }],

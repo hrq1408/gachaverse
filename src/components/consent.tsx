@@ -6,12 +6,15 @@ import Link from 'next/link';
 import { games } from '@/content/catalog';
 import { adPreferenceKey, readAdPreference } from '@/features/advertising/privacy';
 import { preferenceKey, readPreference, startAnalytics, stopAnalytics, trackAction, trackPage, type Preference } from '@/lib/analytics';
+import type { Locale } from '@/i18n/locales';
+import { messages } from '@/i18n/messages';
 
-export function CookiePreferencesButton() {
-  return <button type="button" className="cookie-link" onClick={() => window.dispatchEvent(new Event('cookie-preferences'))}>Preferências de cookies</button>;
+export function CookiePreferencesButton({ locale = 'pt-BR' }: { locale?: Locale }) {
+  return <button type="button" className="cookie-link" onClick={() => window.dispatchEvent(new Event('cookie-preferences'))}>{messages[locale].preferences}</button>;
 }
 
-export function Consent({ paths, advertisingAvailable = false }: { paths: string[]; advertisingAvailable?: boolean }) {
+export function Consent({ paths, advertisingAvailable = false, locale = 'pt-BR' }: { paths: string[]; advertisingAvailable?: boolean; locale?: Locale }) {
+  const copy = messages[locale];
   const path = usePathname();
   const [preference, setPreference] = useState<Preference | null | undefined>(undefined);
   const [custom, setCustom] = useState(false);
@@ -102,19 +105,19 @@ export function Consent({ paths, advertisingAvailable = false }: { paths: string
 
   if (!custom && preference !== null) return null;
   return <aside className="cookie-panel" aria-labelledby="cookie-heading">
-    <h2 ref={heading} tabIndex={-1} id="cookie-heading">{custom ? 'Preferências de cookies' : 'Sua privacidade no GachaVerse'}</h2>
-    <p>Com sua permissão, usamos o Google Analytics para saber quais jogos e guias recebem visitas. Sua escolha pode ser alterada no rodapé. <Link href="/privacidade/">Política de privacidade</Link></p>
-    {custom && <label className="cookie-choice"><input type="checkbox" checked={enabled} onChange={(event) => setEnabled(event.target.checked)} /> Permitir medição de audiência</label>}
+    <h2 ref={heading} tabIndex={-1} id="cookie-heading">{custom ? copy.preferences : copy.consentTitle}</h2>
+    <p>{copy.consentBody} <Link href="/privacidade/" hrefLang={locale === 'pt-BR' ? undefined : 'pt-BR'}>{copy.policy}</Link></p>
+    {custom && <label className="cookie-choice"><input type="checkbox" checked={enabled} onChange={(event) => setEnabled(event.target.checked)} /> {copy.allowAnalytics}</label>}
     {custom && advertisingAvailable && <>
-      <label className="cookie-choice"><input type="checkbox" checked={ads} onChange={(event) => setAds(event.target.checked)} /> Permitir publicidade do Google</label>
-      <p>Esta opção se aplica à publicidade no Brasil. Se você autorizar, o Google AdSense pode usar cookies, dados do dispositivo e informações da visita para exibir e medir anúncios, inclusive personalizados. Você pode retirar a autorização neste painel. <a href="https://policies.google.com/technologies/partner-sites?hl=pt-BR">Como o Google usa esses dados</a>.</p>
-      {saveError && <p role="alert">O navegador não permitiu salvar a alteração de publicidade.</p>}
+      <label className="cookie-choice"><input type="checkbox" checked={ads} onChange={(event) => setAds(event.target.checked)} /> {copy.allowAds}</label>
+      <p>{copy.adNotice} <a href={'https://policies.google.com/technologies/partner-sites?hl=' + locale}>{copy.google}</a>.</p>
+      {saveError && <p role="alert">{copy.saveError}</p>}
     </>}
     <div className="cookie-actions">
-      {custom ? <button type="button" onClick={() => save(enabled ? 'accepted' : 'declined')}>Salvar preferências</button> : <>
-        <button type="button" onClick={() => save('accepted')}>Aceitar</button>
-        <button type="button" onClick={() => save('declined')}>Recusar</button>
-        <button type="button" onClick={() => setCustom(true)}>Personalizar</button>
+      {custom ? <button type="button" onClick={() => save(enabled ? 'accepted' : 'declined')}>{copy.save}</button> : <>
+        <button type="button" onClick={() => save('accepted')}>{copy.accept}</button>
+        <button type="button" onClick={() => save('declined')}>{copy.decline}</button>
+        <button type="button" onClick={() => setCustom(true)}>{copy.customize}</button>
       </>}
     </div>
   </aside>;
