@@ -1,3 +1,5 @@
+import { entryAttribution } from './analytics-attribution';
+
 const measurementId = process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID;
 export const preferenceKey = 'gachaverse:analytics:v1';
 export type Preference = 'accepted' | 'declined';
@@ -20,6 +22,9 @@ let lastPath = '';
 let currentLocation = '';
 let currentTitle = '';
 let previousLocation = '';
+let entry: ReturnType<typeof entryAttribution> | undefined;
+let entrySent = false;
+let lastMeasuredPath = '';
 
 function tracker() {
   return frame?.contentWindow as TagWindow | undefined;
@@ -33,6 +38,10 @@ function command(...args: unknown[]) {
 
 export function startAnalytics() {
   if (frame || !measurementId || !/^G-[A-Z0-9]+$/.test(measurementId)) return;
+  if (!entrySent) {
+    const navigation = performance.getEntriesByType('navigation')[0];
+    entry = entryAttribution(location.origin, navigation?.name ?? location.href, document.referrer);
+  }
   // The tag gets its own document and history. Only approved App Router paths
   // are supplied to it, even when Enhanced Measurement observes history.
   frame = document.createElement('iframe');
@@ -64,7 +73,7 @@ function initializeTag() {
   command('config', measurementId, {
     send_page_view: false, allow_google_signals: false, allow_ad_personalization_signals: false,
     cookie_domain: location.hostname, page_location: location.origin + '/', page_referrer: '',
-    page_title: 'GachaVerse', ignore_referrer: true,
+    page_title: 'GachaVerse',
   });
   const script = doc.createElement('script');
   script.async = true;
@@ -85,6 +94,7 @@ export function stopAnalytics() {
   frame = undefined;
   ready = false;
   pending = [];
+  entry = undefined;
   lastPath = currentLocation = previousLocation = currentTitle = '';
   for (const cookie of document.cookie.split(';')) {
     const name = cookie.trim().split('=')[0];
@@ -100,11 +110,21 @@ export function trackPage(path: string, allowedPaths: readonly string[]) {
   lastPath = path;
   previousLocation = currentLocation;
   currentLocation = allowedPaths.includes(path) ? location.origin + path : '';
-  if (!currentLocation) return;
+  if (!currentLocation) {
+    lastMeasuredPath = '';
+    return;
+  }
   currentTitle = document.title;
-  const fields = { page_location: currentLocation, page_title: currentTitle, page_referrer: previousLocation };
-  command('set', fields);
+  const context = { page_location: currentLocation, page_title: currentTitle, page_referrer: previousLocation };
+  command('set', context);
+  if (lastMeasuredPath === path) return;
+  lastMeasuredPath = path;
+  const fields = entry
+    ? { ...context, page_location: currentLocation + entry.campaign, page_referrer: entry.referrer }
+    : context;
   command('event', 'page_view', fields);
+  entrySent = true;
+  entry = undefined;
   if (previousLocation) {
     const previous = new URL(previousLocation).pathname;
     if ((previous.startsWith('/artigos/') && path.startsWith('/ferramentas/')) ||
