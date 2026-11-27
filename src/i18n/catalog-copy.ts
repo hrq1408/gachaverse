@@ -4,6 +4,8 @@ const bannerNames: Record<string, Partial<Record<Locale, string>>> = {
   'Fragmento Lunar da Luz': { en: 'Lightbearing Moonshard', es: 'Refulgencia de la Luna' },
   'Ramo Dourado do Juramento Gelado': { en: 'Golden Frostbound Oath', es: 'Rama del Juramento Escarchado' },
   Linnea: { es: 'Linnéa' },
+  'Incarcerating Grip': { es: 'Agarre de encarcelación' },
+  'Chief Sidekick': { es: 'Subalterno jefe' },
 };
 
 export const localizedBannerName = (value: string, locale: Locale) => bannerNames[value]?.[locale] ?? value;

@@ -10,6 +10,8 @@ Para selecionar a próxima pauta da fila ranqueada, use `pnpm exec tsx scripts/e
 
 Para EN e ES, execute a redação uma vez por idioma com o original aprovado, o `editorialId`, a revisão de origem e a terminologia oficial no briefing. Use o idioma e a revisão na chave do arquivo de saída para separar revisões e evitar repetir chamadas. O texto segue como rascunho até que o revisor daquele idioma aprove conteúdo, glossário e links.
 
+O script versionado `scripts/redigir-editorial.ps1` recebe o `pauta.json` do seletor em `-Pauta` e um JSON revisado em `-Briefing`. O briefing inclui `editorialId`, `reviewedSources: true`, `facts` e `sources` (URLs públicas HTTPS). Inclua `approvedOriginal` para EN e ES. Use `-Idioma pt-BR|en|es`, `-Revisao` com o SHA-256 da versão revisada e `-Saida` apontando para um diretório privado existente. O mesmo ID, idioma e revisão conserva o rascunho anterior.
+
 1. Prepare um diretório privado fora do checkout e um briefing Markdown com uma única pauta, fontes oficiais específicas já conferidas, fatos que sustentam, termos e links permitidos. Use o ID estável do Intelligence ou um ID editorial. Para uma atualização, forneça o slug existente e somente os trechos que precisam ser revisados. Mantenha o relatório bruto do Search Console fora do prompt.
 2. Use um script PowerShell próprio sob sua conta. O exemplo abaixo recebe uma pauta por vez, evita execução concorrente para o mesmo ID e não executa o modelo novamente se já houver rascunho para revisar. Salve-o em um diretório privado com acesso restrito. O modo somente leitura protege o código e a saída registrada é apenas a última mensagem. A saída textual continua sujeita à revisão editorial.
 
