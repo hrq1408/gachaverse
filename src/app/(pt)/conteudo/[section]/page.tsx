@@ -1,7 +1,9 @@
+import { SectionPage } from '@/components/page-frames';
+import { EditorialIndex } from '@/components/editorial-pages';
 import { notFound } from 'next/navigation';
-import { PageHeading, SectionContent } from '@/components/catalog';
+import { SectionContent } from '@/components/catalog';
 import { sections, sectionPath } from '@/content/catalog';
-import { sectionHasContent } from '@/content/editorial';
+import { findArticles, sectionHasContent } from '@/content/editorial';
 import { pageMetadata } from '@/lib/site';
 import { guideAlternates, withLanguages } from '@/i18n/seo';
 
@@ -25,9 +27,9 @@ export async function generateMetadata({ params }: Props) {
 
 export default async function ContentSection({ params }: Props) {
   const category = await resolveSection(params);
-  return <div className="shell interior">
-    <PageHeading eyebrow="GachaVerse" title={category.title} description={category.description} />
+  if (category.slug === 'artigos' && sectionHasContent(category)) return <EditorialIndex locale="pt-BR" title={category.title} description={category.description} entries={findArticles(category).map(article => ({ article }))} />;
+  return <SectionPage eyebrow="GachaVerse" title={category.title} description={category.description}>
     <SectionContent section={category} />
-  </div>;
+  </SectionPage>;
 }
 

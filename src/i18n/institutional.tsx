@@ -4,6 +4,23 @@ import type { TranslationLocale } from './locales';
 import { toolPath, type ToolPage } from './tools';
 
 type Institution = Extract<ToolPage, 'about' | 'contact' | 'privacy' | 'advertising' | 'advertise'>;
+export const institutionHeadings: Record<TranslationLocale, Record<Institution, { eyebrow: string; title?: string }>> = {
+  en: { about: { eyebrow: 'About the portal', title: 'GachaVerse' }, contact: { eyebrow: 'GachaVerse' }, privacy: { eyebrow: 'GachaVerse' },
+    advertising: { eyebrow: 'GachaVerse' }, advertise: { eyebrow: 'Commercial partnerships' } },
+  es: { about: { eyebrow: 'Sobre el portal', title: 'GachaVerse' }, contact: { eyebrow: 'GachaVerse' }, privacy: { eyebrow: 'GachaVerse' },
+    advertising: { eyebrow: 'GachaVerse' }, advertise: { eyebrow: 'Colaboraciones comerciales' } },
+};
+
+const sectionLabels = {
+  en: { criteria: 'Editorial criteria', corrections: 'Corrections', advertising: 'Advertising', contact: 'Contact the project',
+    independence: 'Advertising and editorial independence', affiliate: 'Affiliate links', offers: 'Offers and top-ups',
+    analytics: 'Measurement and privacy', formats: 'Formats we can consider', proposal: 'How to send a proposal',
+    calculator: 'Pity calculator', tracker: 'Warp Tracker', cloudflare: 'Cloudflare privacy policy', google: 'How Google uses data from partner sites' },
+  es: { criteria: 'Criterios editoriales', corrections: 'Correcciones', advertising: 'Publicidad', contact: 'Contacta con el proyecto',
+    independence: 'Publicidad e independencia editorial', affiliate: 'Enlaces de afiliación', offers: 'Ofertas y recargas',
+    analytics: 'Medición y privacidad', formats: 'Formatos que podemos evaluar', proposal: 'Cómo enviar una propuesta',
+    calculator: 'Calculadora de pity', tracker: 'Warp Tracker', cloudflare: 'Política de privacidad de Cloudflare', google: 'Cómo usa Google los datos de sitios asociados' },
+} as const;
 const copy = {
   en: {
     about: [
@@ -65,18 +82,49 @@ const copy = {
 
 export function InstitutionalContent({ page, locale }: { page: Institution; locale: TranslationLocale }) {
   const c = copy[locale];
+  const h = sectionLabels[locale];
+  const en = locale === 'en';
+  const contact = <Link href={toolPath('contact', locale)}>{c.contactLink}</Link>;
+  const policy = <Link href={toolPath('advertising', locale)}>{c.policy}</Link>;
+  const configured = autoAdsSource(advertisingPolicy, autoAdsEnabled, adsenseClient);
+  const google = <a href={'https://policies.google.com/technologies/partner-sites?hl=' + locale}>{h.google}</a>;
   if (page === 'privacy') {
-    const configured = autoAdsSource(advertisingPolicy, autoAdsEnabled, adsenseClient);
+    const [visit, analytics, , external] = c.privacy;
     return <>
-      {c.privacy.map(([title, text]) => <section key={title}><h2>{title}</h2><p>{text}</p></section>)}
+      <h2>{visit[0]}</h2><p>{visit[1]}</p>
+      <p><a href="https://www.cloudflare.com/privacypolicy/">{h.cloudflare}</a></p>
+      <h2>{analytics[0]}</h2><p>{analytics[1]}</p><p>{google}</p>
+      <h2>{h.calculator}</h2><p>{en ? 'Calculator inputs stay in local storage. With measurement permission, the portal records tool opens, calculations, banner changes, and resets. These events omit pity and resource balances.' : 'La calculadora guarda los valores en el almacenamiento local. Con permiso de medición, el portal registra la apertura, el cálculo, el cambio de banner y el reinicio. Los eventos omiten el pity y el saldo.'}</p>
+      <h2>{h.tracker}</h2><p>{en ? 'The tracker stores history in IndexedDB on its own origin and works with local files, without audience measurement or advertising. To migrate an older history, export a copy on the portal and confirm the import on the tracker.' : 'El tracker guarda el historial en IndexedDB en su propio origen y funciona con archivos locales, sin medición ni publicidad. Para migrar un historial anterior, exporta una copia en el portal y confirma la importación en el tracker.'}</p>
       <h2>{c.adTitle}</h2><p>{configured ? c.adOn : c.adOff}</p>
-      <p><a href="https://www.cloudflare.com/privacypolicy/">Cloudflare</a> · <a href={'https://policies.google.com/technologies/partner-sites?hl=' + locale}>Google</a></p>
-      <Link href={toolPath('contact', locale)}>{c.contactLink}</Link>
+      <h2>{external[0]}</h2><p>{external[1]} {policy}.</p>
+      <p>{contact}</p>
     </>;
   }
+  if (page === 'about') return <>
+    <p>{c.about[0]}</p><h2>{h.criteria}</h2><p>{c.about[1]}</p>
+    <h2>{h.corrections}</h2><p>{en ? 'Report broken links, expired codes, or outdated instructions with the page and a source.' : 'Indica la página y la fuente al avisar de enlaces rotos, códigos vencidos o instrucciones desactualizadas.'} {contact}.</p>
+    <h2>{h.advertising}</h2><p>{en ? 'Advertising placements stay disabled while the portal awaits Google AdSense approval.' : 'Los espacios publicitarios siguen desactivados mientras el portal espera la aprobación de Google AdSense.'}</p>
+  </>;
+  if (page === 'contact') return <>
+    <h2>{h.contact}</h2>
+    {c.contact.map(paragraph => <p key={paragraph}>{paragraph}</p>)}
+    <p><a href="https://github.com/hrq1408/gachaverse/issues">{c.github}</a></p>
+  </>;
+  if (page === 'advertise') return <>
+    <h2>{h.formats}</h2><ul>{(en ? ['Disclosed sponsorship of guides, calendars, or portal sections.', 'Campaigns for launches and events related to covered games.', 'Disclosed offers and affiliate links with reviewed destinations, providers, and terms.'] :
+      ['Patrocinios identificados de guías, calendarios o secciones del portal.', 'Campañas de lanzamientos y eventos de los juegos cubiertos.', 'Ofertas y enlaces de afiliados identificados, con revisión del proveedor, destino y condiciones.']).map(format => <li key={format}>{format}</li>)}</ul>
+    <h2>{h.proposal}</h2><p>{c.advertise[1]}</p>
+    <p><Link className="button secondary" href={toolPath('contact', locale)}>{c.contactLink}</Link></p>
+    <h2>{h.criteria}</h2><p>{c.advertising[0]} {c.advertising[1]}</p>
+    <p>{policy}</p>
+  </>;
   return <>
-    {c[page].map(paragraph => <p key={paragraph}>{paragraph}</p>)}
-    {page === 'contact' && <a href="https://github.com/hrq1408/gachaverse/issues">{c.github}</a>}
-    {page === 'advertise' && <p><Link href={toolPath('contact', locale)}>{c.contactLink}</Link> · <Link href={toolPath('advertising', locale)}>{c.policy}</Link></p>}
+    <h2>{h.independence}</h2><p>{c.advertising[0]}</p>
+    <h2>{h.affiliate}</h2><p>{en ? 'A disclosed affiliate link may generate a commission. Partners set the prices, payment options, terms, and support.' : 'Un enlace de afiliación identificado puede generar una comisión. El socio fija los precios, las opciones de pago, las condiciones y el soporte.'}</p>
+    <h2>{h.offers}</h2><p>{c.advertising[1]}</p>
+    <h2>{h.analytics}</h2><p>{en ? 'With measurement permission, the portal uses only the public offer ID, relationship type, and navigation context for commercial click events.' : 'Con permiso de medición, los clics comerciales usan solo el identificador público de la oferta, el tipo de relación y el contexto de navegación.'}</p>
+    <p><Link href={toolPath('privacy', locale)}>{en ? 'Privacy policy' : 'Política de privacidad'}</Link> · {contact}</p>
+    <p><Link href={toolPath('advertise', locale)}>{en ? 'Advertise on GachaVerse' : 'Anúnciate en GachaVerse'}</Link></p>
   </>;
 }

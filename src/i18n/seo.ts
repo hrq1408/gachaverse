@@ -7,6 +7,20 @@ import { games } from '@/content/catalog';
 import { codeGameAlternates, gameHubAlternates, gameHubPath, toolAlternates, toolPages, toolPath } from './tools';
 
 export const homeAlternates = languageAlternates({ 'pt-BR': '/', en: '/en/', es: '/es/' });
+export const homeSeoTitles = {
+  'pt-BR': 'GachaVerse — Guias, Códigos e Builds de Jogos Gacha',
+  en: 'GachaVerse — Gacha Game Guides, Codes & Builds',
+  es: 'GachaVerse — Guías, Códigos y Builds de Juegos Gacha',
+};
+
+export function articleSeoTitle(editorialId: string, title: string, locale: 'pt-BR' | TranslationLocale) {
+  if (editorialId !== 'honkai-star-rail-reliquias') return title;
+  return {
+    'pt-BR': 'Relíquias em Honkai: Star Rail: atributos e síntese',
+    en: 'Honkai: Star Rail Relics: Stats and Synthesis',
+    es: 'Reliquias en Honkai: Star Rail: atributos y síntesis',
+  }[locale];
+}
 export const guideAlternates = () => languageAlternates({
   'pt-BR': guidesPath('pt-BR'),
   ...Object.fromEntries(translatedLocales.filter(lang => publishedTranslations.some(entry => entry.locale === lang))

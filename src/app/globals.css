@@ -239,13 +239,6 @@ button:not(:disabled) { cursor: pointer; }
 .language-switcher a { display: block; padding: .65rem .8rem; min-height: 44px; border-radius: .4rem; }
 .language-switcher a:hover { background: var(--subtle); }
 .language-preferred { margin-inline-start: .55rem; }
-.localized-home { display: grid; gap: 2rem; }
-.localized-hero { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 2rem; align-items: center; }
-.localized-hero img, .localized-article > img { width: 100%; height: auto; border-radius: .9rem; }
-.localized-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 14rem), 1fr)); gap: .8rem; }
-.localized-article { max-width: 78ch; }
-.localized-article a { overflow-wrap: anywhere; }
-@media (max-width: 720px) { .localized-hero { grid-template-columns: 1fr; } }
 .theme-toggle { width: 44px; height: 44px; display: grid; place-items: center; color: var(--heading); background: var(--page); border: 1px solid var(--border); border-radius: .7rem; }
 :root:not([data-theme="dark"]) .theme-sun, :root[data-theme="dark"] .theme-moon { display: none; }
 

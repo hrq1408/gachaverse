@@ -1,14 +1,13 @@
 import { advertisingPolicy, adsenseClient, autoAdsEnabled, autoAdsSource } from '@/features/advertising/config';
 import Link from 'next/link';
-import { PageHeading } from '@/components/catalog';
+import { InstitutionalPage } from '@/components/page-frames';
 import { pageMetadata } from '@/lib/site';
 
 const description = 'Entenda quais serviços recebem dados quando você consulta os guias e como controlar cookies no navegador.';
 export const metadata = pageMetadata('Política de privacidade', description, '/privacidade/');
 
 export default function Privacy() {
-  return <div className="shell interior"><article className="prose">
-    <PageHeading eyebrow="GachaVerse" title="Política de privacidade" description={description} />
+  return <InstitutionalPage eyebrow="GachaVerse" title="Política de privacidade" description={description}>
     <h2>Ao visitar o portal</h2>
     <p>A leitura dos guias dispensa cadastro. A Cloudflare entrega as páginas e recebe dados técnicos da conexão, como endereço IP, página solicitada e informações do navegador, para atender à solicitação e proteger a infraestrutura.</p>
     <p><a href="https://www.cloudflare.com/privacypolicy/">Consultar a política de privacidade da Cloudflare</a></p>
@@ -29,5 +28,5 @@ export default function Privacy() {
     <p>Com a medição autorizada, podemos contar cliques em ofertas identificadas usando o identificador público da oferta e o tipo de relação comercial. O evento omite a URL do parceiro e dados da compra. Consulte a <Link href="/publicidade-e-afiliados/">política de publicidade e afiliados</Link>.</p>
     <p>Os resgates acontecem nos canais oficiais de cada jogo. Dados de login e códigos inseridos nesses canais são tratados pelo respectivo serviço. Ao abrir um relato no GitHub, seu nome de usuário e a mensagem ficam visíveis ao público.</p>
     <p>Para dúvidas sobre esta política ou solicitações relacionadas a dados, consulte a <Link href="/contato/">página de contato</Link>.</p>
-  </article></div>;
+  </InstitutionalPage>;
 }

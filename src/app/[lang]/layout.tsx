@@ -1,16 +1,14 @@
 import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
-import Link from 'next/link';
 import type { ReactNode } from 'react';
-import { Consent, CookiePreferencesButton } from '@/components/consent';
-import { LocalizedHeader } from '@/components/chrome';
+import { Consent } from '@/components/consent';
+import { Footer, Header } from '@/components/chrome';
 import { advertisingPolicy, adsenseClient, autoAdsEnabled, autoAdsSource } from '@/features/advertising/config';
 import { publicPaths } from '@/content/editorial';
 import { internationalSitemapPaths } from '@/i18n/seo';
 import { feedPath, isTranslationLocale, translatedLocales } from '@/i18n/locales';
 import { messages } from '@/i18n/messages';
 import { site } from '@/lib/site';
-import { toolPath, toolTitles } from '@/i18n/tools';
 import '../globals.css';
 
 export const dynamicParams = false;
@@ -39,17 +37,9 @@ export default async function LocalizedLayout({ children, params }: { children: 
     </head>
     <body>
       <a className="skip-link" href="#principal">{copy.skip}</a>
-      <LocalizedHeader locale={lang} />
+      <Header locale={lang} />
       <main id="principal" tabIndex={-1}>{children}</main>
-      <footer className="site-footer"><div className="shell footer-inner">
-        <a className="brand" href={'/' + lang + '/'}>GachaVerse</a>
-        <nav aria-label={copy.footer}>
-          {(['about', 'privacy', 'advertising', 'advertise', 'contact'] as const).map(page =>
-            <Link key={page} href={toolPath(page, lang)}>{toolTitles[lang][page][0]}</Link>)}
-          <a href={feedPath(lang)}>{copy.rss}</a>
-          <CookiePreferencesButton locale={lang} />
-        </nav>
-      </div></footer>
+      <Footer locale={lang} />
       <Consent locale={lang} advertisingAvailable={Boolean(adSource)} paths={[...publicPaths(), ...internationalSitemapPaths().map(row => row.path)]} />
     </body>
   </html>;

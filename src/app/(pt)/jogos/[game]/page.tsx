@@ -1,9 +1,5 @@
-import { articles, publishedSections } from '@/content/editorial';
-import { AdSlot } from '@/features/advertising/components';
+import { EditorialGame } from '@/components/editorial-pages';
 import { notFound } from 'next/navigation';
-import Link from 'next/link';
-import { ArticleCard } from '@/components/article';
-import { PageHeading, SectionCard } from '@/components/catalog';
 import { games, gamePath } from '@/content/catalog';
 import { pageMetadata } from '@/lib/site';
 
@@ -20,17 +16,7 @@ export async function generateMetadata({ params }: Props) {
 
 export default async function GamePage({ params }: Props) {
   const { game } = await params;
-  const entry = games.find(({ slug }) => slug === game);
+  const entry = games.find(item => item.slug === game);
   if (!entry) notFound();
-  const guides = articles.filter(article => article.jogos.includes(entry.slug));
-  return <div className="shell interior">
-    <Link href="/jogos/" className="back-link">Todos os jogos</Link>
-    <PageHeading eyebrow={entry.studio} title={entry.name} description="Consulte os canais oficiais e as instruções de resgate em português." />
-    <a className="button secondary official" href={entry.official}>Site oficial do jogo</a>
-    <Link className="button secondary official ml-2" href={gamePath(entry) + 'codigos/'}>Códigos de resgate</Link>
-    <h2 className="mb-4 text-xl font-bold">Conteúdo disponível</h2>
-    <div className="card-grid">{publishedSections(entry).map((section) => <SectionCard section={section} game={entry} key={section.slug} />)}</div>
-    {guides.length > 0 && <><AdSlot placement="game"/><section className="mt-8"><h2 className="mb-4 text-xl font-bold">Guias de {entry.name}</h2><div className="editorial-grid">{guides.map(article => <ArticleCard key={article.slug} article={article}/>)}</div></section></>}
-  </div>;
+  return <EditorialGame game={entry} locale="pt-BR" />;
 }
-

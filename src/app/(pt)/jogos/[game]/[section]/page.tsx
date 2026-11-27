@@ -1,6 +1,7 @@
+import { SectionPage } from '@/components/page-frames';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
-import { PageHeading, SectionContent } from '@/components/catalog';
+import { SectionContent } from '@/components/catalog';
 import { games, gamePath, sections, sectionPath } from '@/content/catalog';
 import { sectionHasContent } from '@/content/editorial';
 import { pageMetadata } from '@/lib/site';
@@ -30,10 +31,9 @@ export async function generateMetadata({ params }: Props) {
 
 export default async function GameSection({ params }: Props) {
   const { entry, category } = await resolvePage(params);
-  return <div className="shell interior">
-    <Link href={gamePath(entry)} className="back-link">{entry.name}</Link>
-    <PageHeading eyebrow={entry.name} title={category.title} description={category.description} />
+  return <SectionPage eyebrow={entry.name} title={category.title} description={category.description}
+    before={<Link href={gamePath(entry)} className="back-link">{entry.name}</Link>}>
     <SectionContent section={category} game={entry} />
-  </div>;
+  </SectionPage>;
 }
 
