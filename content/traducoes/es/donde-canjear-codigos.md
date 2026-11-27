@@ -3,9 +3,9 @@ editorialId: "onde-resgatar-codigos"
 slug: "donde-canjear-codigos"
 status: "published"
 reviewed: true
-sourceRevision: "2632f6b50c18333b2ce17ffbe8f37853d59b4360236f2150f15aeb3eb9fb82e8"
+sourceRevision: "1f70155956e383aeeefd4d3a93e8f7e1268859d3463cc55a3e5e6785a407449e"
 title: "Dónde canjear códigos de los cuatro juegos"
-description: "Encuentra las páginas de canje de HoYoverse y descubre dónde introducir códigos en el menú de Wuthering Waves."
+description: "Encuentra los sitios oficiales de canje de HoYoverse, la ruta del menú de Wuthering Waves y qué revisar si un código falla."
 imageAlt: "Un explorador está frente a un portal morado y cian."
 ---
 
@@ -13,9 +13,11 @@ imageAlt: "Un explorador está frente a un portal morado y cian."
 
 HoYoverse mantiene páginas de canje para Genshin Impact, Honkai: Star Rail y Zenless Zone Zero. Abre la página de tu juego y sigue las instrucciones.
 
-- [Genshin Impact](https://genshin.hoyoverse.com/pt/gift)
+- [Genshin Impact](https://genshin.hoyoverse.com/es/gift)
 - [Honkai: Star Rail](https://hsr.hoyoverse.com/gift)
 - [Zenless Zone Zero](https://zenless.hoyoverse.com/redemption)
+
+Antes de confirmar, revisa la cuenta y, si el sitio ofrece esas opciones, el servidor y el personaje seleccionados.
 
 ## Canjea códigos en Wuthering Waves
 
@@ -23,6 +25,6 @@ Kuro Games indica que abras los ajustes del juego, entres en «Otros» y selecci
 
 ## Validez y condiciones
 
-Antes de intentar usar un código, consulta su validez y sus condiciones en la publicación original. Canjéalo únicamente en el sitio oficial o en el menú del juego.
+Si el juego o la página de canje rechazan un código, compara los caracteres con el anuncio original y comprueba el plazo y las condiciones. Si el canje se confirmó en Wuthering Waves, revisa primero el buzón del juego. Canjea códigos únicamente en el sitio oficial o en el menú del juego.
 
-Si estás guardando recursos para un evento, consulta también las fechas anunciadas en el [calendario de banners de los cuatro juegos](/conteudo/calendario/).
+La [central de códigos](/es/codigos/) reúne las fuentes y los plazos confirmados. Si estás guardando recursos para un evento, consulta también el [calendario de banners](/es/calendario/).

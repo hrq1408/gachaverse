@@ -3,7 +3,7 @@ status: publicado
 revisado: true
 titulo: Onde resgatar códigos dos quatro jogos
 slug: onde-resgatar-codigos
-descricao: Encontre os portais da HoYoverse e o caminho pelo menu de Wuthering Waves.
+descricao: Saiba onde resgatar códigos de Genshin Impact, Honkai Star Rail, Zenless Zone Zero e Wuthering Waves, e o que conferir se o resgate falhar.
 jogos: [honkai-star-rail, genshin-impact, zenless-zone-zero, wuthering-waves]
 categoria: artigos
 autor: Equipe editorial do GachaVerse
@@ -24,7 +24,13 @@ fontes:
 
 ## Resgate nos portais da HoYoverse
 
-Genshin Impact, Honkai: Star Rail e Zenless Zone Zero têm páginas de resgate mantidas pela HoYoverse. Abra a página correspondente ao seu jogo e siga as instruções do portal.
+Abra o portal oficial do jogo em que você pretende receber a recompensa.
+
+- [Genshin Impact](https://genshin.hoyoverse.com/pt/gift)
+- [Honkai: Star Rail](https://hsr.hoyoverse.com/gift)
+- [Zenless Zone Zero](https://zenless.hoyoverse.com/redemption)
+
+Antes de confirmar, confira a conta e, se o portal oferecer essa opção, o servidor e o personagem selecionados.
 
 ## Resgate em Wuthering Waves
 
@@ -32,6 +38,8 @@ Em Wuthering Waves, a Kuro Games orienta a abrir as configurações dentro do jo
 
 ## Validade e condições
 
-Confira a validade e as condições na publicação original antes de tentar usar um código. Use apenas o site oficial ou o menu interno do jogo para fazer o resgate.
+Se o jogo ou o portal recusar o código, compare os caracteres com a publicação original e confira o prazo e as condições do anúncio. Se o resgate foi confirmado em Wuthering Waves, confira primeiro a caixa de correio do jogo. Use apenas o site oficial ou o menu interno do jogo para fazer o resgate.
+
+A [Central de Códigos](/conteudo/codigos/) reúne as fontes e os prazos que puderam ser confirmados.
 
 Se você está guardando recursos para um evento, use também o [calendário de banners dos quatro jogos](/conteudo/calendario/) para conferir as janelas anunciadas.
