@@ -1,0 +1,25 @@
+{
+  "candidates": [],
+  "recentlyExpired": [],
+  "calendar": {
+    "candidates": [
+      {
+        "game": "zenless-zone-zero",
+        "version": "3.4",
+        "event": "programa-especial",
+        "sources": [
+          "https://www.youtube.com/watch?v=-g94CfWB-gI",
+          "https://www.youtube.com/watch?v=1hNSmEkYtyI",
+          "https://www.youtube.com/watch?v=KmpZ6TUi2d4",
+          "https://www.youtube.com/watch?v=YQCMj-Gio9Y",
+          "https://www.youtube.com/watch?v=aa6JfusLebs",
+          "https://www.youtube.com/watch?v=s1E6w6QrYZA",
+          "https://www.youtube.com/watch?v=uDjZJ_2IzR4",
+          "https://www.youtube.com/watch?v=wdINx0PHWK8"
+        ]
+      }
+    ],
+    "expired": [],
+    "uncovered": []
+  }
+}
