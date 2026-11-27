@@ -7,6 +7,7 @@ import { LanguageSwitcher } from './language-switcher';
 import { articleSwitchMap } from '@/i18n/articles';
 import { guidesPath, homePath, type Locale } from '@/i18n/locales';
 import { messages } from '@/i18n/messages';
+import { toolPath } from '@/i18n/tools';
 
 function Brand({ locale = 'pt-BR' }: { locale?: Locale }) {
   return <Link className="brand" href={homePath(locale)}><Image src="/images/gachaverse-logo.webp" width={210} height={52} alt="GachaVerse" /></Link>;
@@ -42,12 +43,12 @@ export function LocalizedHeader({ locale }: { locale: 'en' | 'es' }) {
         <Link href={homePath(locale)}>{copy.home}</Link>
         <Link href={guidesPath(locale)}>{copy.guides}</Link>
         <Link href="/jogos/" hrefLang="pt-BR">{copy.games} (PT)</Link>
-        <Link href="/conteudo/codigos/" hrefLang="pt-BR">{copy.codes} (PT)</Link>
-        <Link href="/conteudo/calendario/" hrefLang="pt-BR">{copy.banners} (PT)</Link>
-        <Link href="/ferramentas/" hrefLang="pt-BR">{copy.tools} (PT)</Link>
+        <Link href={toolPath('codes', locale)}>{copy.codes}</Link>
+        <Link href={toolPath('calendar', locale)}>{copy.banners}</Link>
+        <Link href={toolPath('pity', locale)}>{copy.tools}</Link>
       </nav>
       <div className="header-tools">
-        <Link className="theme-toggle" href="/busca/" hrefLang="pt-BR" aria-label={copy.search}><Search size={19} aria-hidden="true" /></Link>
+        <Link className="theme-toggle" href={toolPath('search', locale)} aria-label={copy.search}><Search size={19} aria-hidden="true" /></Link>
         <ThemeToggle locale={locale} />
         <LanguageSwitcher locale={locale} links={articleSwitchMap()} />
       </div>

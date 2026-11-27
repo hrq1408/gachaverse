@@ -7,6 +7,7 @@ import { z } from 'zod';
 import { articles, type Article } from '@/content/articles';
 import { publicPaths } from '@/content/editorial';
 import { guidesPath, languageAlternates, translatedLocales, type TranslationLocale } from './locales';
+import { toolPages, toolPath } from './tools';
 
 const slug = z.string().regex(/^[a-z0-9]+(?:-[a-z0-9]+)*$/);
 const text = z.string().trim().min(1);
@@ -39,8 +40,10 @@ export function readTranslation(raw: string, locale: TranslationLocale, collecti
       if (child.type !== 'link_open') continue;
       const href = child.attrGet('href');
       if (typeof href === 'string' && href.startsWith('/')) {
-        if (!portuguesePaths.has(href)) throw new Error('Link interno sem destino publicado em português.');
-        child.attrSet('hreflang', 'pt-BR');
+        if (portuguesePaths.has(href)) child.attrSet('hreflang', 'pt-BR');
+        else if (!toolPages.some(page => toolPath(page, locale) === href)) {
+          throw new Error('Link interno sem destino público no português ou no idioma da tradução.');
+        }
       }
     }
     if (token.type !== 'heading_open') continue;
@@ -100,8 +103,25 @@ export function translationQueue() {
     return {
       editorialId: source.slug, locale, title: source.titulo, sourcePath: '/artigos/' + source.slug + '/',
       sourceRevision: sourceRevision(source),
+      image: source.imagem, sources: source.fontes, games: source.jogos,
       status: entry ? entry.stale ? 'desatualizada' : entry.indexable ? 'publicada' : 'em revisão' : 'pendente',
       draftPath: entry ? 'content/traducoes/' + locale + '/' + entry.slug + '.md' : null,
     };
+  }));
+}
+
+const first = [
+  'honkai-star-rail-pity-50-50', 'genshin-impact-pity-oracoes', 'zenless-zone-zero-canais-garantia',
+  'wuthering-waves-banners-garantias', 'honkai-star-rail-guia-iniciantes', 'genshin-impact-guia-iniciantes',
+  'zenless-zone-zero-guia-iniciantes', 'wuthering-waves-guia-iniciantes',
+];
+
+export function translationBatches(size = 4) {
+  const pending = translationQueue().filter(row => row.status === 'pendente' || row.status === 'desatualizada');
+  const rank = (id: string) => first.includes(id) ? first.indexOf(id) : first.length;
+  const ids = [...new Set(pending.map(row => row.editorialId))].sort((a, b) => rank(a) - rank(b) || a.localeCompare(b));
+  return Array.from({ length: Math.ceil(ids.length / size) }, (_, index) => ({
+    batch: index + 1,
+    rows: pending.filter(row => ids.slice(index * size, (index + 1) * size).includes(row.editorialId)),
   }));
 }

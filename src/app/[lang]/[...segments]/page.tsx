@@ -7,6 +7,9 @@ import { articleAlternates, publishedTranslations, reviewTranslations, translati
 import { guidesPath, guidesSegment, homePath, isTranslationLocale } from '@/i18n/locales';
 import { editorialMessages, messages } from '@/i18n/messages';
 import { guideAlternates, localizedMetadata } from '@/i18n/seo';
+import { games } from '@/content/catalog';
+import { ToolContent } from '@/i18n/tool-content';
+import { codeGameAlternates, toolAlternates, toolPages, toolPath, toolRoutes, toolTitles } from '@/i18n/tools';
 
 type Props = { params: Promise<{ lang: string; segments: string[] }> };
 const visible = reviewTranslations ? translations : publishedTranslations;
@@ -17,19 +20,34 @@ export function generateStaticParams({ params }: { params: { lang: string } }) {
   if (!isTranslationLocale(lang)) return [];
   const section = guidesSegment[lang];
   return [{ segments: [section] }, ...visible.filter(entry => entry.locale === lang)
-    .map(entry => ({ segments: [section, entry.slug] }))];
+    .map(entry => ({ segments: [section, entry.slug] })),
+    ...toolPages.map(page => ({ segments: [toolRoutes[page][lang]] })),
+    ...games.map(game => ({ segments: [toolRoutes.codes[lang], game.slug] }))];
 }
 
 async function resolveRoute(params: Props['params']) {
   const { lang, segments } = await params;
-  if (!isTranslationLocale(lang) || segments[0] !== guidesSegment[lang] || segments.length > 2) notFound();
+  if (!isTranslationLocale(lang) || segments.length > 2) notFound();
+  const tool = toolPages.find(page => toolRoutes[page][lang] === segments[0]);
+  if (tool) {
+    const game = tool === 'codes' ? games.find(item => item.slug === segments[1]) : undefined;
+    if (segments[1] && !game) notFound();
+    return { lang, tool, game, entry: undefined };
+  }
+  if (segments[0] !== guidesSegment[lang]) notFound();
   const entry = segments[1] ? visible.find(row => row.locale === lang && row.slug === segments[1]) : undefined;
   if (segments[1] && !entry) notFound();
   return { lang, entry };
 }
 
 export async function generateMetadata({ params }: Props) {
-  const { lang, entry } = await resolveRoute(params);
+  const { lang, entry, tool, game } = await resolveRoute(params);
+  if (tool) {
+    const [title, description] = toolTitles[lang][tool];
+    return localizedMetadata(lang, game ? game.name + ' — ' + title : title, description,
+      toolPath(tool, lang) + (game ? game.slug + '/' : ''), tool !== 'search',
+      tool === 'search' ? {} : game ? codeGameAlternates(game.slug) : toolAlternates(tool));
+  }
   if (entry) return localizedMetadata(lang, entry.article.titulo, entry.article.descricao, translationPath(entry), entry.indexable,
     entry.indexable ? articleAlternates(entry.editorialId) : {}, entry);
   const index = publishedTranslations.some(row => row.locale === lang);
@@ -38,7 +56,8 @@ export async function generateMetadata({ params }: Props) {
 }
 
 export default async function LocalizedGuide({ params }: Props) {
-  const { lang, entry } = await resolveRoute(params);
+  const { lang, entry, tool, game } = await resolveRoute(params);
+  if (tool) return <ToolContent page={tool} locale={lang} game={game} />;
   const copy = editorialMessages[lang];
   const menu = messages[lang];
   if (!entry) {

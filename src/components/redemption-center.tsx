@@ -8,17 +8,17 @@ import { trackAction } from '@/lib/analytics';
 import type { RedemptionCode } from '@/content/redemption';
 import { codeStatus, confirmedTimeLeft, isRecent } from '@/lib/redemption-status';
 import { copyRedemptionCode } from './copy-redemption-code';
+import type { Locale } from '@/i18n/locales';
+import { redemptionCopy } from '@/i18n/redemption';
+import { toolPath } from '@/i18n/tools';
 
 const central = '/conteudo/codigos/';
 const pageFor = (game: Game) => gamePath(game) + 'codigos/';
-const labels = {
-  'no-prazo': 'Dentro do prazo',
-  'sem-prazo': 'Sem prazo informado',
-  'expirado': 'Expirado',
-  'revisao': 'Revisão pendente',
+const statuses = {
+  'pt-BR': { 'no-prazo': 'Dentro do prazo', 'sem-prazo': 'Sem prazo informado', expirado: 'Expirado', revisao: 'Revisão pendente' },
+  en: { 'no-prazo': 'Within deadline', 'sem-prazo': 'No published deadline', expirado: 'Expired', revisao: 'Review pending' },
+  es: { 'no-prazo': 'Dentro del plazo', 'sem-prazo': 'Sin plazo publicado', expirado: 'Vencido', revisao: 'Revisión pendiente' },
 };
-const date = new Intl.DateTimeFormat('pt-BR', { dateStyle: 'short', timeZone: 'UTC' });
-const deadline = new Intl.DateTimeFormat('pt-BR', { dateStyle: 'short', timeStyle: 'short', timeZone: 'America/Sao_Paulo' });
 const steps: Record<Game['slug'], string> = {
   'honkai-star-rail': 'Entre na sua conta HoYoverse, selecione o servidor, confira o personagem e cole o código no site oficial. Depois, abra o correio do jogo.',
   'genshin-impact': 'Entre na sua conta HoYoverse, escolha o servidor e confira o apelido antes de colar o código. Recolha a recompensa no correio do jogo.',
@@ -26,9 +26,29 @@ const steps: Record<Game['slug'], string> = {
   'wuthering-waves': 'Dentro do jogo, abra Configurações, Outros e Código de resgate. Digite o código, confirme e confira o correio.',
 };
 
-export function RedemptionCenter({ entries, game, snapshot }: {
-  entries: RedemptionCode[]; game?: Game; snapshot: number;
+const localizedSteps = {
+  'pt-BR': steps,
+  en: {
+    'honkai-star-rail': 'Sign in to your HoYoverse Account, choose your server, confirm your character, and paste the code on the official site. Check your in-game mail.',
+    'genshin-impact': 'Sign in to your HoYoverse Account, choose your server, and check your nickname. Paste the code and claim the reward from in-game mail.',
+    'zenless-zone-zero': 'Finish the prologue mission that unlocks redemption. Sign in and choose your server on the official site, or use Menu, More, and Redemption Code in the game.',
+    'wuthering-waves': 'In the game, open Settings, Other, and Redemption Code. Enter the code, confirm, and check your mail.',
+  },
+  es: {
+    'honkai-star-rail': 'Inicia sesión en HoYoverse, elige el servidor, comprueba el personaje e introduce el código en el sitio oficial. Revisa el correo del juego.',
+    'genshin-impact': 'Inicia sesión en HoYoverse, elige el servidor y verifica tu nombre. Introduce el código y recoge la recompensa en el correo del juego.',
+    'zenless-zone-zero': 'Completa la misión del prólogo que desbloquea el canje. Inicia sesión y elige el servidor en el sitio oficial, o usa las opciones de canje del menú del juego.',
+    'wuthering-waves': 'Dentro del juego, abre los ajustes y busca la opción de canje en la sección de otras opciones. Introduce el código y revisa el correo.',
+  },
+};
+
+export function RedemptionCenter({ entries, game, snapshot, locale = 'pt-BR' }: {
+  entries: RedemptionCode[]; game?: Game; snapshot: number; locale?: Locale;
 }) {
+  const c = redemptionCopy[locale];
+  const labels = statuses[locale];
+  const date = new Intl.DateTimeFormat(locale, { dateStyle: 'short', timeZone: 'UTC' });
+  const deadline = new Intl.DateTimeFormat(locale, { dateStyle: 'short', timeStyle: 'short', timeZone: 'America/Sao_Paulo' });
   const [gameFilter, setGameFilter] = useState<Game['slug'] | ''>(game?.slug ?? '');
   const [statusFilter, setStatusFilter] = useState('disponiveis');
   const [now, setNow] = useState(snapshot);
@@ -68,9 +88,9 @@ export function RedemptionCenter({ entries, game, snapshot }: {
   async function copy(entry: RedemptionCode) {
     try {
       await copyRedemptionCode(entry);
-      setNotice('Código copiado: ' + entry.code);
+      setNotice(c.copied + ': ' + entry.code);
     } catch {
-      setNotice('Não foi possível copiar. Selecione o código e copie manualmente.');
+      setNotice(c.copyError);
     }
   }
 
@@ -78,48 +98,48 @@ export function RedemptionCenter({ entries, game, snapshot }: {
     setUsed(next);
     setHideUsed(hide);
     try { localStorage.setItem(storageKey, JSON.stringify({ used: next, hide })); }
-    catch { setNotice('As preferências ficaram disponíveis somente nesta visita.'); }
+    catch { setNotice(c.saveError); }
   }
 
   return <div className="redemption-center">
-    <nav aria-label="Páginas de resgate por jogo" className="redemption-games">
-      {game && <Link className="button secondary" href={central}>Todos os jogos</Link>}
+    <nav aria-label={c.nav} className="redemption-games">
+      {game && <Link className="button secondary" href={locale === 'pt-BR' ? central : toolPath('codes', locale)}>{c.all}</Link>}
       {games.map(item => <Link className="button secondary" key={item.slug}
-        aria-current={item.slug === game?.slug ? 'page' : undefined} href={pageFor(item)}
+        aria-current={item.slug === game?.slug ? 'page' : undefined} href={locale === 'pt-BR' ? pageFor(item) : toolPath('codes', locale) + item.slug + '/'}
         onClick={() => trackAction('redemption_game_select', { game_slug: item.slug })}>
         <Gift size={16} aria-hidden="true" />{item.name}</Link>)}
     </nav>
-    <section className="panel redemption-filters" aria-label="Filtros de códigos">
-      {!game && <div><label htmlFor="redemption-game-filter">Jogo</label><select id="redemption-game-filter" value={gameFilter} onChange={event => {
+    <section className="panel redemption-filters" aria-label={c.filters}>
+      {!game && <div><label htmlFor="redemption-game-filter">{c.game}</label><select id="redemption-game-filter" value={gameFilter} onChange={event => {
         const selected = games.find(item => item.slug === event.target.value);
         setGameFilter(selected?.slug ?? '');
         if (selected) trackAction('redemption_game_select', { game_slug: selected.slug });
       }}>
-        <option value="">Todos os jogos</option>
+        <option value="">{c.all}</option>
         {games.map(item => <option key={item.slug} value={item.slug}>{item.name}</option>)}
       </select></div>}
-      <div><label htmlFor="redemption-status-filter">Disponibilidade</label><select id="redemption-status-filter" value={statusFilter} onChange={event => setStatusFilter(event.target.value)}>
-        <option value="disponiveis">Disponíveis para tentar</option>
-        <option value="todos">Todos os registros</option>
+      <div><label htmlFor="redemption-status-filter">{c.available}</label><select id="redemption-status-filter" value={statusFilter} onChange={event => setStatusFilter(event.target.value)}>
+        <option value="disponiveis">{c.try}</option>
+        <option value="todos">{c.records}</option>
         {Object.entries(labels).map(([key, label]) => <option key={key} value={key}>{label}</option>)}
       </select></div>
       <label className="redemption-hide-used"><input type="checkbox" checked={hideUsed}
-        onChange={event => savePreferences(used, event.target.checked)} /> Ocultar utilizados</label>
-      <p role="status">{listed.length} {listed.length === 1 ? 'código encontrado' : 'códigos encontrados'}</p>
+        onChange={event => savePreferences(used, event.target.checked)} /> {c.hide}</label>
+      <p role="status">{listed.length} {listed.length === 1 ? c.single : c.multiple}</p>
     </section>
-    <p className="redemption-note">As fontes foram conferidas na data indicada. A confirmação final acontece no jogo ou no canal oficial.</p>
+    <p className="redemption-note">{c.note}</p>
     <p role="status" className="redemption-notice">{notice}</p>
     {displayGames.map(item => {
       const codes = listed.filter(({ entry }) => entry.game === item.slug);
       return <section className="redemption-group" key={item.slug} aria-labelledby={'resgate-' + item.slug}>
         <div className="redemption-instructions">
           <h2 id={'resgate-' + item.slug}>{item.name}</h2>
-          <p>{steps[item.slug]}</p>
+          <p>{localizedSteps[locale][item.slug]}</p>
           <a className="button secondary" data-game={item.slug} data-redemption="" href={item.redemption}>
-            {item.slug === 'wuthering-waves' ? 'Ver instruções oficiais' : 'Abrir resgate oficial'} <ExternalLink size={15} aria-hidden="true" />
+            {item.slug === 'wuthering-waves' ? c.instructions : c.official} <ExternalLink size={15} aria-hidden="true" />
           </a>
         </div>
-        {codes.length === 0 ? <p className="panel">Nenhum código deste jogo corresponde aos filtros.</p> :
+        {codes.length === 0 ? <p className="panel">{c.empty}</p> :
           <ul className="redemption-list">{codes.map(({ entry, status }) => {
             const remaining = confirmedTimeLeft(entry, now);
             const marked = used.includes(codeKey(entry));
@@ -131,31 +151,31 @@ export function RedemptionCenter({ entries, game, snapshot }: {
               <code>{entry.code}</code><span className="redemption-state" data-status={status}>{labels[status]}</span>
             </div>
             {((status !== 'expirado' && isRecent(entry, now)) || (remaining !== null && remaining > 0 && remaining <= 48 * 3600000)) &&
-              <p className="redemption-highlight">{remaining !== null && remaining > 0 && remaining <= 48 * 3600000 ? 'Vence em breve' : 'Código recente'}</p>}
-            <p><strong>Recompensas em destaque</strong><br />{entry.rewards.join(' · ')}</p>
-            <p>{entry.expiresAt ? <>Prazo oficial: <time dateTime={entry.expiresAt}>{deadline.format(Date.parse(entry.expiresAt))} (Brasília)</time></>
-              : 'Validade desconhecida. Disponibilidade relatada nas fontes.'}</p>
-            {remaining !== null && remaining > 0 && <p>Tempo restante: {Math.floor(remaining / 3600000)} h {Math.floor(remaining / 60000) % 60} min {Math.floor(remaining / 1000) % 60} s</p>}
-            {entry.editorialNote && <p>Nota editorial: {entry.editorialNote}</p>}
-            <p>Última conferência das fontes: <time dateTime={entry.verifiedOn}>{date.format(Date.parse(entry.verifiedOn))}</time></p>
-            <ul className="redemption-sources" aria-label="Fontes">{entry.sources.map(source => <li key={source.url}>
-              <a href={source.url}>{source.title}</a> <span>({source.type})</span>
+              <p className="redemption-highlight">{remaining !== null && remaining > 0 && remaining <= 48 * 3600000 ? c.expiring : c.recent}</p>}
+            <p><strong>{c.rewards}</strong><br /><span lang="pt-BR">{entry.rewards.join(' · ')}</span></p>
+            <p>{entry.expiresAt ? <>{c.deadline}: <time dateTime={entry.expiresAt}>{deadline.format(Date.parse(entry.expiresAt))} (Brasília)</time></>
+              : c.unknown}</p>
+            {remaining !== null && remaining > 0 && <p>{c.remaining}: {Math.floor(remaining / 3600000)} h {Math.floor(remaining / 60000) % 60} min {Math.floor(remaining / 1000) % 60} s</p>}
+            {entry.editorialNote && <p>{c.editorialNote}: <span lang="pt-BR">{entry.editorialNote}</span></p>}
+            <p>{c.checked}: <time dateTime={entry.verifiedOn}>{date.format(Date.parse(entry.verifiedOn))}</time></p>
+            <ul className="redemption-sources" aria-label={c.sources}>{entry.sources.map(source => <li key={source.url}>
+              <a href={source.url} lang="pt-BR">{source.title}</a> <span lang="pt-BR">({source.type})</span>
             </li>)}</ul>
             <div className="redemption-actions">
-              {redeemable && <button type="button" className="button primary" onClick={() => void copy(entry)} aria-label={'Copiar ' + entry.code}>
-                <Copy size={16} aria-hidden="true" />Copiar código
+              {redeemable && <button type="button" className="button primary" onClick={() => void copy(entry)} aria-label={c.copy + ' ' + entry.code}>
+                <Copy size={16} aria-hidden="true" />{c.copyCode}
               </button>}
               {redeemable && item.slug !== 'wuthering-waves' && <a className="button secondary"
                 href={redemptionUrl.href} target="_blank" rel="noreferrer" data-game={item.slug} data-redemption=""
-                onClick={() => void copy(entry)}>Copiar e resgatar <ExternalLink size={15} aria-hidden="true" /></a>}
+                onClick={() => void copy(entry)}>{c.copyAndRedeem} <ExternalLink size={15} aria-hidden="true" /></a>}
               <label><input type="checkbox" checked={marked} onChange={() => savePreferences(
                 marked ? used.filter(key => key !== codeKey(entry)) : [...used, codeKey(entry)], hideUsed
-              )} /> Já utilizado</label>
+              )} /> {c.used}</label>
             </div>
           </li>;
           })}</ul>}
       </section>;
     })}
-    <Link className="back-link" href="/artigos/onde-resgatar-codigos/">Guia de resgate dos quatro jogos</Link>
+    <Link className="back-link" href="/artigos/onde-resgatar-codigos/" hrefLang="pt-BR">{c.guide}</Link>
   </div>;
 }

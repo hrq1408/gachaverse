@@ -6,6 +6,7 @@ import { publishedTranslations, translationPath } from '@/i18n/articles';
 import { editorialMessages, messages } from '@/i18n/messages';
 import { homeAlternates, localizedMetadata } from '@/i18n/seo';
 import { guidesPath, homePath, isTranslationLocale } from '@/i18n/locales';
+import { toolPath } from '@/i18n/tools';
 
 type Props = { params: Promise<{ lang: string }> };
 
@@ -23,9 +24,9 @@ export default async function LocalizedHome({ params }: Props) {
   const nav = messages[lang];
   const entries = publishedTranslations.filter(entry => entry.locale === lang);
   const resources = [
-    { path: '/conteudo/codigos/', title: nav.codes, description: copy.codeInfo },
-    { path: '/conteudo/calendario/', title: nav.banners, description: copy.bannerInfo },
-    { path: '/ferramentas/', title: nav.tools, description: copy.toolInfo },
+    { path: toolPath('codes', lang), title: nav.codes, description: copy.codeInfo },
+    { path: toolPath('calendar', lang), title: nav.banners, description: copy.bannerInfo },
+    { path: toolPath('pity', lang), title: nav.tools, description: copy.toolInfo },
   ];
   return <div className="shell interior localized-home">
     <section className="localized-hero">
@@ -37,7 +38,7 @@ export default async function LocalizedHome({ params }: Props) {
     <section aria-labelledby="localized-resources">
       <h2 id="localized-resources">{copy.resources}</h2>
       <ul className="localized-grid">{resources.map(({ path, title, description }) => <li className="panel" key={path}>
-        <a href={path} hrefLang="pt-BR">{title} (PT)</a><p>{description}</p>
+        <Link href={path}>{title}</Link><p>{description}</p>
       </li>)}</ul>
     </section>
     <section aria-labelledby="localized-games">

@@ -10,6 +10,7 @@ import { internationalSitemapPaths } from '@/i18n/seo';
 import { feedPath, isTranslationLocale, translatedLocales } from '@/i18n/locales';
 import { messages } from '@/i18n/messages';
 import { site } from '@/lib/site';
+import { toolPath, toolTitles } from '@/i18n/tools';
 import '../globals.css';
 
 export const dynamicParams = false;
@@ -43,8 +44,8 @@ export default async function LocalizedLayout({ children, params }: { children: 
       <footer className="site-footer"><div className="shell footer-inner">
         <a className="brand" href={'/' + lang + '/'}>GachaVerse</a>
         <nav aria-label={copy.footer}>
-          <Link href="/privacidade/" hrefLang="pt-BR">{copy.privacy} (PT)</Link>
-          <Link href="/contato/" hrefLang="pt-BR">{copy.contact} (PT)</Link>
+          {(['about', 'privacy', 'advertising', 'advertise', 'contact'] as const).map(page =>
+            <Link key={page} href={toolPath(page, lang)}>{toolTitles[lang][page][0]}</Link>)}
           <a href={feedPath(lang)}>{copy.rss}</a>
           <CookiePreferencesButton locale={lang} />
         </nav>

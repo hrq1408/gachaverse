@@ -3,6 +3,8 @@ import { pageMetadata, site } from '@/lib/site';
 import { articleAlternates, publishedTranslations, translationPath, type Translation } from './articles';
 import { feedPath, guidesPath, homePath, languageAlternates, translatedLocales, type Alternates, type TranslationLocale } from './locales';
 import { editorialMessages } from './messages';
+import { games } from '@/content/catalog';
+import { codeGameAlternates, toolAlternates, toolPages, toolPath } from './tools';
 
 export const homeAlternates = languageAlternates({ 'pt-BR': '/', en: '/en/', es: '/es/' });
 export const guideAlternates = () => languageAlternates({
@@ -44,5 +46,10 @@ export function internationalSitemapPaths() {
     ...translatedLocales.filter(locale => publishedTranslations.some(entry => entry.locale === locale))
       .map(locale => ({ path: guidesPath(locale), languages: guideAlternates() })),
     ...publishedTranslations.map(entry => ({ path: translationPath(entry), languages: articleAlternates(entry.editorialId) })),
+    ...translatedLocales.flatMap(locale => toolPages.filter(page => page !== 'search')
+      .map(page => ({ path: toolPath(page, locale), languages: toolAlternates(page) }))),
+    ...translatedLocales.flatMap(locale => games.map(game => ({
+      path: toolPath('codes', locale) + game.slug + '/', languages: codeGameAlternates(game.slug),
+    }))),
   ];
 }

@@ -8,6 +8,7 @@ import { adPreferenceKey, readAdPreference } from '@/features/advertising/privac
 import { preferenceKey, readPreference, startAnalytics, stopAnalytics, trackAction, trackPage, type Preference } from '@/lib/analytics';
 import type { Locale } from '@/i18n/locales';
 import { messages } from '@/i18n/messages';
+import { toolPath } from '@/i18n/tools';
 
 export function CookiePreferencesButton({ locale = 'pt-BR' }: { locale?: Locale }) {
   return <button type="button" className="cookie-link" onClick={() => window.dispatchEvent(new Event('cookie-preferences'))}>{messages[locale].preferences}</button>;
@@ -106,7 +107,7 @@ export function Consent({ paths, advertisingAvailable = false, locale = 'pt-BR' 
   if (!custom && preference !== null) return null;
   return <aside className="cookie-panel" aria-labelledby="cookie-heading">
     <h2 ref={heading} tabIndex={-1} id="cookie-heading">{custom ? copy.preferences : copy.consentTitle}</h2>
-    <p>{copy.consentBody} <Link href="/privacidade/" hrefLang={locale === 'pt-BR' ? undefined : 'pt-BR'}>{copy.policy}</Link></p>
+    <p>{copy.consentBody} <Link href={toolPath('privacy', locale)}>{copy.policy}</Link></p>
     {custom && <label className="cookie-choice"><input type="checkbox" checked={enabled} onChange={(event) => setEnabled(event.target.checked)} /> {copy.allowAnalytics}</label>}
     {custom && advertisingAvailable && <>
       <label className="cookie-choice"><input type="checkbox" checked={ads} onChange={(event) => setAds(event.target.checked)} /> {copy.allowAds}</label>
