@@ -26,6 +26,7 @@ const schema = z.object({
   publicacao: z.iso.date(),
   atualizacao: z.iso.date(),
   versao: text.optional(),
+  noticia: z.literal(true).optional(),
   imagem: z.string().regex(/^\/(?:[\w-]+\/)*[\w-]+\.(?:webp|png|jpe?g|avif)$/i),
   textoAlternativo: text,
   legendaImagem: text.optional(),

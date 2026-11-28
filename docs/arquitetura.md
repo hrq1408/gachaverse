@@ -72,3 +72,7 @@ Os selos usam a data pública do anúncio, quando disponível, e o prazo oficial
 [Feeds públicos do YouTube](https://developers.google.com/youtube/data/guides/push_notifications)
 
 Se o feed Atom recusar acesso no ambiente do runner, configure o secret opcional YOUTUBE_DATA_API_KEY. Ele deve pertencer a um projeto Google com YouTube Data API v3 habilitada e restrita à API, dentro da cota gratuita. O fallback lê os 15 uploads mais recentes de cada canal indisponível em até nove chamadas por execução. Sem chave, o workflow continua emitindo a auditoria do catálogo e informa quais fontes não pôde consultar. O script não registra a chave nem os URLs autenticados.
+
+## Notícias
+
+Publique uma notícia pelo mesmo carregador de artigos, com noticia: true no front matter do original. O índice em /noticias/, /en/news/ e /es/noticias/ usa os cards editoriais compartilhados. Um índice sem notícias publicadas naquele idioma fica fora do sitemap. As matérias preservam os caminhos de artigos e participam dos feeds existentes. A seção não precisa de CSS ou de um fluxo de publicação próprios.

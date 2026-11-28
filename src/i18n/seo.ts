@@ -4,9 +4,16 @@ import { articleAlternates, publishedTranslations, translationPath, type Transla
 import { feedPath, guidesPath, homePath, languageAlternates, translatedLocales, type Alternates, type TranslationLocale } from './locales';
 import { editorialMessages } from './messages';
 import { games } from '@/content/catalog';
+import { hasNews } from '@/content/editorial';
 import { codeGameAlternates, gameHubAlternates, gameHubPath, toolAlternates, toolPages, toolPath } from './tools';
 
 export const homeAlternates = languageAlternates({ 'pt-BR': '/', en: '/en/', es: '/es/' });
+export const localizedNewsAlternates = () => languageAlternates({
+  ...(hasNews() && { 'pt-BR': toolPath('news', 'pt-BR') }),
+  ...Object.fromEntries(translatedLocales
+    .filter(locale => publishedTranslations.some(entry => entry.locale === locale && entry.article.noticia))
+    .map(locale => [locale, toolPath('news', locale)])),
+});
 export const homeSeoTitles = {
   'pt-BR': 'GachaVerse — Guias, Códigos e Builds de Jogos Gacha',
   en: 'GachaVerse — Gacha Game Guides, Codes & Builds',
@@ -60,8 +67,10 @@ export function internationalSitemapPaths() {
     ...translatedLocales.filter(locale => publishedTranslations.some(entry => entry.locale === locale))
       .map(locale => ({ path: guidesPath(locale), languages: guideAlternates() })),
     ...publishedTranslations.map(entry => ({ path: translationPath(entry), languages: articleAlternates(entry.editorialId) })),
-    ...translatedLocales.flatMap(locale => toolPages.filter(page => page !== 'search')
+    ...translatedLocales.flatMap(locale => toolPages.filter(page => page !== 'search' && page !== 'news')
       .map(page => ({ path: toolPath(page, locale), languages: toolAlternates(page) }))),
+    ...translatedLocales.filter(locale => localizedNewsAlternates()[locale])
+      .map(locale => ({ path: toolPath('news', locale), languages: localizedNewsAlternates() })),
     ...translatedLocales.flatMap(locale => games.map(game => ({
       path: toolPath('codes', locale) + game.slug + '/', languages: codeGameAlternates(game.slug),
     }))),

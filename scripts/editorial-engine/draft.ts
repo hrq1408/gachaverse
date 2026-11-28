@@ -39,7 +39,14 @@ export const intelligenceSchema = z.object({
 export const approvalSchema = z.object({
   id: slug, digest: z.string().regex(/^[a-f0-9]{64}$/), reviewer: text, date: z.iso.date(),
   status: z.literal('aprovada'), sourcesChecked: z.literal(true), coverChecked: z.literal(true),
-}).strict();
+  mode: z.enum(['manual', 'codex']).optional(),
+  evidence: z.object({
+    verifiedFacts: z.array(text).min(1),
+    coverRights: text,
+    languageReview: text,
+  }).strict().optional(),
+}).strict().refine(approval => approval.mode !== 'codex' || Boolean(approval.evidence),
+  'A revisão pelo Codex exige evidências factuais, direitos da capa e revisão de idioma.');
 export type Brief = z.infer<typeof briefSchema>;
 type Approval = z.infer<typeof approvalSchema>;
 export const bareBody = (raw: string) => raw.replace(/\r\n/g, '\n').replace(/^---\n[\s\S]*?\n---\n/, '').trim();

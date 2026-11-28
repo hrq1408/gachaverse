@@ -2,7 +2,7 @@ import type { MetadataRoute } from 'next';
 import { publicPaths } from '@/content/editorial';
 import { site } from '@/lib/site';
 import { articleAlternates } from '@/i18n/articles';
-import { guideAlternates, homeAlternates, internationalSitemapPaths } from '@/i18n/seo';
+import { guideAlternates, homeAlternates, internationalSitemapPaths, localizedNewsAlternates } from '@/i18n/seo';
 import type { Alternates } from '@/i18n/locales';
 import { legacyToolAlternates } from '@/i18n/tools';
 
@@ -21,6 +21,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
   }
   return [
     ...publicPaths().map(path => row(path, path === '/' ? homeAlternates : path === '/conteudo/artigos/' ? guideAlternates()
+      : path === '/noticias/' ? localizedNewsAlternates()
       : path.startsWith('/artigos/') ? articleAlternates(path.split('/')[2]) : legacyToolAlternates(path))),
     ...internationalSitemapPaths().map(({ path, languages }) => row(path, languages)),
   ];

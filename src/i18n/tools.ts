@@ -1,6 +1,7 @@
 import { homePath, languageAlternates, type TranslationLocale } from './locales';
 
 export const toolRoutes = {
+  news: { 'pt-BR': '/noticias/', en: 'news', es: 'noticias' },
   codes: { 'pt-BR': '/conteudo/codigos/', en: 'codes', es: 'codigos' },
   calendar: { 'pt-BR': '/conteudo/calendario/', en: 'banner-calendar', es: 'calendario' },
   pity: { 'pt-BR': '/ferramentas/calculadora-pity/', en: 'pity-calculator', es: 'calculadora-pity' },
@@ -32,12 +33,13 @@ export function legacyToolAlternates(path: string) {
   if (game) return codeGameAlternates(game);
   const hub = /^\/jogos\/([^/]+)\/$/.exec(path)?.[1];
   if (hub) return gameHubAlternates(hub);
-  const route = toolPages.find(page => page !== 'search' && toolPath(page, 'pt-BR') === path);
+  const route = toolPages.find(page => page !== 'search' && page !== 'news' && toolPath(page, 'pt-BR') === path);
   return route ? toolAlternates(route) : {};
 }
 
 export const toolTitles = {
   en: {
+    news: ['News', 'Publisher-confirmed updates, events, and changes in gacha games.'],
     codes: ['Redemption codes', 'Browse redemption codes by game, check their sources, and open official redemption channels.'],
     calendar: ['Banner calendar', 'See confirmed banner dates for all four games and check the original publisher announcements.'],
     pity: ['Honkai: Star Rail pity calculator', 'Plan how many pulls and Stellar Jades you may need for a featured character or Light Cone.'],
@@ -49,6 +51,7 @@ export const toolTitles = {
     advertise: ['Advertise on GachaVerse', 'Contact GachaVerse about an editorially independent commercial partnership.'],
   },
   es: {
+    news: ['Noticias', 'Actualizaciones, eventos y cambios confirmados por las editoras de juegos gacha.'],
     codes: ['Códigos de canje', 'Consulta códigos por juego, comprueba sus fuentes y abre los canales oficiales de canje.'],
     calendar: ['Calendario de banners', 'Consulta los plazos confirmados de los cuatro juegos y sus anuncios oficiales.'],
     pity: ['Calculadora de pity de Honkai: Star Rail', 'Calcula los saltos y el Jade estelar que podrías necesitar para un personaje o cono de luz destacado.'],

@@ -3,7 +3,7 @@ import { notFound } from 'next/navigation';
 import { articleAlternates, publishedTranslations, reviewTranslations, translationPath, translations } from '@/i18n/articles';
 import { guidesPath, guidesSegment, isTranslationLocale } from '@/i18n/locales';
 import { editorialMessages, messages } from '@/i18n/messages';
-import { articleSeoTitle, guideAlternates, localizedMetadata } from '@/i18n/seo';
+import { articleSeoTitle, guideAlternates, localizedMetadata, localizedNewsAlternates } from '@/i18n/seo';
 import { games } from '@/content/catalog';
 import { ToolContent } from '@/i18n/tool-content';
 import { codeGameAlternates, gameHubAlternates, gameHubPath, toolAlternates, toolPages, toolPath, toolRoutes, toolTitles } from '@/i18n/tools';
@@ -48,6 +48,8 @@ export async function generateMetadata({ params }: Props) {
   if (hub) return localizedMetadata(lang, hub.name, hubDescription(lang, hub.name), gameHubPath(hub.slug, lang), true, gameHubAlternates(hub.slug));
   if (tool) {
     const [title, description] = toolTitles[lang][tool];
+    if (tool === 'news') return localizedMetadata(lang, title, description, toolPath(tool, lang),
+      Boolean(localizedNewsAlternates()[lang]), localizedNewsAlternates());
     return localizedMetadata(lang, game ? game.name + ' — ' + title : title, description,
       toolPath(tool, lang) + (game ? game.slug + '/' : ''), tool !== 'search',
       tool === 'search' ? {} : game ? codeGameAlternates(game.slug) : toolAlternates(tool));

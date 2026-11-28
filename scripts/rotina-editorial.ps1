@@ -23,7 +23,7 @@ if ($Consultar) {
             $drafts = @(Get-ChildItem -LiteralPath $place.FullName -Filter '*.md' -File)
             [pscustomobject]@{
                 Pauta = $notes.editorialId
-                Estado = if (!$notes.reviewedSources) { 'Aguardando fontes' }
+                Estado = if (!$notes.reviewedSources) { 'Aguardando revisão factual pelo Codex ou mantenedor' }
                     elseif (!$notes.approvedOriginal -and $drafts.Count) { 'Aguardando aprovação do original' }
                     elseif ($drafts.Count) { 'Rascunhos disponíveis para revisão' }
                     else { 'Briefing validado, aguardando redação' }

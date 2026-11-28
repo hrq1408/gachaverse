@@ -3,6 +3,7 @@ import { games, gamePath, sectionPath, sections, type Game, type Section } from 
 import { articles, type Article } from './articles';
 import { gameBanners } from './banners';
 export { articles };
+export const hasNews = () => articles.some(article => article.noticia);
 
 export function findArticles(section: Section, game?: Game) {
   const entries = articles.filter((article) =>
@@ -36,6 +37,7 @@ export function publicPaths() {
         .map((section) => sectionPath(section, game)),
     ]),
     ...articles.map(contentPath),
+    ...(hasNews() ? ['/noticias/'] : []),
   ];
 }
 

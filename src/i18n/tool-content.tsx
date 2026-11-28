@@ -2,6 +2,7 @@ import { SectionContent } from '@/components/catalog';
 import { InstitutionalPage, SectionPage } from '@/components/page-frames';
 import { PityPage } from '@/components/pity-page';
 import { SearchPage } from '@/components/search-page';
+import { NewsPage } from '@/components/news-page';
 import { sections, type Game } from '@/content/catalog';
 import Link from 'next/link';
 import { InstitutionalContent, institutionHeadings } from './institutional';
@@ -9,6 +10,7 @@ import type { TranslationLocale } from './locales';
 import { gameHubPath, toolTitles, type ToolPage } from './tools';
 
 export function ToolContent({ page, locale, game }: { page: ToolPage; locale: TranslationLocale; game?: Game }) {
+  if (page === 'news') return <NewsPage locale={locale} />;
   const [title, description] = toolTitles[locale][page];
   if (page === 'pity') return <PityPage locale={locale} />;
   if (page === 'search') return <SearchPage locale={locale} />;
